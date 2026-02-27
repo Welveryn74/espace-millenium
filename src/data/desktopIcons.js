@@ -5,5 +5,6 @@ export const DESKTOP_ICONS = [
   { id: "skyblog", label: "Mon\nSkyblog", emoji: "\u{1F4DD}" },
   { id: "dressing", label: "Dressing\nTemporel", emoji: "\u{1F457}" },
   { id: "cartable", label: "Mon\nCartable", emoji: "\u{1F392}" },
+  { id: "salleJeux", label: "Salle\nde Jeux", emoji: "\u{1F579}\uFE0F" },
   { id: "poubelle", label: "Corbeille", emoji: "\u{1F5D1}\uFE0F" },
 ];
