@@ -1,0 +1,6 @@
+export const SKYBLOG_POSTS = [
+  { title: "~*~ mOn AnNiVeRsAiRe ~*~", date: "14/03/2005", content: "Cc tt le monde !! Hier ct mon anniv jav\u00E9 invit\u00E9 tt le monde on a tro d\u00E9lirer !! J\u00E9 eu un iPod mini ROSE je sui tro contente \u{1F60D}\u{1F60D} Gro bisou a tt ceux ki \u00E9tai la !! LaCh3z VoS cOmS !! \u{1F495}", comments: 14, img: "\u{1F382}" },
+  { title: "JsUi DeG \u{1F622}", date: "22/02/2005", content: "Pfff auj tro nul o coll\u00E8ge, ya kelkun ki ma saoul\u00E9 jveux pa en parler... En + il pleut. Vivement les vacances s\u00E9rieux. Bon jv\u00E9 \u00E9couter du Evanescence sa va me calmer ptetre.", comments: 23, img: "\u{1F327}\uFE0F" },
+  { title: "NoUvElLe PhOtO dE pRoFiL !!!", date: "08/02/2005", content: "Cc !! Regard\u00E9 ma nvelle foto !!! Jl\u00E9 pri ac ma webcam Logitech mdr la kualit\u00E9 \u00E9 pa ouf m\u00E9 bon \u{1F4F8} L\u00E2chez vos coms svp !! +5 pr tt le monde !! BisOuX \u{1F618}", comments: 31, img: "\u{1F4F8}" },
+  { title: "\u266B PaRoLeS 2 ChAnSoN \u266B", date: "01/02/2005", content: "Jador tro cte chanson : \u00AB WAKE ME UP INSIDE \u00BB mdr jla chante tt le tps m\u00E9 jcompren pa tt les paroles en angl\u00E9 ptdr \u{1F3A4}\u{1F3B8}", comments: 8, img: "\u{1F3B5}" },
+];

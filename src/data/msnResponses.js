@@ -1,0 +1,17 @@
+export const MSN_RESPONSES = [
+  "hey !! sa va ??? \u{1F60A}",
+  "mdr jtenvoie un wizz attend",
+  "ta vu la star ac hier ??? tro bi1 !",
+  "lol jdoi y aller ma mer mappel pr manger",
+  "ptdr ten fai pa",
+  "tu f\u00E9 koi ce wknd ??",
+  "j\u00E9coute lorie en boucle mdr",
+  "g tro 2 devoirs la flemme \u{1F629}",
+  "tkt sa va le faire !",
+  "att 2 sec jrevien... ( AFK )",
+  "bon ++ a 2m1 sur msn \u{1F618}",
+  "tu kon\u00E9 le code 2 la porte ds le jeu ??",
+  "jsui en trin de DL une chanson sur kazaa \u{1F3B5}",
+  "fo ke tu voi la nvelle foto sur mon sky !!!",
+  "mdr ma webcam logitech \u00E9 cass\u00E9 \u{1F602}",
+];
