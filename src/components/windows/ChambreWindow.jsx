@@ -5,6 +5,8 @@ import { ROOM_ITEMS, COUETTES, BILLES_COLLECTION, LEGO_SETS, PELUCHES, SCOUBIDOU
 import { ALBUM_PAGES, ALBUM_TITLE, TOTAL_STICKERS, ALL_STICKER_NAMES } from "../../data/paniniAlbum";
 import { loadState, saveState, clearState } from "../../utils/storage";
 import BeybladeArena from "./BeybladeArena";
+import BillesGame from "./minigames/BillesGame";
+import PetitsChevauxGame from "./minigames/PetitsChevauxGame";
 
 const TAMA_TICK_MS = 10_000; // stats decay every 10s
 const TAMA_MAX = 5;
@@ -1056,7 +1058,21 @@ function PateAProut({ playing, onPress }) {
    ============================================================ */
 function BillesView() {
   const [selected, setSelected] = useState(null);
+  const [playingBilles, setPlayingBilles] = useState(false);
   const current = selected ? BILLES_COLLECTION.find(b => b.id === selected) : null;
+
+  if (playingBilles) {
+    return (
+      <div style={{ animation: "fadeIn 0.3s ease-out" }}>
+        <button onClick={() => setPlayingBilles(false)} style={{
+          background: "none", border: "1px solid rgba(200,176,232,0.4)",
+          color: "#C8B0E8", padding: "4px 12px", borderRadius: 4, cursor: "pointer",
+          fontSize: 11, fontFamily: "'Tahoma', sans-serif", marginBottom: 10,
+        }}>← Retour à la collection</button>
+        <BillesGame onBack={() => setPlayingBilles(false)} billes={BILLES_COLLECTION} />
+      </div>
+    );
+  }
 
   return (
     <div style={{ animation: "fadeIn 0.3s ease-out" }}>
@@ -1068,6 +1084,15 @@ function BillesView() {
         <div style={{ color: "#8B6BAE", fontSize: 11, marginTop: 4, fontStyle: "italic" }}>
           "Tu joues pour de vrai ou pour de faux ?"
         </div>
+        <button onClick={() => setPlayingBilles(true)} style={{
+          marginTop: 8, background: "rgba(200,176,232,0.15)", color: "#C8B0E8",
+          border: "1px solid rgba(200,176,232,0.4)", padding: "6px 18px",
+          borderRadius: 4, cursor: "pointer", fontFamily: "'Tahoma', sans-serif",
+          fontSize: 12, fontWeight: "bold", transition: "all 0.15s",
+        }}
+          onMouseEnter={e => { e.currentTarget.style.background = "rgba(200,176,232,0.3)"; }}
+          onMouseLeave={e => { e.currentTarget.style.background = "rgba(200,176,232,0.15)"; }}
+        >▶ Tir de billes !</button>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, justifyItems: "center" }}>
@@ -1134,6 +1159,20 @@ function BillesView() {
    ============================================================ */
 function JeuxSocieteView() {
   const [open, setOpen] = useState(null);
+  const [playingChevaux, setPlayingChevaux] = useState(false);
+
+  if (playingChevaux) {
+    return (
+      <div style={{ animation: "fadeIn 0.3s ease-out" }}>
+        <button onClick={() => setPlayingChevaux(false)} style={{
+          background: "none", border: "1px solid rgba(200,176,232,0.4)",
+          color: "#C8B0E8", padding: "4px 12px", borderRadius: 4, cursor: "pointer",
+          fontSize: 11, fontFamily: "'Tahoma', sans-serif", marginBottom: 10,
+        }}>← Retour aux jeux</button>
+        <PetitsChevauxGame onBack={() => setPlayingChevaux(false)} />
+      </div>
+    );
+  }
 
   return (
     <div style={{ animation: "fadeIn 0.3s ease-out" }}>
@@ -1179,9 +1218,26 @@ function JeuxSocieteView() {
                 <span style={{ color: "#666", fontSize: 10, transition: "transform 0.2s", transform: isOpen ? "rotate(90deg)" : "rotate(0deg)" }}>▶</span>
               </div>
               {isOpen && (
-                <div style={{ padding: "0 14px 12px 14px", display: "flex", gap: 12, animation: "fadeIn 0.2s ease-out" }}>
-                  <NostalImg src={g.img} fallback={g.emoji} size={100} style={{ borderRadius: 6, flexShrink: 0 }} />
-                  <div style={{ color: "#AAA", fontSize: 11, lineHeight: 1.6 }}>{g.desc}</div>
+                <div style={{ animation: "fadeIn 0.2s ease-out" }}>
+                  <div style={{ padding: "0 14px 12px 14px", display: "flex", gap: 12 }}>
+                    <NostalImg src={g.img} fallback={g.emoji} size={100} style={{ borderRadius: 6, flexShrink: 0 }} />
+                    <div style={{ color: "#AAA", fontSize: 11, lineHeight: 1.6 }}>{g.desc}</div>
+                  </div>
+                  {g.id === "petitsChevaux" && (
+                    <div style={{ padding: "0 14px 12px 14px" }}>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setPlayingChevaux(true); }}
+                        style={{
+                          width: "100%", background: `${g.color}25`, color: "#E0E0E0",
+                          border: `1px solid ${g.color}50`, padding: "6px 0",
+                          borderRadius: 4, cursor: "pointer", fontFamily: "'Tahoma', sans-serif",
+                          fontSize: 12, fontWeight: "bold", transition: "all 0.15s",
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.background = `${g.color}45`; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = `${g.color}25`; }}
+                      >▶ Jouer !</button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
