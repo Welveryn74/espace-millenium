@@ -2,10 +2,10 @@
 // Each item has a position in the room scene, interaction type, and metadata
 
 export const COUETTES = [
-  { id: "harryPotter", emoji: "🧙", label: "Harry Potter", color: "#722F37", desc: "La housse Gryffondor avec le Vif d'Or doré. Tu dormais dans la magie tous les soirs." },
-  { id: "spiderman", emoji: "🕷️", label: "Spider-Man", color: "#CC1C2C", desc: "Toile d'araignée sur fond bleu et rouge. Tu faisais le geste pchit-pchit au réveil." },
-  { id: "roiLion", emoji: "🦁", label: "Le Roi Lion", color: "#D4943A", desc: "Simba et Nala sur fond de savane. Hakuna Matata avant même de savoir ce que ça voulait dire." },
-  { id: "dinosaures", emoji: "🦖", label: "Dinosaures", color: "#2E7D32", desc: "T-Rex, Tricératops, Stégosaure. Tu connaissais plus de noms de dinos que de capitales." },
+  { id: "harryPotter", emoji: "🧙", label: "Harry Potter", color: "#722F37", desc: "La housse Gryffondor avec le Vif d'Or doré. Tu dormais dans la magie tous les soirs.", img: "/images/chambre/couettes/harry-potter.png" },
+  { id: "spiderman", emoji: "🕷️", label: "Spider-Man", color: "#CC1C2C", desc: "Toile d'araignée sur fond bleu et rouge. Tu faisais le geste pchit-pchit au réveil.", img: "/images/chambre/couettes/spiderman.png" },
+  { id: "roiLion", emoji: "🦁", label: "Le Roi Lion", color: "#D4943A", desc: "Simba et Nala sur fond de savane. Hakuna Matata avant même de savoir ce que ça voulait dire.", img: "/images/chambre/couettes/roi-lion.png" },
+  { id: "dinosaures", emoji: "🦖", label: "Dinosaures", color: "#2E7D32", desc: "T-Rex, Tricératops, Stégosaure. Tu connaissais plus de noms de dinos que de capitales.", img: "/images/chambre/couettes/dinosaures.png" },
 ];
 
 export const BEYBLADE_TOUPIES = [
@@ -27,19 +27,19 @@ export const BILLES_COLLECTION = [
 ];
 
 export const LEGO_SETS = [
-  { id: "starwars", name: "Faucon Millénium", theme: "Star Wars", year: 2000, pieces: 664, color: "#607D8B", emoji: "🚀", desc: "Le set que tu demandais à CHAQUE Noël. 664 pièces. Tu l'as monté en un week-end avec papa et tu as perdu 3 pièces dans le tapis." },
-  { id: "bionicle", name: "Tahu Nuva", theme: "Bionicle", year: 2002, pieces: 36, color: "#E53935", emoji: "🔥", desc: "Le Toa du Feu. Le premier Bionicle. Tu le montais, le démontais, le remontais. Son masque était la pièce la plus précieuse de ta collection." },
-  { id: "harrypotter", name: "Poudlard Express", theme: "Harry Potter", year: 2001, pieces: 410, color: "#7B1FA2", emoji: "🧙", desc: "Le train rouge et noir. La mini-fig de Harry avec sa cicatrice. Tu l'emmenais partout même à table." },
-  { id: "city", name: "La Caserne des Pompiers", theme: "City", year: 1999, pieces: 302, color: "#F57C00", emoji: "🚒", desc: "Avec le camion échelle, la porte de garage qui s'ouvre, et le dalmatien. LE set classique par excellence." },
-  { id: "racers", name: "Ferrari F1", theme: "Racers", year: 2003, pieces: 237, color: "#C62828", emoji: "🏎️", desc: "Michael Schumacher en Lego. Tu la faisais rouler sur le carrelage à fond et elle explosait dans les murs." },
-  { id: "castle", name: "Le Château Royal", theme: "Castle", year: 2000, pieces: 524, color: "#5D4037", emoji: "🏰", desc: "Avec le pont-levis qui descend et les chevaliers. Tu inventais des batailles qui duraient tout l'après-midi." },
+  { id: "starwars", name: "Faucon Millénium", theme: "Star Wars", year: 2000, pieces: 664, color: "#607D8B", emoji: "🚀", desc: "Le set que tu demandais à CHAQUE Noël. 664 pièces. Tu l'as monté en un week-end avec papa et tu as perdu 3 pièces dans le tapis.", img: "/images/chambre/lego/starwars.png" },
+  { id: "bionicle", name: "Tahu Nuva", theme: "Bionicle", year: 2002, pieces: 36, color: "#E53935", emoji: "🔥", desc: "Le Toa du Feu. Le premier Bionicle. Tu le montais, le démontais, le remontais. Son masque était la pièce la plus précieuse de ta collection.", img: "/images/chambre/lego/bionicle.png" },
+  { id: "harrypotter", name: "Poudlard Express", theme: "Harry Potter", year: 2001, pieces: 410, color: "#7B1FA2", emoji: "🧙", desc: "Le train rouge et noir. La mini-fig de Harry avec sa cicatrice. Tu l'emmenais partout même à table.", img: "/images/chambre/lego/harrypotter.png" },
+  { id: "city", name: "La Caserne des Pompiers", theme: "City", year: 1999, pieces: 302, color: "#F57C00", emoji: "🚒", desc: "Avec le camion échelle, la porte de garage qui s'ouvre, et le dalmatien. LE set classique par excellence.", img: "/images/chambre/lego/city.png" },
+  { id: "racers", name: "Ferrari F1", theme: "Racers", year: 2003, pieces: 237, color: "#C62828", emoji: "🏎️", desc: "Michael Schumacher en Lego. Tu la faisais rouler sur le carrelage à fond et elle explosait dans les murs.", img: "/images/chambre/lego/racers.png" },
+  { id: "castle", name: "Le Château Royal", theme: "Castle", year: 2000, pieces: 524, color: "#5D4037", emoji: "🏰", desc: "Avec le pont-levis qui descend et les chevaliers. Tu inventais des batailles qui duraient tout l'après-midi.", img: "/images/chambre/lego/castle.png" },
 ];
 
 export const PELUCHES = [
-  { id: "ours", emoji: "🧸", name: "Gros Nounours", color: "#A0522D", desc: "Le premier. Celui qui a perdu un œil et dont le bras tient avec du scotch. Tu refusais de dormir sans lui.", reaction: "Câlin ! Il est tout doux malgré les années..." },
-  { id: "lapin", emoji: "🐰", name: "Lapinou", color: "#DDA0DD", desc: "Les oreilles qui pendouillent. Tu le traînais partout par une patte. Il sentait le lait et le doudou.", reaction: "Ses oreilles se redressent de joie !" },
-  { id: "chien", emoji: "🐶", name: "Pitou", color: "#D2B48C", desc: "Le chien en peluche que tu avais demandé parce que maman voulait pas de vrai chien. Tu lui parlais quand même.", reaction: "Il remue la queue ! Enfin... presque." },
-  { id: "dragon", emoji: "🐉", name: "Drago", color: "#2E8B57", desc: "Le dragon vert gagné à la fête foraine. Papa a dépensé 15 euros de chamboule-tout pour le gagner.", reaction: "Il crache du feu imaginaire ! ROOAAR !" },
+  { id: "ours", emoji: "🧸", name: "Gros Nounours", color: "#A0522D", desc: "Le premier. Celui qui a perdu un œil et dont le bras tient avec du scotch. Tu refusais de dormir sans lui.", reaction: "Câlin ! Il est tout doux malgré les années...", img: "/images/chambre/peluches/ours.png" },
+  { id: "lapin", emoji: "🐰", name: "Lapinou", color: "#DDA0DD", desc: "Les oreilles qui pendouillent. Tu le traînais partout par une patte. Il sentait le lait et le doudou.", reaction: "Ses oreilles se redressent de joie !", img: "/images/chambre/peluches/lapin.png" },
+  { id: "chien", emoji: "🐶", name: "Pitou", color: "#D2B48C", desc: "Le chien en peluche que tu avais demandé parce que maman voulait pas de vrai chien. Tu lui parlais quand même.", reaction: "Il remue la queue ! Enfin... presque.", img: "/images/chambre/peluches/chien.png" },
+  { id: "dragon", emoji: "🐉", name: "Drago", color: "#2E8B57", desc: "Le dragon vert gagné à la fête foraine. Papa a dépensé 15 euros de chamboule-tout pour le gagner.", reaction: "Il crache du feu imaginaire ! ROOAAR !", img: "/images/chambre/peluches/dragon.png" },
 ];
 
 export const SCOUBIDOUS = [
@@ -52,11 +52,11 @@ export const SCOUBIDOUS = [
 ];
 
 export const JEUX_SOCIETE = [
-  { id: "monopoly", name: "Monopoly", emoji: "🏠", color: "#2E7D32", players: "2-6", desc: "La Rue de la Paix. Les hôtels rouges. Les billets de Monopoly cachés sous la table. Et papa qui retournait le plateau quand il perdait." },
-  { id: "bonnePaye", name: "La Bonne Paye", emoji: "💰", color: "#1565C0", players: "2-6", desc: "Le jeu où tu apprenais ce que c'était de payer des factures. À 8 ans. Bienvenue dans la vie adulte, version plateau." },
-  { id: "petitsChevaux", name: "Les Petits Chevaux", emoji: "🐴", color: "#E65100", players: "2-4", desc: "Les bagarres pour la couleur du pion. Le cri de rage quand quelqu'un te renvoyait à l'écurie. Dimanche après-midi classique." },
-  { id: "cluedo", name: "Cluedo", emoji: "🔍", color: "#6A1B9A", players: "3-6", desc: "\"C'est le Colonel Moutarde, dans la cuisine, avec le chandelier !\" Tu te sentais détective privé. Même si tu accusais au hasard." },
-  { id: "unMille", name: "Le 1000 Bornes", emoji: "🚗", color: "#C62828", players: "2-4", desc: "Crevaison ! Panne d'essence ! Limitation de vitesse ! Le jeu de cartes qui rendait les trajets en voiture encore plus longs." },
+  { id: "monopoly", name: "Monopoly", emoji: "🏠", color: "#2E7D32", players: "2-6", desc: "La Rue de la Paix. Les hôtels rouges. Les billets de Monopoly cachés sous la table. Et papa qui retournait le plateau quand il perdait.", img: "/images/chambre/jeux/monopoly.png" },
+  { id: "bonnePaye", name: "La Bonne Paye", emoji: "💰", color: "#1565C0", players: "2-6", desc: "Le jeu où tu apprenais ce que c'était de payer des factures. À 8 ans. Bienvenue dans la vie adulte, version plateau.", img: "/images/chambre/jeux/bonnepaye.png" },
+  { id: "petitsChevaux", name: "Les Petits Chevaux", emoji: "🐴", color: "#E65100", players: "2-4", desc: "Les bagarres pour la couleur du pion. Le cri de rage quand quelqu'un te renvoyait à l'écurie. Dimanche après-midi classique.", img: "/images/chambre/jeux/petitschevaux.png" },
+  { id: "cluedo", name: "Cluedo", emoji: "🔍", color: "#6A1B9A", players: "3-6", desc: "\"C'est le Colonel Moutarde, dans la cuisine, avec le chandelier !\" Tu te sentais détective privé. Même si tu accusais au hasard.", img: "/images/chambre/jeux/cluedo.png" },
+  { id: "unMille", name: "Le 1000 Bornes", emoji: "🚗", color: "#C62828", players: "2-4", desc: "Crevaison ! Panne d'essence ! Limitation de vitesse ! Le jeu de cartes qui rendait les trajets en voiture encore plus longs.", img: "/images/chambre/jeux/1000bornes.png" },
 ];
 
 export const ROOM_ITEMS = [

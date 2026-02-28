@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Win from "../Win";
+import NostalImg from "../NostalImg";
 import { CARTABLE_ITEMS } from "../../data/cartableItems";
 
 export default function CartableWindow({ onClose, onMinimize, zIndex, onFocus }) {
@@ -20,7 +21,7 @@ export default function CartableWindow({ onClose, onMinimize, zIndex, onFocus })
     <Win title="Mon Cartable — Année scolaire 2004-2005" onClose={onClose} onMinimize={onMinimize} width={500} height={460} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 160, y: 45 }} color="#8B4513">
       <div style={{ height: "100%", background: "linear-gradient(180deg, #FFF8F0 0%, #F0E8D8 100%)", padding: 16, overflowY: "auto" }}>
         <div style={{ textAlign: "center", marginBottom: 16 }}>
-          <span style={{ fontSize: 42 }}>🎒</span>
+          <NostalImg src="/images/desktop/cartable.png" fallback="🎒" size={42} />
           <div style={{ fontSize: 14, fontWeight: "bold", color: "#5A3E1B", marginTop: 4 }}>
             Qu'est-ce qu'il y a dans le sac ?
           </div>
@@ -55,7 +56,7 @@ export default function CartableWindow({ onClose, onMinimize, zIndex, onFocus })
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: opened === i ? 8 : 0 }}>
-                <span style={{ fontSize: 26 }}>{item.emoji}</span>
+                <NostalImg src={item.img} fallback={item.emoji} size={26} />
                 <span style={{ fontSize: 12, fontWeight: "bold", color: "#5A3E1B" }}>{item.name}</span>
               </div>
               {opened === i && (

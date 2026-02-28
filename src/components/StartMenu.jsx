@@ -1,4 +1,5 @@
 import { DESKTOP_ICONS } from "../data/desktopIcons";
+import NostalImg from "./NostalImg";
 
 export default function StartMenu({ openWindow, onShutdown }) {
   return (
@@ -15,10 +16,12 @@ export default function StartMenu({ openWindow, onShutdown }) {
         <div style={{
           width: 40, height: 40, borderRadius: "50%",
           background: "linear-gradient(135deg, #6CF, #39F)",
-          display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20,
+          display: "flex", alignItems: "center", justifyContent: "center",
           border: "2px solid rgba(255,255,255,0.5)",
-          boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
-        }}>👤</div>
+          boxShadow: "0 2px 6px rgba(0,0,0,0.3)", overflow: "hidden",
+        }}>
+          <NostalImg src="/images/ui/user.png" fallback="👤" size={24} />
+        </div>
         <div>
           <div style={{ color: "#fff", fontWeight: "bold", fontSize: 13, textShadow: "1px 1px 2px rgba(0,0,0,0.5)" }}>Utilisateur_2005</div>
           <div style={{ color: "rgba(255,255,255,0.7)", fontSize: 10 }}>Connecté</div>
@@ -34,7 +37,7 @@ export default function StartMenu({ openWindow, onShutdown }) {
             onMouseEnter={e => { e.currentTarget.style.background = "#316AC5"; e.currentTarget.style.color = "#fff"; }}
             onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#333"; }}
           >
-            <span style={{ fontSize: 22, width: 26, textAlign: "center" }}>{icon.emoji}</span>
+            <NostalImg src={icon.img} fallback={icon.emoji} size={22} style={{ width: 26, textAlign: "center" }} />
             <span style={{ fontFamily: "'Tahoma', sans-serif" }}>{icon.label.replace("\n", " ")}</span>
           </div>
         ))}
@@ -45,7 +48,7 @@ export default function StartMenu({ openWindow, onShutdown }) {
           onMouseEnter={e => e.currentTarget.style.fontWeight = "bold"}
           onMouseLeave={e => e.currentTarget.style.fontWeight = "normal"}
         >
-          🔴 Arrêter l'ordinateur...
+          <NostalImg src="/images/ui/shutdown.png" fallback="🔴" size={12} /> Arrêter l'ordinateur...
         </span>
       </div>
     </div>

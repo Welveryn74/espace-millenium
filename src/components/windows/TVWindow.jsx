@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Win from "../Win";
+import NostalImg from "../NostalImg";
 import { CHANNELS } from "../../data/channels";
 import { tvBtnBase } from "../../styles/windowStyles";
 
@@ -68,13 +69,15 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
               }}>CH {channel + 1}</div>
               {/* Volume indicator */}
               <div style={{ position: "absolute", top: 10, left: 14, display: "flex", gap: 2, alignItems: "center" }}>
-                <span style={{ color: "#888", fontSize: 10 }}>🔊</span>
+                <NostalImg src="/images/ui/volume.png" fallback="🔊" size={10} />
                 <div style={{ width: 50, height: 4, background: "#333", borderRadius: 2, overflow: "hidden" }}>
                   <div style={{ width: `${volume}%`, height: "100%", background: CHANNELS[channel].color, transition: "width 0.2s" }} />
                 </div>
               </div>
               {/* Content */}
-              <div style={{ fontSize: 42, marginBottom: 10, textShadow: "0 0 20px rgba(255,255,255,0.2)" }}>{CHANNELS[channel].emoji}</div>
+              <div style={{ marginBottom: 10, textShadow: "0 0 20px rgba(255,255,255,0.2)" }}>
+                <NostalImg src={CHANNELS[channel].img} fallback={CHANNELS[channel].emoji} size={42} />
+              </div>
               <div style={{ color: CHANNELS[channel].color, fontSize: 15, fontWeight: "bold", textAlign: "center", textShadow: `0 0 12px ${CHANNELS[channel].color}50`, marginBottom: 10 }}>
                 {CHANNELS[channel].name}
               </div>

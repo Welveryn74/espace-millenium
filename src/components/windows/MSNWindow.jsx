@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Win from "../Win";
+import NostalImg from "../NostalImg";
 import { MSN_RESPONSES } from "../../data/msnResponses";
 import { STATUS_OPTIONS } from "../../data/statusOptions";
 
@@ -51,7 +52,9 @@ export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz
       <div style={{ display: "flex", flexDirection: "column", height: "100%", background: "#fff" }}>
         {/* Header with contact info */}
         <div style={{ padding: "8px 12px", background: "linear-gradient(180deg, #E8F4FF 0%, #D0E8FF 100%)", borderBottom: "1px solid #B0C8E8", display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ width: 36, height: 36, borderRadius: 4, background: "linear-gradient(135deg, #F0F, #60F)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, border: "2px solid #fff", boxShadow: "0 1px 4px rgba(0,0,0,0.2)" }}>😈</div>
+          <div style={{ width: 36, height: 36, borderRadius: 4, background: "linear-gradient(135deg, #F0F, #60F)", display: "flex", alignItems: "center", justifyContent: "center", border: "2px solid #fff", boxShadow: "0 1px 4px rgba(0,0,0,0.2)", overflow: "hidden" }}>
+            <NostalImg src="/images/ui/msn-contact.png" fallback="😈" size={22} />
+          </div>
           <div>
             <div style={{ fontSize: 12, fontWeight: "bold", color: "#003" }}>{botName}</div>
             <div style={{ fontSize: 10, color: "#666" }}>🎵 Evanescence — Bring Me To Life 🎵</div>
@@ -103,7 +106,7 @@ export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz
           )}
         </div>
 
-        {/* Emote bar */}
+        {/* Emote bar — intentionally kept as emojis */}
         <div style={{ padding: "3px 8px", background: "#F8F8F8", borderBottom: "1px solid #e0e0e0", display: "flex", gap: 4 }}>
           {["😊", "😂", "😢", "😍", "😡", "🤣", "😘", "🙄"].map((e, i) => (
             <span key={i} onClick={() => setInput(prev => prev + e)} style={{ cursor: "pointer", fontSize: 16, padding: 2, borderRadius: 3, transition: "background 0.1s" }}

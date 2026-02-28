@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Win from "../Win";
+import NostalImg from "../NostalImg";
 import { SKYBLOG_POSTS } from "../../data/skyblogPosts";
 import { ieBtnStyle } from "../../styles/windowStyles";
 

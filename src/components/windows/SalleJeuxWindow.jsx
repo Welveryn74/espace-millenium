@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Win from "../Win";
+import NostalImg from "../NostalImg";
 import { CONSOLES } from "../../data/consoles";
 
 export default function SalleJeuxWindow({ onClose, onMinimize, zIndex, onFocus }) {
@@ -40,7 +41,7 @@ export default function SalleJeuxWindow({ onClose, onMinimize, zIndex, onFocus }
           /* ============ SHELF VIEW ============ */
           <div style={{ padding: 16, overflowY: "auto", height: "100%" }}>
             <div style={{ textAlign: "center", marginBottom: 16 }}>
-              <span style={{ fontSize: 42 }}>🕹️</span>
+              <NostalImg src="/images/desktop/sallejeux.png" fallback="🕹️" size={42} />
               <div style={{ fontSize: 15, fontWeight: "bold", color: "#E0E0E0", marginTop: 4, fontFamily: "'Tahoma', sans-serif" }}>
                 Choisis ta console !
               </div>
@@ -69,7 +70,7 @@ export default function SalleJeuxWindow({ onClose, onMinimize, zIndex, onFocus }
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <span style={{ fontSize: 28 }}>{console.emoji}</span>
+                    <NostalImg src={console.img} fallback={console.emoji} size={28} />
                     <div>
                       <div style={{ color: "#E0E0E0", fontSize: 13, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif" }}>
                         {console.name}
@@ -153,7 +154,7 @@ export default function SalleJeuxWindow({ onClose, onMinimize, zIndex, onFocus }
                 textAlign: "center", marginBottom: 16,
                 animation: "fadeIn 0.4s ease-out",
               }}>
-                <span style={{ fontSize: 32 }}>{current.emoji}</span>
+                <NostalImg src={current.img} fallback={current.emoji} size={32} />
                 <div style={{
                   color: current.screenText,
                   fontSize: 16, fontWeight: "bold",

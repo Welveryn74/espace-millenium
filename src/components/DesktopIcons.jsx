@@ -1,4 +1,5 @@
 import { DESKTOP_ICONS } from "../data/desktopIcons";
+import NostalImg from "./NostalImg";
 
 export default function DesktopIcons({ selectedIcon, setSelectedIcon, openWindow }) {
   return (
@@ -18,7 +19,9 @@ export default function DesktopIcons({ selectedIcon, setSelectedIcon, openWindow
           onMouseEnter={e => { if (selectedIcon !== icon.id) e.currentTarget.style.background = "rgba(80,130,255,0.15)"; }}
           onMouseLeave={e => { if (selectedIcon !== icon.id) e.currentTarget.style.background = "transparent"; }}
         >
-          <div style={{ fontSize: 34, filter: "drop-shadow(1px 2px 3px rgba(0,0,0,0.5))" }}>{icon.emoji}</div>
+          <div style={{ filter: "drop-shadow(1px 2px 3px rgba(0,0,0,0.5))", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <NostalImg src={icon.img} fallback={icon.emoji} size={34} alt={icon.label} />
+          </div>
           <div style={{
             color: "#fff", fontSize: 10, textAlign: "center", lineHeight: 1.3,
             textShadow: "1px 1px 3px #000, -1px -1px 3px #000, 1px -1px 3px #000, -1px 1px 3px #000",

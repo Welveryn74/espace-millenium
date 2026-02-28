@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Win from "../Win";
+import NostalImg from "../NostalImg";
 import { ROOM_ITEMS, COUETTES, BILLES_COLLECTION, LEGO_SETS, PELUCHES, SCOUBIDOUS, JEUX_SOCIETE } from "../../data/chambreItems";
 import { ALBUM_PAGES, ALBUM_TITLE, TOTAL_STICKERS, ALL_STICKER_NAMES } from "../../data/paniniAlbum";
 import { loadState, saveState, clearState } from "../../utils/storage";
@@ -712,7 +713,7 @@ function CouetteSelector({ couette, setCouette }) {
   return (
     <div style={{ animation: "fadeIn 0.3s ease-out" }}>
       <div style={{ textAlign: "center", marginBottom: 16 }}>
-        <span style={{ fontSize: 36 }}>🛏️</span>
+        <NostalImg src="/images/desktop/chambre.png" fallback="🛏️" size={36} />
         <div style={{ color: "#C8B0E8", fontSize: 15, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif", marginTop: 4 }}>
           Choisis ta housse de couette !
         </div>
@@ -736,7 +737,7 @@ function CouetteSelector({ couette, setCouette }) {
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <span style={{ fontSize: 28 }}>{c.emoji}</span>
+                <NostalImg src={c.img} fallback={c.emoji} size={28} />
                 <div style={{ color: "#E0E0E0", fontSize: 13, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif" }}>
                   {c.label}
                 </div>
@@ -1060,7 +1061,7 @@ function BillesView() {
   return (
     <div style={{ animation: "fadeIn 0.3s ease-out" }}>
       <div style={{ textAlign: "center", marginBottom: 16 }}>
-        <span style={{ fontSize: 36 }}>🔮</span>
+        <NostalImg fallback="🔮" size={36} />
         <div style={{ color: "#C8B0E8", fontSize: 15, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif", marginTop: 4 }}>
           Ma Pochette de Billes
         </div>
@@ -1133,7 +1134,7 @@ function JeuxSocieteView() {
   return (
     <div style={{ animation: "fadeIn 0.3s ease-out" }}>
       <div style={{ textAlign: "center", marginBottom: 16 }}>
-        <span style={{ fontSize: 36 }}>🎲</span>
+        <NostalImg fallback="🎲" size={36} />
         <div style={{ color: "#C8B0E8", fontSize: 15, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif", marginTop: 4 }}>
           Jeux de Société
         </div>
@@ -1164,7 +1165,7 @@ function JeuxSocieteView() {
                 background: isOpen ? `linear-gradient(135deg, ${g.color}30, ${g.color}10)` : "none",
                 display: "flex", alignItems: "center", gap: 10,
               }}>
-                <span style={{ fontSize: 26 }}>{g.emoji}</span>
+                <NostalImg src={g.img} fallback={g.emoji} size={26} />
                 <div style={{ flex: 1 }}>
                   <div style={{ color: "#E0E0E0", fontSize: 13, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif" }}>
                     {g.name}
@@ -1200,7 +1201,7 @@ function ScoubidousView() {
   return (
     <div style={{ animation: "fadeIn 0.3s ease-out" }}>
       <div style={{ textAlign: "center", marginBottom: 16 }}>
-        <span style={{ fontSize: 36 }}>🪢</span>
+        <NostalImg fallback="🪢" size={36} />
         <div style={{ color: "#C8B0E8", fontSize: 15, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif", marginTop: 4 }}>
           Mes Scoubidous
         </div>
@@ -1291,7 +1292,7 @@ function PeluchesView() {
   return (
     <div style={{ animation: "fadeIn 0.3s ease-out" }}>
       <div style={{ textAlign: "center", marginBottom: 16 }}>
-        <span style={{ fontSize: 36 }}>🧸</span>
+        <NostalImg src="/images/chambre/peluches/ours.png" fallback="🧸" size={36} />
         <div style={{ color: "#C8B0E8", fontSize: 15, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif", marginTop: 4 }}>
           Mes Peluches
         </div>
@@ -1317,11 +1318,11 @@ function PeluchesView() {
               onMouseLeave={(e) => { if (!isHugged) e.currentTarget.style.background = "rgba(255,255,255,0.04)"; }}
             >
               <div style={{
-                fontSize: 40, transition: "transform 0.3s ease",
+                transition: "transform 0.3s ease",
                 transform: isHugged ? "scale(1.3)" : "scale(1)",
                 animation: isHugged ? "pulse 0.4s ease-in-out 3" : "none",
               }}>
-                {p.emoji}
+                <NostalImg src={p.img} fallback={p.emoji} size={40} />
               </div>
               <div style={{ color: "#E0E0E0", fontSize: 12, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif", marginTop: 6 }}>
                 {p.name}
@@ -1356,7 +1357,7 @@ function LegoGallery() {
   return (
     <div style={{ animation: "fadeIn 0.3s ease-out" }}>
       <div style={{ textAlign: "center", marginBottom: 16 }}>
-        <span style={{ fontSize: 36 }}>🧱</span>
+        <NostalImg fallback="🧱" size={36} />
         <div style={{ color: "#C8B0E8", fontSize: 15, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif", marginTop: 4 }}>
           Ma Collection Lego
         </div>
@@ -1382,7 +1383,7 @@ function LegoGallery() {
               onMouseLeave={(e) => { if (!isOpen) e.currentTarget.style.background = "rgba(255,255,255,0.04)"; }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <span style={{ fontSize: 24 }}>{set.emoji}</span>
+                <NostalImg src={set.img} fallback={set.emoji} size={24} />
                 <div style={{ flex: 1 }}>
                   <div style={{ color: "#E0E0E0", fontSize: 13, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif" }}>
                     {set.name}

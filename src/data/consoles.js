@@ -7,6 +7,7 @@ export const CONSOLES = [
     screenBg: "#0F380F",
     screenText: "#9BBC0F",
     emoji: "🟢",
+    img: "/images/consoles/gameboy.png",
     description: "La brique grise qui a survécu à toutes les chutes. Quatre piles AA et t'étais parti pour 30h de bonheur pixelisé.",
     bootText: "Nintendo®\nGAME BOY™",
     games: [
@@ -24,6 +25,7 @@ export const CONSOLES = [
     screenBg: "#1a1030",
     screenText: "#C8B8FF",
     emoji: "🟣",
+    img: "/images/consoles/gba.png",
     description: "L'écran rétroéclairé (enfin, sur la SP). Tu pouvais ENFIN jouer dans le noir sous la couette après l'heure du dodo.",
     bootText: "Game Boy Advance™\n\nNintendo®",
     games: [
@@ -41,6 +43,7 @@ export const CONSOLES = [
     screenBg: "#000820",
     screenText: "#6080CC",
     emoji: "🔵",
+    img: "/images/consoles/ps2.png",
     description: "Les tours bleues du menu système. Le lecteur DVD qui a convaincu tes parents de l'acheter. 155 millions vendues, forcément t'en avais une.",
     bootText: "Sony Computer Entertainment\n\nPlayStation®2",
     games: [
@@ -59,6 +62,7 @@ export const CONSOLES = [
     screenBg: "#0a0a1a",
     screenText: "#A0A8C0",
     emoji: "⚫",
+    img: "/images/consoles/psp.png",
     description: "L'écran large, le WiFi, les UMD. T'avais l'impression d'avoir le futur entre les mains. Et les films UMD que personne n'achetait.",
     bootText: "Sony Computer Entertainment\n\nPSP™",
     games: [
@@ -76,6 +80,7 @@ export const CONSOLES = [
     screenBg: "#E8E8E8",
     screenText: "#333333",
     emoji: "📱",
+    img: "/images/consoles/ds.png",
     description: "Deux écrans ! Un stylet ! Un micro ! Nintendo a dit \"et pourquoi pas tout ça à la fois ?\" et ça a marché.",
     bootText: "Nintendo\n\n★ DS ★",
     games: [
@@ -94,6 +99,7 @@ export const CONSOLES = [
     screenBg: "#120820",
     screenText: "#B888E0",
     emoji: "🟪",
+    img: "/images/consoles/gamecube.png",
     description: "Le petit cube violet avec la poignée. Le son du démarrage DOOOO-DING. Les manettes les plus confortables ever inventées.",
     bootText: "Nintendo\nGAMECUBE™",
     games: [
@@ -111,6 +117,7 @@ export const CONSOLES = [
     screenBg: "#0a1628",
     screenText: "#88BBEE",
     emoji: "🖥️",
+    img: "/images/consoles/pc.png",
     description: "Le PC familial sous Windows XP. 512 Mo de RAM, un écran cathodique de 50kg et des heures sur Miniclip entre deux devoirs.",
     bootText: "Windows XP\nChargement...\n\n█████░░░░░ 47%",
     games: [

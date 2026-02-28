@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Win from "../Win";
+import NostalImg from "../NostalImg";
 import { Y2K_ITEMS, MCBLING_ITEMS } from "../../data/dressingItems";
 
 export default function DressingWindow({ onClose, onMinimize, zIndex, onFocus }) {
@@ -43,7 +44,9 @@ export default function DressingWindow({ onClose, onMinimize, zIndex, onFocus })
                 onMouseEnter={e => { e.currentTarget.style.background = `${accent}20`; e.currentTarget.style.transform = "translateY(-2px)"; }}
                 onMouseLeave={e => { e.currentTarget.style.background = `${accent}10`; e.currentTarget.style.transform = "translateY(0)"; }}
               >
-                <div style={{ fontSize: 30, marginBottom: 6 }}>{item.emoji}</div>
+                <div style={{ marginBottom: 6, display: "flex", alignItems: "center" }}>
+                  <NostalImg src={item.img} fallback={item.emoji} size={30} />
+                </div>
                 <div style={{ color: accent, fontSize: 12, fontWeight: "bold", marginBottom: 2 }}>{item.name}</div>
                 <div style={{ color: `${accent}BB`, fontSize: 10, lineHeight: 1.5 }}>{item.desc}</div>
               </div>

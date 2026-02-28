@@ -154,7 +154,7 @@ export default function Win({ title, onClose, onMinimize, children, width = 480,
           ))}
         </div>
       </div>
-      <div style={{ ...(maximized ? { flex: 1 } : { height: size.h - 32 }), overflow: "auto" }}>{children}</div>
+      <div style={{ width: "100%", ...(maximized ? { flex: 1 } : { height: size.h - 32 }), overflow: "auto" }}>{children}</div>
     </div>
   );
 }

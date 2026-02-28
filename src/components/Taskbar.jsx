@@ -1,4 +1,5 @@
 import { DESKTOP_ICONS } from "../data/desktopIcons";
+import NostalImg from "./NostalImg";
 
 export default function Taskbar({ startMenu, setStartMenu, openWindowIds, isTopWindow, isMinimized, toggleMinimize, bringToFront, time, muted, toggleMute }) {
   return (
@@ -24,7 +25,7 @@ export default function Taskbar({ startMenu, setStartMenu, openWindowIds, isTopW
           letterSpacing: 0.5,
         }}
       >
-        <span style={{ fontSize: 16 }}>🪟</span> démarrer
+        <NostalImg src="/images/ui/start.png" fallback="🪟" size={16} /> démarrer
       </button>
 
       {/* Separator */}
@@ -55,7 +56,7 @@ export default function Taskbar({ startMenu, setStartMenu, openWindowIds, isTopW
               textOverflow: "ellipsis", whiteSpace: "nowrap", flexShrink: 1,
               opacity: minimizedState ? 0.6 : 1,
             }}>
-              <span style={{ fontSize: 14, flexShrink: 0 }}>{icon.emoji}</span>
+              <NostalImg src={icon.img} fallback={icon.emoji} size={14} style={{ flexShrink: 0 }} />
               <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>{icon.label.split("\n")[0]}</span>
             </button>
           ) : null;
@@ -68,9 +69,15 @@ export default function Taskbar({ startMenu, setStartMenu, openWindowIds, isTopW
         background: "linear-gradient(180deg, rgba(0,40,120,0.4) 0%, rgba(0,20,80,0.4) 100%)",
         borderLeft: "1px solid rgba(255,255,255,0.12)", borderRadius: 2,
       }}>
-        <span style={{ fontSize: 12, cursor: "pointer" }} title={muted ? "Son coupé" : "Volume"} onClick={toggleMute}>{muted ? "🔇" : "🔊"}</span>
-        <span style={{ fontSize: 12, cursor: "pointer" }} title="Réseau">🌐</span>
-        <span style={{ fontSize: 12, cursor: "pointer" }} title="MSN">💬</span>
+        <span style={{ cursor: "pointer", display: "flex", alignItems: "center" }} title={muted ? "Son coupé" : "Volume"} onClick={toggleMute}>
+          <NostalImg src={muted ? "/images/ui/volume-mute.png" : "/images/ui/volume.png"} fallback={muted ? "🔇" : "🔊"} size={12} />
+        </span>
+        <span style={{ cursor: "pointer", display: "flex", alignItems: "center" }} title="Réseau">
+          <NostalImg src="/images/ui/network.png" fallback="🌐" size={12} />
+        </span>
+        <span style={{ cursor: "pointer", display: "flex", alignItems: "center" }} title="MSN">
+          <NostalImg src="/images/ui/chat.png" fallback="💬" size={12} />
+        </span>
         <div style={{ width: 1, height: 16, background: "rgba(255,255,255,0.1)" }} />
         <span style={{ color: "#fff", fontSize: 11, fontFamily: "'Tahoma', sans-serif", fontWeight: 500, letterSpacing: 0.3 }}>
           {time.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
