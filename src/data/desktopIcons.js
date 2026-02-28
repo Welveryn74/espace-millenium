@@ -1,5 +1,6 @@
 export const DESKTOP_ICONS = [
   { id: "msn", label: "MSN\nMessenger", emoji: "\u{1F4AC}", img: "/images/desktop/msn.png" },
+  { id: "ie", label: "Internet\nExplorer", emoji: "\u{1F310}", img: "/images/desktop/ie.png" },
   { id: "tv", label: "Ma TV", emoji: "\u{1F4FA}", img: "/images/desktop/tv.png" },
   { id: "mp3", label: "Lecteur\nMP3", emoji: "\u{1F3B5}", img: "/images/desktop/mp3.png" },
   { id: "skyblog", label: "Mon\nSkyblog", emoji: "\u{1F4DD}", img: "/images/desktop/skyblog.png" },
