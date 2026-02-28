@@ -3,11 +3,11 @@ import Win from "../Win";
 import { SKYBLOG_POSTS } from "../../data/skyblogPosts";
 import { ieBtnStyle } from "../../styles/windowStyles";
 
-export default function SkyblogWindow({ onClose, zIndex, onFocus }) {
+export default function SkyblogWindow({ onClose, onMinimize, zIndex, onFocus }) {
   const [likedPosts, setLikedPosts] = useState({});
 
   return (
-    <Win title="Internet Explorer — xX-DaRk-PoWeR-2005-Xx.skyblog.com" onClose={onClose} width={540} height={500} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 90, y: 15 }} color="#0055E5">
+    <Win title="Internet Explorer — xX-DaRk-PoWeR-2005-Xx.skyblog.com" onClose={onClose} onMinimize={onMinimize} width={540} height={500} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 90, y: 15 }} color="#0055E5">
       <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
         {/* IE Toolbar */}
         <div style={{ background: "#ECE9D8", borderBottom: "1px solid #bbb" }}>

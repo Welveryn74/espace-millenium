@@ -2,7 +2,7 @@ import { useState } from "react";
 import Win from "../Win";
 import { Y2K_ITEMS, MCBLING_ITEMS } from "../../data/dressingItems";
 
-export default function DressingWindow({ onClose, zIndex, onFocus }) {
+export default function DressingWindow({ onClose, onMinimize, zIndex, onFocus }) {
   const [era, setEra] = useState("y2k");
 
   const items = era === "y2k" ? Y2K_ITEMS : MCBLING_ITEMS;
@@ -12,7 +12,7 @@ export default function DressingWindow({ onClose, zIndex, onFocus }) {
     : "linear-gradient(135deg, #330022 0%, #660044 50%, #330022 100%)";
 
   return (
-    <Win title="Le Dressing Temporel — Mode des années 2000" onClose={onClose} width={520} height={460} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 140, y: 35 }} color={era === "y2k" ? "#0088CC" : "#CC0088"}>
+    <Win title="Le Dressing Temporel — Mode des années 2000" onClose={onClose} onMinimize={onMinimize} width={520} height={460} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 140, y: 35 }} color={era === "y2k" ? "#0088CC" : "#CC0088"}>
       <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
         <div style={{ display: "flex" }}>
           {[

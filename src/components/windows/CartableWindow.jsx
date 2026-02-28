@@ -2,7 +2,7 @@ import { useState } from "react";
 import Win from "../Win";
 import { CARTABLE_ITEMS } from "../../data/cartableItems";
 
-export default function CartableWindow({ onClose, zIndex, onFocus }) {
+export default function CartableWindow({ onClose, onMinimize, zIndex, onFocus }) {
   const [opened, setOpened] = useState(null);
   const [weight, setWeight] = useState(null);
 
@@ -17,7 +17,7 @@ export default function CartableWindow({ onClose, zIndex, onFocus }) {
   };
 
   return (
-    <Win title="Mon Cartable — Année scolaire 2004-2005" onClose={onClose} width={500} height={460} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 160, y: 45 }} color="#8B4513">
+    <Win title="Mon Cartable — Année scolaire 2004-2005" onClose={onClose} onMinimize={onMinimize} width={500} height={460} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 160, y: 45 }} color="#8B4513">
       <div style={{ height: "100%", background: "linear-gradient(180deg, #FFF8F0 0%, #F0E8D8 100%)", padding: 16, overflowY: "auto" }}>
         <div style={{ textAlign: "center", marginBottom: 16 }}>
           <span style={{ fontSize: 42 }}>🎒</span>

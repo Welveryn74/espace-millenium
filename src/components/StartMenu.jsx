@@ -1,6 +1,6 @@
 import { DESKTOP_ICONS } from "../data/desktopIcons";
 
-export default function StartMenu({ openWindow }) {
+export default function StartMenu({ openWindow, onShutdown }) {
   return (
     <div data-startmenu="" style={{
       position: "absolute", bottom: 38, left: 2, width: 280,
@@ -41,6 +41,7 @@ export default function StartMenu({ openWindow }) {
       </div>
       <div style={{ borderTop: "2px solid #ccc", padding: "8px 18px", display: "flex", justifyContent: "flex-end", background: "#D6D2C2" }}>
         <span style={{ fontSize: 11, color: "#333", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}
+          onClick={onShutdown}
           onMouseEnter={e => e.currentTarget.style.fontWeight = "bold"}
           onMouseLeave={e => e.currentTarget.style.fontWeight = "normal"}
         >

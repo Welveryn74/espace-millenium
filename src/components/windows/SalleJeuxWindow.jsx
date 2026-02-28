@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Win from "../Win";
 import { CONSOLES } from "../../data/consoles";
 
-export default function SalleJeuxWindow({ onClose, zIndex, onFocus }) {
+export default function SalleJeuxWindow({ onClose, onMinimize, zIndex, onFocus }) {
   const [activeConsole, setActiveConsole] = useState(null);
   const [booting, setBooting] = useState(false);
   const [selectedGame, setSelectedGame] = useState(null);
@@ -34,7 +34,7 @@ export default function SalleJeuxWindow({ onClose, zIndex, onFocus }) {
     : "Salle de Jeux — Choisis ta console !";
 
   return (
-    <Win title={titleText} onClose={onClose} width={540} height={500} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 200, y: 50 }} color={titleColor}>
+    <Win title={titleText} onClose={onClose} onMinimize={onMinimize} width={540} height={500} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 200, y: 50 }} color={titleColor}>
       <div style={{ height: "100%", background: "linear-gradient(135deg, #1a1a2e, #16213e)", overflow: "hidden" }}>
         {activeConsole === null ? (
           /* ============ SHELF VIEW ============ */

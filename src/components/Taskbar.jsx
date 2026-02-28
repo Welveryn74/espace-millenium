@@ -1,6 +1,6 @@
 import { DESKTOP_ICONS } from "../data/desktopIcons";
 
-export default function Taskbar({ startMenu, setStartMenu, openWindowIds, isTopWindow, bringToFront, time }) {
+export default function Taskbar({ startMenu, setStartMenu, openWindowIds, isTopWindow, isMinimized, toggleMinimize, bringToFront, time, muted, toggleMute }) {
   return (
     <div style={{
       position: "absolute", bottom: 0, left: 0, right: 0, height: 36,
@@ -34,15 +34,26 @@ export default function Taskbar({ startMenu, setStartMenu, openWindowIds, isTopW
       <div style={{ flex: 1, display: "flex", gap: 2, overflow: "hidden" }}>
         {openWindowIds.map((id) => {
           const icon = DESKTOP_ICONS.find(i => i.id === id);
-          const isTop = isTopWindow(id);
+          const minimizedState = isMinimized(id);
+          const isTop = !minimizedState && isTopWindow(id);
+          const handleTabClick = () => {
+            if (minimizedState) {
+              toggleMinimize(id);
+            } else if (isTop) {
+              toggleMinimize(id);
+            } else {
+              bringToFront(id);
+            }
+          };
           return icon ? (
-            <button key={id} onClick={() => bringToFront(id)} style={{
+            <button key={id} onClick={handleTabClick} style={{
               height: 26, padding: "0 10px", maxWidth: 160,
               background: isTop ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.06)",
               border: isTop ? "1px solid rgba(255,255,255,0.25)" : "1px solid rgba(255,255,255,0.1)",
               borderRadius: 3, color: "#fff", fontSize: 11, cursor: "pointer",
               display: "flex", alignItems: "center", gap: 4, overflow: "hidden",
               textOverflow: "ellipsis", whiteSpace: "nowrap", flexShrink: 1,
+              opacity: minimizedState ? 0.6 : 1,
             }}>
               <span style={{ fontSize: 14, flexShrink: 0 }}>{icon.emoji}</span>
               <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>{icon.label.split("\n")[0]}</span>
@@ -57,7 +68,7 @@ export default function Taskbar({ startMenu, setStartMenu, openWindowIds, isTopW
         background: "linear-gradient(180deg, rgba(0,40,120,0.4) 0%, rgba(0,20,80,0.4) 100%)",
         borderLeft: "1px solid rgba(255,255,255,0.12)", borderRadius: 2,
       }}>
-        <span style={{ fontSize: 12, cursor: "pointer" }} title="Volume">🔊</span>
+        <span style={{ fontSize: 12, cursor: "pointer" }} title={muted ? "Son coupé" : "Volume"} onClick={toggleMute}>{muted ? "🔇" : "🔊"}</span>
         <span style={{ fontSize: 12, cursor: "pointer" }} title="Réseau">🌐</span>
         <span style={{ fontSize: 12, cursor: "pointer" }} title="MSN">💬</span>
         <div style={{ width: 1, height: 16, background: "rgba(255,255,255,0.1)" }} />

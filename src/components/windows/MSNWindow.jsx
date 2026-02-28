@@ -3,7 +3,7 @@ import Win from "../Win";
 import { MSN_RESPONSES } from "../../data/msnResponses";
 import { STATUS_OPTIONS } from "../../data/statusOptions";
 
-export default function MSNWindow({ onClose, zIndex, onFocus, onWizz }) {
+export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz }) {
   const [messages, setMessages] = useState([
     { from: "bot", msg: "cOuCou !! 😊 bienvenu sur msn !! sa fé plézir !!" }
   ]);
@@ -47,7 +47,7 @@ export default function MSNWindow({ onClose, zIndex, onFocus, onWizz }) {
   const botName = "~*~xX_DaRk_AnGeL_Xx~*~";
 
   return (
-    <Win title={`${botName} — Conversation`} onClose={onClose} width={430} height={480} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 120, y: 25 }} color="#0078D4">
+    <Win title={`${botName} — Conversation`} onClose={onClose} onMinimize={onMinimize} width={430} height={480} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 120, y: 25 }} color="#0078D4">
       <div style={{ display: "flex", flexDirection: "column", height: "100%", background: "#fff" }}>
         {/* Header with contact info */}
         <div style={{ padding: "8px 12px", background: "linear-gradient(180deg, #E8F4FF 0%, #D0E8FF 100%)", borderBottom: "1px solid #B0C8E8", display: "flex", alignItems: "center", gap: 10 }}>

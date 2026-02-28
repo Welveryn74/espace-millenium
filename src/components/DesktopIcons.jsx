@@ -7,7 +7,7 @@ export default function DesktopIcons({ selectedIcon, setSelectedIcon, openWindow
         <div
           key={icon.id}
           onClick={(e) => { e.stopPropagation(); setSelectedIcon(icon.id); }}
-          onDoubleClick={() => icon.id !== "poubelle" && openWindow(icon.id)}
+          onDoubleClick={() => openWindow(icon.id)}
           style={{
             width: 76, padding: "8px 4px", borderRadius: 3, cursor: "pointer",
             display: "flex", flexDirection: "column", alignItems: "center", gap: 3,

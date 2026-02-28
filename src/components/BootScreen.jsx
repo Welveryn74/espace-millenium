@@ -20,6 +20,7 @@ export default function BootScreen({ onComplete }) {
   // Play modem sound on phase 2
   useEffect(() => {
     if (phase === 2) {
+      if (localStorage.getItem('em_muted') === 'true') return;
       try {
         audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
         playModemSound(audioCtxRef.current);
@@ -30,6 +31,36 @@ export default function BootScreen({ onComplete }) {
         audioCtxRef.current.close().catch(() => {});
       }
     };
+  }, [phase]);
+
+  // BIOS POST beep sounds on phase 1
+  useEffect(() => {
+    if (phase !== 1) return;
+    if (localStorage.getItem('em_muted') === 'true') return;
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const now = ctx.currentTime;
+      const beeps = [
+        { start: 0.0,  dur: 0.08 },
+        { start: 0.15, dur: 0.08 },
+        { start: 0.30, dur: 0.08 },
+        { start: 0.55, dur: 0.05 },
+        { start: 0.65, dur: 0.05 },
+        { start: 0.80, dur: 0.12 },
+      ];
+      beeps.forEach(({ start, dur }) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "square";
+        osc.frequency.value = 1000;
+        gain.gain.setValueAtTime(0.06, now + start);
+        gain.gain.setValueAtTime(0, now + start + dur);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(now + start);
+        osc.stop(now + start + dur + 0.01);
+      });
+      setTimeout(() => ctx.close().catch(() => {}), 2000);
+    } catch (e) { /* audio not supported */ }
   }, [phase]);
 
   // Modem text animation

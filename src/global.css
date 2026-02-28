@@ -107,3 +107,8 @@ html, body, #root {
   14% { opacity: 1; }
   100% { opacity: 1; }
 }
+
+@keyframes beybladeRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

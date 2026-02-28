@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Win from "../Win";
 import { TRACKS } from "../../data/tracks";
 
-export default function MP3Window({ onClose, zIndex, onFocus }) {
+export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
   const [track, setTrack] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -20,7 +20,7 @@ export default function MP3Window({ onClose, zIndex, onFocus }) {
   const ipodColor = "#F0F0F0";
 
   return (
-    <Win title="iPod — Lecteur Musical" onClose={onClose} width={280} height={450} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 320, y: 50 }} color="#555">
+    <Win title="iPod — Lecteur Musical" onClose={onClose} onMinimize={onMinimize} width={280} height={450} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 320, y: 50 }} color="#555">
       <div style={{ background: `linear-gradient(180deg, ${ipodColor} 0%, #D8D8D8 100%)`, height: "100%", display: "flex", flexDirection: "column", alignItems: "center", padding: "14px 12px" }}>
         {/* iPod Screen */}
         <div style={{

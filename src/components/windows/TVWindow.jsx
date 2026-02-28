@@ -7,7 +7,7 @@ function BtnTV({ onClick, children }) {
   return <button onClick={onClick} style={tvBtnBase}>{children}</button>;
 }
 
-export default function TVWindow({ onClose, zIndex, onFocus }) {
+export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
   const [channel, setChannel] = useState(0);
   const [staticEffect, setStaticEffect] = useState(false);
   const [power, setPower] = useState(true);
@@ -22,7 +22,7 @@ export default function TVWindow({ onClose, zIndex, onFocus }) {
   };
 
   return (
-    <Win title="Ma Télévision Cathodique — Thomson 36cm" onClose={onClose} width={520} height={470} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 180, y: 40 }} color="#444">
+    <Win title="Ma Télévision Cathodique — Thomson 36cm" onClose={onClose} onMinimize={onMinimize} width={520} height={470} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 180, y: 40 }} color="#444">
       <div style={{ padding: 16, background: "#1a1a1a", height: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
         {/* TV Frame */}
         <div style={{
