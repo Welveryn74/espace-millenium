@@ -12,8 +12,8 @@ export const CONSOLES = [
     bootText: "Nintendo®\nGAME BOY™",
     games: [
       { name: "Pokémon Rouge", emoji: "🔴", img: "/images/consoles/games/pokemon-rouge.png", desc: "Été 1999. Tu trades des Pokémon avec le câble link dans la cour de récré. Ton starter c'est Salamèche, évidemment. Tu connais le glitch MissingNo par cœur.", year: "1996" },
+      { name: "Snake", emoji: "🐍", img: "/images/consoles/games/super-mario-land.png", desc: "Le serpent qui grandit en mangeant. Simple, addictif, éternel. Tu battais ton high score dans le bus en rentrant du collège.", year: "1998", playable: true, miniGame: "snake" },
       { name: "Tetris", emoji: "🧱", img: "/images/consoles/games/tetris.png", desc: "Le jeu qui était DANS la boîte. Ta mère y jouait plus que toi. La musique tourne encore dans ta tête à 3h du mat quand tu fermes les yeux.", year: "1989" },
-      { name: "Super Mario Land", emoji: "🍄", img: "/images/consoles/games/super-mario-land.png", desc: "Mario mais en tout petit, avec des contrôles un peu glissants. T'as jamais vraiment compris pourquoi il était dans un sous-marin mais tu t'en fichais.", year: "1989" },
       { name: "Kirby's Dream Land", emoji: "⭐", img: "/images/consoles/games/kirbys-dream-land.png", desc: "Le jeu que tu finissais en 45 minutes mais que tu recommençais quand même. Kirby qui aspire tout, c'était la belle vie.", year: "1992" },
     ],
   },
@@ -86,7 +86,7 @@ export const CONSOLES = [
     games: [
       { name: "Nintendogs", emoji: "🐕", img: "/images/consoles/games/nintendogs.png", desc: "Tu soufflais dans le micro pour appeler ton chien. Tu lui apprenais des tours pendant des semaines. Et puis un jour tu l'as oublié... pardon Rex.", year: "2005" },
       { name: "Mario Kart DS", emoji: "🏁", img: "/images/consoles/games/mario-kart-ds.png", desc: "Le VRAI Mario Kart portable. Le online sur la Nintendo Wi-Fi Connection, les courses contre des japonais à 3h du mat. Snaking sur Peach Circuit.", year: "2005" },
-      { name: "Pokémon Diamant", emoji: "💠", img: "/images/consoles/games/pokemon-diamant.png", desc: "La région de Sinnoh, le Pokématos, les souterrains. Tu farmais des fossiles en WiFi avec tes potes. Cynthia et sa Carchacrok t'ont traumatisé.", year: "2006" },
+      { name: "Pokémon Diamant", emoji: "💠", img: "/images/consoles/games/pokemon-diamant.png", desc: "La région de Sinnoh, le Pokématos, les souterrains. Tu farmais des fossiles en WiFi avec tes potes. Cynthia et sa Carchacrok t'ont traumatisé.", year: "2006", playable: true, miniGame: "memory" },
       { name: "Programme d'Entraînement Cérébral", emoji: "🧠", img: "/images/consoles/games/cerveau.png", desc: "\"Vous avez le cerveau d'un humain de 80 ans.\" Merci Dr Kawashima. Même mamie y jouait. Les calculs rapides en écriture manuscrite, quel concept.", year: "2005" },
       { name: "Animal Crossing: Wild World", emoji: "🌳", img: "/images/consoles/games/animal-crossing.png", desc: "Tu te levais à 7h un dimanche pour acheter des navets. Tom Nook t'a appris le crédit immobilier avant la vraie vie. Ta ville était parfaite.", year: "2005" },
     ],
@@ -123,7 +123,7 @@ export const CONSOLES = [
     games: [
       { name: "Bugdom", emoji: "🐛", img: "/images/consoles/games/bugdom.png", desc: "Le jeu installé par défaut sur les iMac de l'école. Une coccinelle qui sauve des coccinelles. On avait 15 minutes d'ordi et on les passait là-dessus.", year: "1999" },
       { name: "Nanosaur", emoji: "🦖", img: "/images/consoles/games/nanosaur.png", desc: "Un dinosaure avec un jetpack et un laser. C'est tout ce que t'avais besoin de savoir. L'autre jeu pré-installé sur les Mac de la salle info.", year: "1998" },
-      { name: "Jeux Flash Miniclip", emoji: "🌐", img: "/images/consoles/games/jeux-flash.png", desc: "On The Run, Heli Attack, Club Penguin... La barre de chargement du jeu Flash, l'excitation quand ça atteint 100%. RIP Flash Player, gone but never forgotten.", year: "~2004" },
+      { name: "Jeux Flash Miniclip", emoji: "🌐", img: "/images/consoles/games/jeux-flash.png", desc: "On The Run, Heli Attack, Club Penguin... La barre de chargement du jeu Flash, l'excitation quand ça atteint 100%. RIP Flash Player, gone but never forgotten.", year: "~2004", playable: true, miniGame: "morpion" },
       { name: "Age of Empires II", emoji: "🏰", img: "/images/consoles/games/age-of-empires-2.png", desc: "WOLOLO. Tu convertissais les unités ennemies avec les prêtres. \"Start the game already!\" dans le lobby. Les parties de 4 heures un mercredi après-midi.", year: "1999" },
       { name: "Les Sims", emoji: "🏠", img: "/images/consoles/games/les-sims.png", desc: "Tu construisais la maison de tes rêves, tu enlevais l'échelle de la piscine... on sait tous ce qui se passait après. Sul sul ! Dag dag !", year: "2000" },
     ],

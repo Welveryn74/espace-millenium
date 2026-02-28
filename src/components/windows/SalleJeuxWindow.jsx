@@ -2,12 +2,22 @@ import { useState, useEffect } from "react";
 import Win from "../Win";
 import NostalImg from "../NostalImg";
 import { CONSOLES } from "../../data/consoles";
+import SnakeGame from "./minigames/SnakeGame";
+import MemoryGame from "./minigames/MemoryGame";
+import MorpionGame from "./minigames/MorpionGame";
+
+const MINIGAME_COMPONENTS = {
+  snake: SnakeGame,
+  memory: MemoryGame,
+  morpion: MorpionGame,
+};
 
 export default function SalleJeuxWindow({ onClose, onMinimize, zIndex, onFocus }) {
   const [activeConsole, setActiveConsole] = useState(null);
   const [booting, setBooting] = useState(false);
   const [selectedGame, setSelectedGame] = useState(null);
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [playingMiniGame, setPlayingMiniGame] = useState(null);
 
   const current = activeConsole !== null ? CONSOLES[activeConsole] : null;
 
@@ -24,6 +34,10 @@ export default function SalleJeuxWindow({ onClose, onMinimize, zIndex, onFocus }
   }, [booting]);
 
   const goBack = () => {
+    if (playingMiniGame) {
+      setPlayingMiniGame(null);
+      return;
+    }
     setActiveConsole(null);
     setSelectedGame(null);
     setBooting(false);
@@ -131,7 +145,7 @@ export default function SalleJeuxWindow({ onClose, onMinimize, zIndex, onFocus }
                 onMouseEnter={e => { e.currentTarget.style.background = `${current.color}20`; }}
                 onMouseLeave={e => { e.currentTarget.style.background = "none"; }}
               >
-                ← Retour
+                {playingMiniGame ? "← Retour aux jeux" : "← Retour"}
               </button>
             </div>
 
@@ -149,90 +163,121 @@ export default function SalleJeuxWindow({ onClose, onMinimize, zIndex, onFocus }
                 background: "repeating-linear-gradient(transparent 0px, transparent 1px, rgba(0,0,0,0.1) 1px, rgba(0,0,0,0.1) 3px)",
               }} />
 
-              {/* Console header */}
-              <div style={{
-                textAlign: "center", marginBottom: 16,
-                animation: "fadeIn 0.4s ease-out",
-              }}>
-                <NostalImg src={current.img} fallback={current.emoji} size={32} />
-                <div style={{
-                  color: current.screenText,
-                  fontSize: 16, fontWeight: "bold",
-                  fontFamily: "'Tahoma', sans-serif",
-                  textShadow: `0 0 10px ${current.screenText}40`,
-                  marginTop: 4,
-                }}>
-                  {current.name}
+              {playingMiniGame ? (
+                /* ============ MINI-GAME ============ */
+                <div style={{ position: "relative", display: "flex", justifyContent: "center", paddingTop: 8 }}>
+                  {(() => {
+                    const MiniGameComp = MINIGAME_COMPONENTS[playingMiniGame];
+                    return MiniGameComp ? (
+                      <MiniGameComp screenBg={current.screenBg} screenText={current.screenText} color={current.color} />
+                    ) : null;
+                  })()}
                 </div>
-                <div style={{ color: `${current.screenText}99`, fontSize: 10, marginTop: 2, fontStyle: "italic" }}>
-                  {current.description}
-                </div>
-              </div>
-
-              {/* Game list */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 8, position: "relative" }}>
-                {current.games.map((game, i) => (
-                  <div
-                    key={i}
-                    onClick={() => setSelectedGame(selectedGame === i ? null : i)}
-                    style={{
-                      background: selectedGame === i ? `${current.screenText}15` : `${current.screenText}08`,
-                      border: selectedGame === i ? `1px solid ${current.screenText}40` : `1px solid ${current.screenText}18`,
-                      borderRadius: 6,
-                      padding: 10,
-                      cursor: "pointer",
-                      transition: "all 0.2s",
-                      animation: `slideUp 0.3s ease-out ${i * 0.06}s both`,
-                    }}
-                    onMouseEnter={e => {
-                      if (selectedGame !== i) e.currentTarget.style.background = `${current.screenText}12`;
-                    }}
-                    onMouseLeave={e => {
-                      if (selectedGame !== i) e.currentTarget.style.background = `${current.screenText}08`;
-                    }}
-                  >
-                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      <NostalImg src={game.img} fallback={game.emoji} size={24} />
-                      <div style={{ flex: 1 }}>
-                        <span style={{
-                          color: current.screenText,
-                          fontSize: 12, fontWeight: "bold",
-                          fontFamily: "'Tahoma', sans-serif",
-                        }}>
-                          {game.name}
-                        </span>
-                        <span style={{ color: `${current.screenText}60`, fontSize: 10, marginLeft: 6 }}>
-                          ({game.year})
-                        </span>
-                      </div>
-                      <span style={{ color: `${current.screenText}60`, fontSize: 10 }}>
-                        {selectedGame === i ? "▼" : "▶"}
-                      </span>
+              ) : (
+                <>
+                  {/* Console header */}
+                  <div style={{
+                    textAlign: "center", marginBottom: 16,
+                    animation: "fadeIn 0.4s ease-out",
+                  }}>
+                    <NostalImg src={current.img} fallback={current.emoji} size={32} />
+                    <div style={{
+                      color: current.screenText,
+                      fontSize: 16, fontWeight: "bold",
+                      fontFamily: "'Tahoma', sans-serif",
+                      textShadow: `0 0 10px ${current.screenText}40`,
+                      marginTop: 4,
+                    }}>
+                      {current.name}
                     </div>
-
-                    {selectedGame === i && (
-                      <div style={{
-                        marginTop: 8,
-                        paddingTop: 8,
-                        borderTop: `1px solid ${current.screenText}20`,
-                        display: "flex",
-                        gap: 12,
-                        animation: "slideUp 0.2s ease-out",
-                      }}>
-                        <NostalImg src={game.img} fallback={game.emoji} size={120} style={{ borderRadius: 6, flexShrink: 0 }} />
-                        <div style={{
-                          color: `${current.screenText}CC`,
-                          fontSize: 11,
-                          lineHeight: 1.7,
-                          fontStyle: "italic",
-                        }}>
-                          {game.desc}
-                        </div>
-                      </div>
-                    )}
+                    <div style={{ color: `${current.screenText}99`, fontSize: 10, marginTop: 2, fontStyle: "italic" }}>
+                      {current.description}
+                    </div>
                   </div>
-                ))}
-              </div>
+
+                  {/* Game list */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 8, position: "relative" }}>
+                    {current.games.map((game, i) => (
+                      <div
+                        key={i}
+                        onClick={() => setSelectedGame(selectedGame === i ? null : i)}
+                        style={{
+                          background: selectedGame === i ? `${current.screenText}15` : `${current.screenText}08`,
+                          border: selectedGame === i ? `1px solid ${current.screenText}40` : `1px solid ${current.screenText}18`,
+                          borderRadius: 6,
+                          padding: 10,
+                          cursor: "pointer",
+                          transition: "all 0.2s",
+                          animation: `slideUp 0.3s ease-out ${i * 0.06}s both`,
+                        }}
+                        onMouseEnter={e => {
+                          if (selectedGame !== i) e.currentTarget.style.background = `${current.screenText}12`;
+                        }}
+                        onMouseLeave={e => {
+                          if (selectedGame !== i) e.currentTarget.style.background = `${current.screenText}08`;
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                          <NostalImg src={game.img} fallback={game.emoji} size={24} />
+                          <div style={{ flex: 1 }}>
+                            <span style={{
+                              color: current.screenText,
+                              fontSize: 12, fontWeight: "bold",
+                              fontFamily: "'Tahoma', sans-serif",
+                            }}>
+                              {game.name}
+                            </span>
+                            <span style={{ color: `${current.screenText}60`, fontSize: 10, marginLeft: 6 }}>
+                              ({game.year})
+                            </span>
+                          </div>
+                          <span style={{ color: `${current.screenText}60`, fontSize: 10 }}>
+                            {selectedGame === i ? "▼" : "▶"}
+                          </span>
+                        </div>
+
+                        {selectedGame === i && (
+                          <div style={{
+                            marginTop: 8,
+                            paddingTop: 8,
+                            borderTop: `1px solid ${current.screenText}20`,
+                            animation: "slideUp 0.2s ease-out",
+                          }}>
+                            <div style={{ display: "flex", gap: 12 }}>
+                              <NostalImg src={game.img} fallback={game.emoji} size={120} style={{ borderRadius: 6, flexShrink: 0 }} />
+                              <div style={{
+                                color: `${current.screenText}CC`,
+                                fontSize: 11,
+                                lineHeight: 1.7,
+                                fontStyle: "italic",
+                              }}>
+                                {game.desc}
+                              </div>
+                            </div>
+                            {game.playable && (
+                              <button
+                                onClick={(e) => { e.stopPropagation(); setPlayingMiniGame(game.miniGame); }}
+                                style={{
+                                  marginTop: 8, width: "100%",
+                                  background: `${current.color}30`, color: current.screenText,
+                                  border: `1px solid ${current.color}60`, padding: "6px 0",
+                                  borderRadius: 4, cursor: "pointer", fontFamily: "'Tahoma', sans-serif",
+                                  fontSize: 12, fontWeight: "bold",
+                                  transition: "all 0.15s",
+                                }}
+                                onMouseEnter={e => { e.currentTarget.style.background = `${current.color}50`; }}
+                                onMouseLeave={e => { e.currentTarget.style.background = `${current.color}30`; }}
+                              >
+                                ▶ Jouer !
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         )}
