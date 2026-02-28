@@ -151,7 +151,7 @@ export default function ChambreWindow({ onClose, onMinimize, zIndex, onFocus }) 
                 <CouetteSelector couette={couette} setCouette={setCouette} />
               )}
               {activeItem === "tamagotchi" && (
-                <TamagotchiWidget tama={tama} tamaDo={tamaDo} tamaMood={tamaMood} tamaAction={tamaAction} neglected={tamaNeglected} onReset={tamaReset} />
+                <TamagotchiWidget tama={tama} tamaDo={tamaDo} tamaMood={tamaMood} tamaAction={tamaAction} neglected={tamaNeglected} onReset={tamaReset} tamaTotal={tamaTotal} />
               )}
               {activeItem === "panini" && (
                 <PaniniAlbum page={paniniPage} setPage={setPaniniPage} collected={collectedStickers} newStickers={newStickers} />
@@ -760,7 +760,7 @@ function CouetteSelector({ couette, setCouette }) {
 /* ============================================================
    TAMAGOTCHI WIDGET
    ============================================================ */
-function TamagotchiWidget({ tama, tamaDo, tamaMood, tamaAction, neglected, onReset }) {
+function TamagotchiWidget({ tama, tamaDo, tamaMood, tamaAction, neglected, onReset, tamaTotal }) {
   const statBar = (label, value, color) => (
     <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
       <span style={{ color: "#AAA", fontSize: 11, width: 65, fontFamily: "'Tahoma', sans-serif" }}>{label}</span>
