@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Win from "../Win";
 import NostalImg from "../NostalImg";
 import { CHANNELS } from "../../data/channels";
@@ -8,11 +8,199 @@ function BtnTV({ onClick, children }) {
   return <button onClick={onClick} style={tvBtnBase}>{children}</button>;
 }
 
+// --- Sub-components per channel type ---
+
+function MinikeumsContent({ content, tick }) {
+  const d = content.dialogues[tick % content.dialogues.length];
+  const prev = content.dialogues[(tick - 1 + content.dialogues.length) % content.dialogues.length];
+  return (
+    <div style={{ textAlign: "center", width: "100%" }}>
+      <div style={{ color: "#666", fontSize: 9, marginBottom: 8, fontStyle: "italic", opacity: 0.6, transition: "opacity 0.3s" }}>
+        {prev.speaker} : {prev.text}
+      </div>
+      <div style={{ animation: "slideUp 0.4s ease-out", key: tick }}>
+        <span style={{ color: "#FFD700", fontSize: 11, fontWeight: "bold" }}>{d.speaker}</span>
+        <div style={{ color: "#fff", fontSize: 12, marginTop: 4, lineHeight: 1.5 }}>{d.text}</div>
+      </div>
+    </div>
+  );
+}
+
+function KD2AContent({ content, tick }) {
+  const offset = tick % content.programme.length;
+  const visible = content.programme.slice(offset, offset + 4).concat(
+    content.programme.slice(0, Math.max(0, offset + 4 - content.programme.length))
+  );
+  return (
+    <div style={{ width: "100%", overflow: "hidden" }}>
+      <div style={{ color: "#FF69B4", fontSize: 10, textAlign: "center", marginBottom: 6, fontWeight: "bold", animation: "pulse 2s infinite" }}>
+        PROGRAMME DU JOUR
+      </div>
+      {visible.map((p, i) => (
+        <div key={p.time} style={{
+          display: "flex", gap: 8, padding: "3px 10px", fontSize: 11,
+          color: i === 0 ? "#FF69B4" : "#aaa",
+          background: i === 0 ? "rgba(255,105,180,0.1)" : "transparent",
+          borderRadius: 3, transition: "all 0.4s", animation: `slideUp 0.3s ease-out ${i * 0.08}s both`,
+        }}>
+          <span style={{ fontFamily: "monospace", minWidth: 40 }}>{p.time}</span>
+          <span>{p.show}</span>
+          {i === 0 && <span style={{ marginLeft: "auto", animation: "blink 1s infinite", color: "#F44" }}>EN COURS</span>}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function StarAcContent({ content, tick }) {
+  const lyric = content.lyrics[tick % content.lyrics.length];
+  const nominee = content.nominees[tick % content.nominees.length];
+  return (
+    <div style={{ textAlign: "center", width: "100%" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", width: "100%", marginBottom: 10 }}>
+        <span style={{ color: "#F44", fontSize: 9, animation: "blink 1s infinite", fontWeight: "bold" }}>EN DIRECT</span>
+        <span style={{ color: "#F44", fontSize: 9 }}>PRIME N°{7 + (tick % 5)}</span>
+      </div>
+      <div key={tick} style={{ color: "#FF4", fontSize: 14, fontStyle: "italic", animation: "fadeIn 0.5s ease-out", marginBottom: 12, textShadow: "0 0 10px rgba(255,255,0,0.3)" }}>
+        {lyric}
+      </div>
+      <div style={{ color: "#F88", fontSize: 10, borderTop: "1px solid #333", paddingTop: 6 }}>
+        Nominé(e) : <span style={{ fontWeight: "bold", color: "#FF4444" }}>{nominee}</span> — Votez au 3672 !
+      </div>
+    </div>
+  );
+}
+
+function LoftContent({ content, tick }) {
+  const event = content.events[tick % content.events.length];
+  const isConfessionnal = event.includes("confessionnal");
+  return (
+    <div style={{ textAlign: "center", width: "100%" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", width: "100%", marginBottom: 8 }}>
+        <span style={{ color: "#F44", fontSize: 9, animation: "blink 1s infinite" }}>
+          {isConfessionnal ? "CONFESSIONNAL" : "REC"}
+        </span>
+        <span style={{ color: "#44AAFF", fontSize: 10, fontWeight: "bold" }}>JOUR {content.day + (tick % 3)}</span>
+      </div>
+      <div key={tick} style={{ color: "#ddd", fontSize: 12, animation: "fadeIn 0.5s ease-out", lineHeight: 1.6, fontStyle: "italic" }}>
+        {event}
+      </div>
+      <div style={{ marginTop: 10, display: "flex", gap: 8, justifyContent: "center" }}>
+        {["Cam 1", "Cam 2", "Cam 3"].map((c, i) => (
+          <span key={c} style={{
+            fontSize: 8, padding: "2px 6px", borderRadius: 2,
+            background: tick % 3 === i ? "rgba(68,170,255,0.3)" : "rgba(255,255,255,0.05)",
+            color: tick % 3 === i ? "#44AAFF" : "#666",
+            border: `1px solid ${tick % 3 === i ? "#44AAFF" : "#333"}`,
+          }}>{c}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MangaContent({ content, tick }) {
+  const panel = content.panels[tick % content.panels.length];
+  const styles = {
+    action: { color: "#FF4444", fontSize: 15, fontWeight: "bold", fontStyle: "italic", textShadow: "0 0 10px rgba(255,0,0,0.4)", letterSpacing: 1 },
+    dialogue: { color: "#ddd", fontSize: 12, fontStyle: "italic", borderLeft: "3px solid #44FF88", paddingLeft: 10 },
+    impact: { color: "#FFD700", fontSize: 20, fontWeight: "bold", textShadow: "0 0 15px rgba(255,215,0,0.5), 2px 2px 0 #000", letterSpacing: 3 },
+    narrator: { color: "#999", fontSize: 11, fontStyle: "italic", borderTop: "1px solid #333", borderBottom: "1px solid #333", padding: "6px 0" },
+  };
+  return (
+    <div style={{ textAlign: "center", width: "100%" }}>
+      <div style={{ color: "#44FF88", fontSize: 9, marginBottom: 8, fontWeight: "bold" }}>
+        CANAL J — CLUB MANGA
+      </div>
+      <div key={tick} style={{ ...styles[panel.style], animation: panel.style === "impact" ? "pulse 0.5s ease-out" : "fadeIn 0.4s ease-out" }}>
+        {panel.text}
+      </div>
+      <div style={{ marginTop: 10, display: "flex", justifyContent: "center", gap: 4 }}>
+        {content.panels.map((_, i) => (
+          <div key={i} style={{
+            width: 6, height: 6, borderRadius: "50%",
+            background: i === tick % content.panels.length ? "#44FF88" : "#333",
+            transition: "background 0.3s",
+          }} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PokemonContent({ content, tick }) {
+  const scene = content.scenes[tick % content.scenes.length];
+  return (
+    <div style={{ width: "100%", textAlign: "center" }}>
+      {scene.type === "narrator" && (
+        <div key={tick} style={{ color: "#FFAA00", fontSize: 12, fontStyle: "italic", animation: "fadeIn 0.5s ease-out", lineHeight: 1.6 }}>
+          {scene.text}
+        </div>
+      )}
+      {scene.type === "attack" && (
+        <div key={tick} style={{ animation: "fadeIn 0.3s ease-out" }}>
+          <div style={{ color: "#FF4", fontSize: 13, fontWeight: "bold", marginBottom: 4 }}>
+            {scene.text}
+          </div>
+          <div style={{
+            width: 60, height: 4, margin: "0 auto", borderRadius: 2,
+            background: "linear-gradient(90deg, #FF4, #F80)",
+            animation: "pulse 0.3s ease-out 3",
+          }} />
+        </div>
+      )}
+      {scene.type === "hp" && (
+        <div key={tick} style={{ animation: "fadeIn 0.3s ease-out" }}>
+          <div style={{ color: "#aaa", fontSize: 10, marginBottom: 4 }}>{scene.target}</div>
+          <div style={{ width: 140, height: 8, background: "#333", borderRadius: 4, margin: "0 auto", overflow: "hidden", border: "1px solid #555" }}>
+            <div style={{
+              width: `${scene.pct}%`, height: "100%",
+              background: scene.pct > 50 ? "#4F4" : scene.pct > 20 ? "#FF0" : "#F44",
+              transition: "width 0.8s",
+              borderRadius: 3,
+            }} />
+          </div>
+          <div style={{ color: "#888", fontSize: 9, marginTop: 2 }}>PV : {scene.pct}%</div>
+        </div>
+      )}
+      {scene.type === "dialogue" && (
+        <div key={tick} style={{ color: "#fff", fontSize: 12, fontStyle: "italic", animation: "slideUp 0.4s ease-out", lineHeight: 1.6 }}>
+          {scene.text}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ChannelContent({ channel, tick }) {
+  const { type, content } = channel;
+  switch (type) {
+    case "minikeums": return <MinikeumsContent content={content} tick={tick} />;
+    case "kd2a": return <KD2AContent content={content} tick={tick} />;
+    case "starac": return <StarAcContent content={content} tick={tick} />;
+    case "loft": return <LoftContent content={content} tick={tick} />;
+    case "manga": return <MangaContent content={content} tick={tick} />;
+    case "pokemon": return <PokemonContent content={content} tick={tick} />;
+    default: return <div style={{ color: "#bbb", fontSize: 11, textAlign: "center", fontStyle: "italic" }}>{channel.desc || "Pas de signal"}</div>;
+  }
+}
+
+// --- Main TVWindow ---
+
 export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
   const [channel, setChannel] = useState(0);
   const [staticEffect, setStaticEffect] = useState(false);
   const [power, setPower] = useState(true);
   const [volume, setVolume] = useState(75);
+  const [tick, setTick] = useState(0);
+
+  // Tick every 2s, reset on channel change
+  useEffect(() => {
+    if (!power) return;
+    setTick(0);
+    const iv = setInterval(() => setTick(t => t + 1), 2000);
+    return () => clearInterval(iv);
+  }, [channel, power]);
 
   const changeChannel = (dir) => {
     setStaticEffect(true);
@@ -74,15 +262,16 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
                   <div style={{ width: `${volume}%`, height: "100%", background: CHANNELS[channel].color, transition: "width 0.2s" }} />
                 </div>
               </div>
-              {/* Content */}
-              <div style={{ marginBottom: 10, textShadow: "0 0 20px rgba(255,255,255,0.2)" }}>
-                <NostalImg src={CHANNELS[channel].img} fallback={CHANNELS[channel].emoji} size={42} />
+              {/* Channel logo */}
+              <div style={{ marginBottom: 6, textShadow: "0 0 20px rgba(255,255,255,0.2)" }}>
+                <NostalImg src={CHANNELS[channel].img} fallback={CHANNELS[channel].emoji} size={28} />
               </div>
-              <div style={{ color: CHANNELS[channel].color, fontSize: 15, fontWeight: "bold", textAlign: "center", textShadow: `0 0 12px ${CHANNELS[channel].color}50`, marginBottom: 10 }}>
+              <div style={{ color: CHANNELS[channel].color, fontSize: 12, fontWeight: "bold", textAlign: "center", textShadow: `0 0 12px ${CHANNELS[channel].color}50`, marginBottom: 8 }}>
                 {CHANNELS[channel].name}
               </div>
-              <div style={{ color: "#bbb", fontSize: 11, textAlign: "center", maxWidth: 360, lineHeight: 1.7, fontStyle: "italic" }}>
-                {CHANNELS[channel].desc}
+              {/* Animated content */}
+              <div style={{ width: "100%", maxWidth: 360, flex: 1, display: "flex", alignItems: "center", justifyContent: "center", minHeight: 0 }}>
+                <ChannelContent channel={CHANNELS[channel]} tick={tick} />
               </div>
             </div>
           )}
