@@ -28,7 +28,7 @@ function randomTargets(count) {
   return targets;
 }
 
-export default function BillesGame({ onBack, billes }) {
+export default function BillesGame({ onBack, billes, onScore }) {
   const [phase, setPhase] = useState("AIM"); // AIM, ROLLING, DONE
   const [calot, setCalot] = useState({ x: ARENA_R, y: ARENA_SIZE - 30, vx: 0, vy: 0 });
   const [targets, setTargets] = useState(() => randomTargets(6));
@@ -189,6 +189,7 @@ export default function BillesGame({ onBack, billes }) {
         const alive = newTargets.filter(t => t.alive).length;
         if (alive === 0 || shotsLeft <= 1) {
           setPhase("DONE");
+          if (onScore) onScore(scoreRef.current);
         } else {
           setPhase("AIM");
         }

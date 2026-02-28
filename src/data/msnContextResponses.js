@@ -37,11 +37,6 @@ export const CONTEXT_RESPONSES = {
     "lache tes coms sur mon skyblog stp !! +5 pr toi",
     "jé mi une nvelle zik sur mon profil 🎵",
   ],
-  dressing: [
-    "mdr tu fé du shopping ?? 😂",
-    "jveu le meme tshirt ke toi !!",
-    "ta vu les nvelles converses ??? jlé veu trooo",
-  ],
   cartable: [
     "ta fé tes devoirs ??? moi non ptdr 😂",
     "on a un controle de math 2m1 tu savé ??",

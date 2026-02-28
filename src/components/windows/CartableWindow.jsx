@@ -2,12 +2,14 @@ import { useState } from "react";
 import Win from "../Win";
 import NostalImg from "../NostalImg";
 import { CARTABLE_ITEMS } from "../../data/cartableItems";
+import { playZipSound } from "../../utils/uiSounds";
 
 export default function CartableWindow({ onClose, onMinimize, zIndex, onFocus }) {
   const [opened, setOpened] = useState(null);
   const [weight, setWeight] = useState(null);
 
   const handleWeight = () => {
+    playZipSound();
     setWeight(0);
     let w = 0;
     const iv = setInterval(() => {

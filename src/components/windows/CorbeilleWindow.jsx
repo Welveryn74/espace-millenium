@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Win from "../Win";
 import NostalImg from "../NostalImg";
+import { playPaperSound } from "../../utils/uiSounds";
 
 const DELETED_ITEMS = [
   { icon: "\u{1F4C4}", name: "Exposé_volcans_FINAL_v3.doc", type: "Document Word", date: "12/03/2004", size: "245 Ko", img: "/images/corbeille/doc.png" },
@@ -83,7 +84,7 @@ export default function CorbeilleWindow({ onClose, onMinimize, zIndex, onFocus }
                 key={i}
                 onMouseEnter={() => setHoveredRow(i)}
                 onMouseLeave={() => setHoveredRow(null)}
-                onDoubleClick={() => { if (HIDDEN_MESSAGES[item.name]) setPreviewMsg({ title: item.name, text: HIDDEN_MESSAGES[item.name] }); }}
+                onDoubleClick={() => { if (HIDDEN_MESSAGES[item.name]) { playPaperSound(); setPreviewMsg({ title: item.name, text: HIDDEN_MESSAGES[item.name] }); } }}
                 style={{
                   display: "flex",
                   fontSize: 11, fontFamily: "'Tahoma', sans-serif",

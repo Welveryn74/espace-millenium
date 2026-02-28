@@ -124,16 +124,18 @@ export default function EspaceMillenium() {
   // Clippy timer: first at 15s, then every 40-80s
   useEffect(() => {
     if (!booted) return;
+    const mounted = { current: true };
     let timeout;
     const scheduleClippy = (delay) => {
       timeout = setTimeout(() => {
+        if (!mounted.current) return;
         setClippyMsg(pickClippyMsg());
         setShowClippy(true);
         scheduleClippy(40000 + Math.random() * 40000);
       }, delay);
     };
     scheduleClippy(15000);
-    return () => clearTimeout(timeout);
+    return () => { mounted.current = false; clearTimeout(timeout); };
   }, [booted, pickClippyMsg]);
 
   if (!booted) return <BootScreen onComplete={() => setBooted(true)} />;

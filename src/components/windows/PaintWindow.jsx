@@ -4,6 +4,7 @@ import {
   XP_COLORS, TOOLS, BRUSH_SIZES,
   CANVAS_WIDTH, CANVAS_HEIGHT, DEFAULTS,
 } from "../../data/paintConfig";
+import { loadState, saveState } from "../../utils/storage";
 
 /* ── Flood-fill (BFS, Uint8Array visited) ── */
 function floodFill(ctx, startX, startY, fillColor, w, h) {
@@ -61,7 +62,7 @@ function hexFromRgb(r, g, b) {
 }
 
 /* ── Component ── */
-export default function PaintWindow({ onClose, onMinimize, zIndex, onFocus }) {
+export default function PaintWindow({ onClose: rawOnClose, onMinimize, zIndex, onFocus }) {
   const [activeTool, setActiveTool] = useState(DEFAULTS.tool);
   const [activeColor, setActiveColor] = useState(DEFAULTS.color);
   const [brushSize, setBrushSize] = useState(DEFAULTS.brushSize);
@@ -74,7 +75,17 @@ export default function PaintWindow({ onClose, onMinimize, zIndex, onFocus }) {
   const ctxRef = useRef(null);
   const previewCanvasRef = useRef(null);
 
-  /* ── Init canvas ── */
+  const onClose = useCallback(() => {
+    if (canvasRef.current) {
+      try {
+        const dataURL = canvasRef.current.toDataURL('image/png');
+        saveState('paint_canvas', dataURL);
+      } catch (_) { /* silent */ }
+    }
+    rawOnClose();
+  }, [rawOnClose]);
+
+  /* ── Init canvas + restore saved drawing ── */
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -83,6 +94,13 @@ export default function PaintWindow({ onClose, onMinimize, zIndex, onFocus }) {
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
     ctxRef.current = ctx;
+    // Restore saved canvas
+    const saved = loadState('paint_canvas', null);
+    if (saved) {
+      const img = new Image();
+      img.onload = () => { ctx.drawImage(img, 0, 0); };
+      img.src = saved;
+    }
   }, []);
 
   /* ── File menu outside-click ── */
@@ -107,6 +125,7 @@ export default function PaintWindow({ onClose, onMinimize, zIndex, onFocus }) {
     const ctx = ctxRef.current;
     ctx.fillStyle = DEFAULTS.bgColor;
     ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    saveState('paint_canvas', null);
     setShowFileMenu(false);
   }, []);
 

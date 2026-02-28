@@ -37,7 +37,7 @@ function startFan() {
   filter.Q.value = 0.5;
 
   fanGain = ctx.createGain();
-  fanGain.gain.value = 0.02;
+  fanGain.gain.value = 0.06;
 
   fanNode.connect(filter).connect(fanGain).connect(ctx.destination);
   fanNode.start();
@@ -50,7 +50,7 @@ function scheduleHDClick() {
   hdTimeout = setTimeout(() => {
     if (!running) return;
     if (localStorage.getItem('em_muted') === 'true') {
-      scheduleHDClick();
+      if (running) scheduleHDClick();
       return;
     }
     const ctx = getCtx();
@@ -59,12 +59,12 @@ function scheduleHDClick() {
     osc.type = 'square';
     osc.frequency.value = 4000 + Math.random() * 1000;
     const t = ctx.currentTime;
-    gain.gain.setValueAtTime(0.01, t);
+    gain.gain.setValueAtTime(0.025, t);
     gain.gain.exponentialRampToValueAtTime(0.001, t + 0.03);
     osc.connect(gain).connect(ctx.destination);
     osc.start(t);
     osc.stop(t + 0.04);
-    scheduleHDClick();
+    if (running) scheduleHDClick();
   }, delay);
 }
 
@@ -97,6 +97,6 @@ export function stopAmbient() {
 /** Mettre à jour le mute (couper le fan sans arrêter le cycle) */
 export function setAmbientMuted(muted) {
   if (fanGain) {
-    fanGain.gain.value = muted ? 0 : 0.02;
+    fanGain.gain.value = muted ? 0 : 0.06;
   }
 }

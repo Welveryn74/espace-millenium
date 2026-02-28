@@ -1189,7 +1189,16 @@ function PateAProut({ playing, onPress }) {
 function BillesView() {
   const [selected, setSelected] = useState(null);
   const [playingBilles, setPlayingBilles] = useState(false);
+  const [billesWon, setBillesWon] = useState(() => loadState('billes_collection', 0));
   const current = selected ? BILLES_COLLECTION.find(b => b.id === selected) : null;
+
+  const handleGameEnd = (score) => {
+    if (score > 0) {
+      const updated = billesWon + score;
+      setBillesWon(updated);
+      saveState('billes_collection', updated);
+    }
+  };
 
   if (playingBilles) {
     return (
@@ -1199,7 +1208,7 @@ function BillesView() {
           color: "#C8B0E8", padding: "4px 12px", borderRadius: 4, cursor: "pointer",
           fontSize: 11, fontFamily: "'Tahoma', sans-serif", marginBottom: 10,
         }}>← Retour à la collection</button>
-        <BillesGame onBack={() => setPlayingBilles(false)} billes={BILLES_COLLECTION} />
+        <BillesGame onBack={() => setPlayingBilles(false)} billes={BILLES_COLLECTION} onScore={handleGameEnd} />
       </div>
     );
   }
@@ -1213,6 +1222,9 @@ function BillesView() {
         </div>
         <div style={{ color: "#8B6BAE", fontSize: 11, marginTop: 4, fontStyle: "italic" }}>
           "Tu joues pour de vrai ou pour de faux ?"
+        </div>
+        <div style={{ color: "#FFD700", fontSize: 12, marginTop: 6, fontWeight: "bold" }}>
+          🏆 Billes gagnées : {billesWon}
         </div>
         <button onClick={() => setPlayingBilles(true)} style={{
           marginTop: 8, background: "rgba(200,176,232,0.15)", color: "#C8B0E8",
@@ -1386,8 +1398,32 @@ function JeuxSocieteView() {
    SCOUBIDOUS
    ============================================================ */
 function ScoubidousView() {
+  const SCOUBIE_COLORS = ["#FF4444", "#FFDD44", "#4488FF", "#44FF88", "#FF44FF", "#FF8844"];
   const [selected, setSelected] = useState(null);
+  const [color1, setColor1] = useState(0);
+  const [color2, setColor2] = useState(1);
+  const [weaving, setWeaving] = useState(false);
+  const [weaveDone, setWeaveDone] = useState(false);
+  const [collection, setCollection] = useState(() => loadState('scoubidous_made', []));
   const current = selected ? SCOUBIDOUS.find(s => s.id === selected) : null;
+
+  const startWeave = () => {
+    if (weaving) return;
+    setWeaving(true);
+    setWeaveDone(false);
+    setTimeout(() => {
+      const newScoubie = {
+        colors: [SCOUBIE_COLORS[color1], SCOUBIE_COLORS[color2]],
+        date: new Date().toLocaleDateString('fr-FR'),
+      };
+      const updated = [...collection, newScoubie];
+      setCollection(updated);
+      saveState('scoubidous_made', updated);
+      setWeaving(false);
+      setWeaveDone(true);
+      setTimeout(() => setWeaveDone(false), 2000);
+    }, 2000);
+  };
 
   return (
     <div style={{ animation: "fadeIn 0.3s ease-out" }}>
@@ -1399,8 +1435,107 @@ function ScoubidousView() {
         <div style={{ color: "#8B6BAE", fontSize: 11, marginTop: 4, fontStyle: "italic" }}>
           Dessus, dessous, tirer, recommencer...
         </div>
+        <div style={{ color: "#FFD700", fontSize: 11, marginTop: 4 }}>
+          🪢 {collection.length} scoubidou{collection.length > 1 ? "s" : ""} tressé{collection.length > 1 ? "s" : ""}
+        </div>
       </div>
 
+      {/* Weaving workshop */}
+      <div style={{
+        background: "rgba(255,255,255,0.05)", border: "1px solid rgba(200,176,232,0.3)",
+        borderRadius: 8, padding: 14, marginBottom: 16,
+      }}>
+        <div style={{ color: "#C8B0E8", fontSize: 12, fontWeight: "bold", marginBottom: 10, textAlign: "center" }}>
+          ✂️ Atelier Scoubidou
+        </div>
+        <div style={{ display: "flex", justifyContent: "center", gap: 20, marginBottom: 12 }}>
+          <div>
+            <div style={{ color: "#AAA", fontSize: 10, marginBottom: 4, textAlign: "center" }}>Fil 1</div>
+            <div style={{ display: "flex", gap: 4 }}>
+              {SCOUBIE_COLORS.map((c, i) => (
+                <div key={i} onClick={() => { if (!weaving && i !== color2) setColor1(i); }} style={{
+                  width: 20, height: 20, borderRadius: "50%", background: c, cursor: weaving || i === color2 ? "default" : "pointer",
+                  border: color1 === i ? "2px solid #fff" : "2px solid transparent",
+                  opacity: i === color2 ? 0.3 : 1,
+                  transition: "all 0.15s",
+                }} />
+              ))}
+            </div>
+          </div>
+          <div>
+            <div style={{ color: "#AAA", fontSize: 10, marginBottom: 4, textAlign: "center" }}>Fil 2</div>
+            <div style={{ display: "flex", gap: 4 }}>
+              {SCOUBIE_COLORS.map((c, i) => (
+                <div key={i} onClick={() => { if (!weaving && i !== color1) setColor2(i); }} style={{
+                  width: 20, height: 20, borderRadius: "50%", background: c, cursor: weaving || i === color1 ? "default" : "pointer",
+                  border: color2 === i ? "2px solid #fff" : "2px solid transparent",
+                  opacity: i === color1 ? 0.3 : 1,
+                  transition: "all 0.15s",
+                }} />
+              ))}
+            </div>
+          </div>
+        </div>
+        {/* Preview */}
+        <div style={{ display: "flex", justifyContent: "center", gap: 3, height: 50, alignItems: "center", marginBottom: 10 }}>
+          {[0,1,2,3].map(i => (
+            <div key={i} style={{
+              width: 7, height: 42, borderRadius: 3,
+              background: `linear-gradient(180deg, ${SCOUBIE_COLORS[i % 2 === 0 ? color1 : color2]}, ${SCOUBIE_COLORS[i % 2 === 0 ? color1 : color2]}88, ${SCOUBIE_COLORS[i % 2 === 0 ? color1 : color2]})`,
+              transform: i % 2 === 0 ? "rotate(8deg)" : "rotate(-8deg)",
+              boxShadow: `0 0 6px ${SCOUBIE_COLORS[i % 2 === 0 ? color1 : color2]}40`,
+              animation: weaving ? `pulse 0.3s ease-in-out ${i * 0.1}s infinite` : "none",
+            }} />
+          ))}
+        </div>
+        <div style={{ textAlign: "center" }}>
+          {weaving ? (
+            <div style={{ color: "#C8B0E8", fontSize: 11, fontWeight: "bold", animation: "pulse 0.5s ease-in-out infinite" }}>
+              🪢 Dessus... dessous... tirer...
+            </div>
+          ) : weaveDone ? (
+            <div style={{ color: "#4CAF50", fontSize: 12, fontWeight: "bold", animation: "fadeIn 0.3s ease-out" }}>
+              ✅ Scoubidou terminé ! Ajouté à ta collection !
+            </div>
+          ) : (
+            <button onClick={startWeave} style={{
+              background: "rgba(200,176,232,0.2)", color: "#C8B0E8",
+              border: "1px solid rgba(200,176,232,0.4)", padding: "6px 20px",
+              borderRadius: 4, cursor: "pointer", fontSize: 12, fontWeight: "bold",
+              fontFamily: "'Tahoma', sans-serif",
+            }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(200,176,232,0.35)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "rgba(200,176,232,0.2)"; }}
+            >🪢 Tresser !</button>
+          )}
+        </div>
+      </div>
+
+      {/* My collection */}
+      {collection.length > 0 && (
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ color: "#C8B0E8", fontSize: 11, fontWeight: "bold", marginBottom: 8 }}>Ma collection :</div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+            {collection.map((s, i) => (
+              <div key={i} style={{
+                display: "flex", gap: 1, padding: "4px 6px",
+                background: "rgba(255,255,255,0.04)", borderRadius: 4,
+                border: "1px solid rgba(255,255,255,0.08)",
+              }} title={`Tressé le ${s.date}`}>
+                {[0,1,2,3].map(j => (
+                  <div key={j} style={{
+                    width: 4, height: 20, borderRadius: 2,
+                    background: s.colors[j % 2],
+                    transform: j % 2 === 0 ? "rotate(6deg)" : "rotate(-6deg)",
+                  }} />
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Existing scoubidou catalog */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}>
         {SCOUBIDOUS.map((s) => {
           const isSelected = selected === s.id;
@@ -1418,7 +1553,6 @@ function ScoubidousView() {
               onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.05)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; }}
             >
-              {/* Scoubidou strand visual */}
               <div style={{ display: "flex", justifyContent: "center", gap: 2, height: 48, alignItems: "center" }}>
                 {s.colors.map((c, i) => (
                   <div key={i} style={{
@@ -1549,6 +1683,28 @@ function PeluchesView() {
    ============================================================ */
 function LegoGallery() {
   const [expanded, setExpanded] = useState(null);
+  const [builtSets, setBuiltSets] = useState(() => loadState('lego_built', []));
+  const [building, setBuilding] = useState(null);
+  const [progress, setProgress] = useState(0);
+
+  const startBuild = (setId, e) => {
+    e.stopPropagation();
+    if (builtSets.includes(setId) || building) return;
+    setBuilding(setId);
+    setProgress(0);
+    let p = 0;
+    const iv = setInterval(() => {
+      p += 2;
+      setProgress(p);
+      if (p >= 100) {
+        clearInterval(iv);
+        const updated = [...builtSets, setId];
+        setBuiltSets(updated);
+        saveState('lego_built', updated);
+        setTimeout(() => setBuilding(null), 500);
+      }
+    }, 80);
+  };
 
   return (
     <div style={{ animation: "fadeIn 0.3s ease-out" }}>
@@ -1560,11 +1716,16 @@ function LegoGallery() {
         <div style={{ color: "#8B6BAE", fontSize: 11, marginTop: 4, fontStyle: "italic" }}>
           Le catalogue de Noël, page cornée sur les Lego...
         </div>
+        <div style={{ color: "#FFD700", fontSize: 11, marginTop: 4 }}>
+          ⭐ {builtSets.length}/{LEGO_SETS.length} sets construits
+        </div>
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {LEGO_SETS.map((set) => {
           const isOpen = expanded === set.id;
+          const isBuilt = builtSets.includes(set.id);
+          const isBuilding = building === set.id;
           return (
             <div
               key={set.id}
@@ -1581,8 +1742,9 @@ function LegoGallery() {
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                 <NostalImg src={set.img} fallback={set.emoji} size={24} />
                 <div style={{ flex: 1 }}>
-                  <div style={{ color: "#E0E0E0", fontSize: 13, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif" }}>
+                  <div style={{ color: "#E0E0E0", fontSize: 13, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif", display: "flex", alignItems: "center", gap: 6 }}>
                     {set.name}
+                    {isBuilt && <span style={{ color: "#FFD700", fontSize: 14 }}>⭐</span>}
                   </div>
                   <div style={{ display: "flex", gap: 8, marginTop: 3 }}>
                     <span style={{
@@ -1594,14 +1756,54 @@ function LegoGallery() {
                     </span>
                     <span style={{ fontSize: 9, color: "#888" }}>{set.year}</span>
                     <span style={{ fontSize: 9, color: "#888" }}>{set.pieces} pièces</span>
+                    {isBuilt && <span style={{ fontSize: 9, color: "#4CAF50", fontWeight: "bold" }}>✓ Construit</span>}
                   </div>
                 </div>
                 <span style={{ color: "#666", fontSize: 10, transition: "transform 0.2s", transform: isOpen ? "rotate(90deg)" : "rotate(0deg)" }}>▶</span>
               </div>
               {isOpen && (
-                <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid ${set.color}30`, display: "flex", gap: 12, animation: "fadeIn 0.2s ease-out" }}>
-                  <NostalImg src={set.img} fallback={set.emoji} size={100} style={{ borderRadius: 6, flexShrink: 0 }} />
-                  <div style={{ color: "#AAA", fontSize: 11, lineHeight: 1.6 }}>{set.desc}</div>
+                <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid ${set.color}30`, animation: "fadeIn 0.2s ease-out" }}>
+                  <div style={{ display: "flex", gap: 12 }}>
+                    <NostalImg src={set.img} fallback={set.emoji} size={100} style={{ borderRadius: 6, flexShrink: 0 }} />
+                    <div style={{ color: "#AAA", fontSize: 11, lineHeight: 1.6 }}>{set.desc}</div>
+                  </div>
+                  {/* Build button */}
+                  <div style={{ marginTop: 10 }}>
+                    {isBuilding ? (
+                      <div>
+                        <div style={{ fontSize: 11, color: set.color, marginBottom: 4, fontWeight: "bold" }}>
+                          🔧 Construction en cours... {progress}%
+                        </div>
+                        <div style={{ height: 8, background: "rgba(255,255,255,0.1)", borderRadius: 4, overflow: "hidden" }}>
+                          <div style={{
+                            height: "100%", background: `linear-gradient(90deg, ${set.color}, ${set.color}CC)`,
+                            width: `${progress}%`, borderRadius: 4,
+                            transition: "width 0.08s linear",
+                          }} />
+                        </div>
+                        {progress >= 100 && (
+                          <div style={{ color: "#4CAF50", fontSize: 12, fontWeight: "bold", marginTop: 6, animation: "fadeIn 0.3s ease-out" }}>
+                            ✅ Set terminé !
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <button
+                        onClick={(e) => startBuild(set.id, e)}
+                        disabled={isBuilt}
+                        style={{
+                          background: isBuilt ? "rgba(76,175,80,0.15)" : `${set.color}25`,
+                          color: isBuilt ? "#4CAF50" : set.color,
+                          border: `1px solid ${isBuilt ? "rgba(76,175,80,0.4)" : set.color + "50"}`,
+                          padding: "5px 16px", borderRadius: 4,
+                          cursor: isBuilt ? "default" : "pointer",
+                          fontSize: 11, fontFamily: "'Tahoma', sans-serif", fontWeight: "bold",
+                        }}
+                      >
+                        {isBuilt ? "⭐ Déjà construit !" : `🔧 Construire (${set.pieces} pièces)`}
+                      </button>
+                    )}
+                  </div>
                 </div>
               )}
             </div>

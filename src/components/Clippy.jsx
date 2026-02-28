@@ -8,7 +8,7 @@ const ACTIVITY_MESSAGES = {
   open_skyblog: "Ton skyblog a reçu un nouveau commentaire ! Ah non, c'est juste moi.",
   open_tv: "T'es encore devant la télé ? Va jouer dehors !",
   open_paint: "Oh, tu dessines ? Montre-moi quand t'as fini !",
-  open_dressing: "Tu changes de tenue ? T'es déjà très bien comme ça.",
+
   open_cartable: "T'as vérifié ton cartable ? T'as sûrement oublié un truc.",
   open_chambre: "Range ta chambre avant que maman arrive !",
 };

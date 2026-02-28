@@ -2,7 +2,7 @@ import MSNWindow from "../components/windows/MSNWindow";
 import TVWindow from "../components/windows/TVWindow";
 import MP3Window from "../components/windows/MP3Window";
 import SkyblogWindow from "../components/windows/SkyblogWindow";
-import DressingWindow from "../components/windows/DressingWindow";
+
 import CartableWindow from "../components/windows/CartableWindow";
 import SalleJeuxWindow from "../components/windows/SalleJeuxWindow";
 import ChambreWindow from "../components/windows/ChambreWindow";
@@ -17,7 +17,7 @@ export const WINDOW_REGISTRY = {
   tv:       { component: TVWindow },
   mp3:      { component: MP3Window },
   skyblog:  { component: SkyblogWindow },
-  dressing: { component: DressingWindow },
+
   cartable: { component: CartableWindow },
   salleJeux: { component: SalleJeuxWindow },
   chambre:  { component: ChambreWindow },

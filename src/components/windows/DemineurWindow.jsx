@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Win from "../Win";
 import { DIFFICULTIES, NUMBER_COLORS, SMILEY_STATES } from "../../data/demineurConfig";
+import { playVictorySound, playExplosionSound } from "../../utils/uiSounds";
 
 function createEmptyGrid(rows, cols) {
   const grid = [];
@@ -169,9 +170,11 @@ export default function DemineurWindow({ onClose, onMinimize, zIndex, onFocus })
         setGrid(finalGrid);
         setGameState("lost");
         setClickedMine(`${row},${col}`);
+        playExplosionSound();
       } else if (checkWin(result.grid, level.rows, level.cols)) {
         setGrid(result.grid);
         setGameState("won");
+        playVictorySound();
       } else {
         setGrid(result.grid);
       }

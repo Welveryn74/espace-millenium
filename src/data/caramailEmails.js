@@ -1,3 +1,125 @@
+export const CARAMAIL_SENT = [
+  {
+    id: "s1",
+    to: "julie_du_13",
+    subject: "slt c moi",
+    date: "15/03/2005",
+    body: `slt julie sa va ??
+
+jvoulé te dir ke ct tro bi1 hier a la récré mdr on a tro déliré !! tu vien o parc 2m1 apré lécol ??
+
+a+ bisou
+
+PS : répond vit stp`,
+  },
+  {
+    id: "s2",
+    to: "xx-dark-kevin-xx",
+    subject: "Re: ptdr la video",
+    date: "13/03/2005",
+    body: `mdr oué jlé vu tro drole !!
+
+ta le lien de lotre video ac le chat ki tombe ?? jpeu pa la retrouvé
+
+a+ kev`,
+  },
+  {
+    id: "s3",
+    to: "maman",
+    subject: "Re: Re: Re: Fw: Fw: Les dangers d'Internet",
+    date: "14/03/2005",
+    body: `oué oué maman tkt jfé attention
+
+é non jpeu pa attraper un virus en regardan des videos
+
+bisou`,
+  },
+  {
+    id: "s4",
+    to: "prof_durand@ac-versailles.fr",
+    subject: "exposé volcans",
+    date: "11/03/2005",
+    body: `Bonjour M. Durand
+
+je voulé savoir si on peu fair lexposé a 2 ac julien pcq on a le meme sujet
+
+Cordiallement`,
+  },
+];
+
+export const CARAMAIL_DRAFTS = [
+  {
+    id: "d1",
+    to: "papa-noël@polenord.com",
+    subject: "Ma liste de Noël 2005",
+    date: "02/12/2004",
+    body: `Cher Père Noël,
+
+Cette année je voudrais :
+- Une PSP (la nouvelle console de Sony)
+- Le jeu Kingdom Hearts 2
+- Un skate (mé maman veut pas)
+- Des cartes Pokémon
+- Un portable (maman a di non mé on sé jamé)
+
+Je promet je seré sage.
+
+PS : si ta pa tout cé pa grave mé la PSP cé le + importan
+
+PS2 : la vréé PS2 je lai déja mdr`,
+  },
+  {
+    id: "d2",
+    to: "prof_durand@ac-versailles.fr",
+    subject: "Excuse absence mardi",
+    date: "08/03/2005",
+    body: `Monsieur Durand,
+
+Je vous écrit pour vous dire que mardi je pourai pa venir en cour car
+`,
+  },
+];
+
+export const CARAMAIL_TRASH = [
+  {
+    id: "t1",
+    from: "offre-speciale@gagnez-millions.com",
+    subject: "Vous avez gagné 1 MILLION d'euros !!!",
+    date: "06/03/2005",
+    body: `FÉLICITATIONS !!! 🎉🎉🎉
+
+Vous avez été sélectionné(e) parmi 10.000.000 d'internautes pour recevoir UN MILLION D'EUROS !!!
+
+Pour récupérer votre lot, envoyez simplement vos coordonnées bancaires à cette adresse.
+
+C'est GRATUIT et SANS ENGAGEMENT !!!
+
+Dépêchez-vous, l'offre expire dans 24h !!!`,
+  },
+  {
+    id: "t2",
+    from: "chainelettres@hotmail.fr",
+    subject: "⚠ CHAÎNE MAGIQUE — envoie à 10 personnes ⚠",
+    date: "03/03/2005",
+    body: `ATTENTION !!!
+
+Si tu envoies ce message à 10 personnes dans les 15 prochaines minutes, la personne que tu aimes va t'embrasser demain !!!
+
+Si tu ne le fais pas, tu auras 7 ans de malheur et ton MSN sera supprimé !!!
+
+ÇA MARCHE VRAIMENT !!! Mon cousin l'a fait et il a eu une PS2 le lendemain !!!
+
+NE BRISE PAS LA CHAÎNE !!!`,
+  },
+  {
+    id: "t3",
+    from: "viagra-discount@spam.com",
+    subject: "V1AGRA pas cher livraison rapide",
+    date: "01/03/2005",
+    body: `(c'est quoi le viagra ? Maman a dit de pas ouvrir ce mail)`,
+  },
+];
+
 export const CARAMAIL_EMAILS = [
   {
     id: 1,

@@ -8,7 +8,10 @@ import { loadState, saveState, getUsername } from "../../utils/storage";
 const POSTS_PER_PAGE = 3;
 
 export default function SkyblogWindow({ onClose, onMinimize, zIndex, onFocus }) {
-  const [likedPosts, setLikedPosts] = useState({});
+  const [likedPosts, setLikedPosts] = useState(() => loadState('skyblog_likes', {}));
+  const [comments, setComments] = useState(() => loadState('skyblog_comments', {}));
+  const [commentText, setCommentText] = useState("");
+  const [commentingOn, setCommentingOn] = useState(null);
   const [page, setPage] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
   const [visitors, setVisitors] = useState(() => {
@@ -18,9 +21,20 @@ export default function SkyblogWindow({ onClose, onMinimize, zIndex, onFocus }) 
     return next;
   });
   const contentRef = useRef(null);
+  const username = getUsername();
 
   const totalPages = Math.ceil(SKYBLOG_POSTS.length / POSTS_PER_PAGE);
   const currentPosts = SKYBLOG_POSTS.slice(page * POSTS_PER_PAGE, (page + 1) * POSTS_PER_PAGE);
+
+  // Persist likes
+  useEffect(() => {
+    saveState('skyblog_likes', likedPosts);
+  }, [likedPosts]);
+
+  // Persist comments
+  useEffect(() => {
+    saveState('skyblog_comments', comments);
+  }, [comments]);
 
   // Scroll to top on page change
   useEffect(() => {
@@ -31,6 +45,31 @@ export default function SkyblogWindow({ onClose, onMinimize, zIndex, onFocus }) 
     setRefreshing(true);
     setTimeout(() => setRefreshing(false), 800);
   };
+
+  const handleLike = (idx) => {
+    setLikedPosts(prev => {
+      const current = prev[idx] || 0;
+      return { ...prev, [idx]: current + 1 };
+    });
+  };
+
+  const handleComment = (idx) => {
+    if (!commentText.trim()) return;
+    const newComment = {
+      pseudo: username,
+      text: commentText.trim(),
+      date: new Date().toLocaleDateString('fr-FR'),
+    };
+    setComments(prev => ({
+      ...prev,
+      [idx]: [...(prev[idx] || []), newComment],
+    }));
+    setCommentText("");
+    setCommentingOn(null);
+  };
+
+  const totalComments = SKYBLOG_POSTS.reduce((s, p) => s + p.comments, 0)
+    + Object.values(comments).reduce((s, arr) => s + arr.length, 0);
 
   const urlSuffix = page > 0 ? `/page/${page + 1}` : "";
 
@@ -74,12 +113,12 @@ export default function SkyblogWindow({ onClose, onMinimize, zIndex, onFocus }) 
                   animation: "gradient 3s linear infinite",
                   WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
                   marginBottom: 8,
-                }}>~*~ xX-{getUsername()}-2005-Xx ~*~</div>
+                }}>~*~ xX-{username}-2005-Xx ~*~</div>
                 <div style={{ color: "#C0F", fontSize: 12, fontFamily: "'Comic Sans MS', cursive", letterSpacing: 1 }}>
                   ★ LaCh3z VoS cOmS ★ +5 pOuR tOuT lE mOnDe ★
                 </div>
                 <div style={{ color: "#666", fontSize: 10, marginTop: 6 }}>
-                  Visiteurs : {visitors.toLocaleString("fr-FR")} | Articles : {SKYBLOG_POSTS.length} | Commentaires : {SKYBLOG_POSTS.reduce((s, p) => s + p.comments, 0)}
+                  Visiteurs : {visitors.toLocaleString("fr-FR")} | Articles : {SKYBLOG_POSTS.length} | Commentaires : {totalComments}
                 </div>
                 {/* Marquee */}
                 <div style={{ overflow: "hidden", marginTop: 8, height: 16 }}>
@@ -91,38 +130,99 @@ export default function SkyblogWindow({ onClose, onMinimize, zIndex, onFocus }) 
 
               {/* Posts */}
               <div style={{ padding: "0 16px 12px" }}>
-                {currentPosts.map((post, i) => (
-                  <div key={page * POSTS_PER_PAGE + i} style={{
-                    background: "rgba(0,0,0,0.5)", border: "1px solid rgba(150,0,255,0.3)",
-                    borderRadius: 6, padding: 16, marginBottom: 14,
-                    boxShadow: "0 2px 8px rgba(100,0,200,0.1)",
-                    animation: `slideUp 0.3s ease-out ${i * 0.1}s both`,
-                  }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
-                      <div>
-                        <div style={{ fontFamily: "'Comic Sans MS', cursive", fontSize: 16, color: "#F0F", fontWeight: "bold" }}>{post.title}</div>
-                        <div style={{ color: "#888", fontSize: 10, marginTop: 2 }}>Posté le {post.date} à 18h42</div>
+                {currentPosts.map((post, i) => {
+                  const idx = page * POSTS_PER_PAGE + i;
+                  const likeCount = likedPosts[idx] || 0;
+                  const postComments = comments[idx] || [];
+                  return (
+                    <div key={idx} style={{
+                      background: "rgba(0,0,0,0.5)", border: "1px solid rgba(150,0,255,0.3)",
+                      borderRadius: 6, padding: 16, marginBottom: 14,
+                      boxShadow: "0 2px 8px rgba(100,0,200,0.1)",
+                      animation: `slideUp 0.3s ease-out ${i * 0.1}s both`,
+                    }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
+                        <div>
+                          <div style={{ fontFamily: "'Comic Sans MS', cursive", fontSize: 16, color: "#F0F", fontWeight: "bold" }}>{post.title}</div>
+                          <div style={{ color: "#888", fontSize: 10, marginTop: 2 }}>Posté le {post.date} à 18h42</div>
+                        </div>
+                        <NostalImg src={post.img} fallback={post.emoji} size={100} style={{ borderRadius: 6 }} />
                       </div>
-                      <NostalImg src={post.img} fallback={post.emoji} size={100} style={{ borderRadius: 6 }} />
+                      <div style={{
+                        color: "#ddd", fontSize: 12, lineHeight: 1.7,
+                        fontFamily: "'Comic Sans MS', cursive", marginBottom: 10, whiteSpace: "pre-line",
+                      }}>{post.content}</div>
+
+                      {/* Like & comment bar */}
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid rgba(150,0,255,0.2)", paddingTop: 8 }}>
+                        <span
+                          onClick={() => setCommentingOn(commentingOn === idx ? null : idx)}
+                          style={{ color: "#0CF", fontSize: 11, cursor: "pointer" }}
+                        >
+                          💬 {post.comments + postComments.length} commentaires
+                        </span>
+                        <span
+                          onClick={() => handleLike(idx)}
+                          style={{ fontSize: 12, cursor: "pointer", color: likeCount > 0 ? "#F00" : "#888", transition: "all 0.2s" }}
+                        >
+                          {likeCount > 0 ? `❤️ Kiffé ! (${likeCount})` : "♡ Kiff cet article"}
+                        </span>
+                      </div>
+
+                      {/* User comments */}
+                      {postComments.length > 0 && (
+                        <div style={{ marginTop: 8, borderTop: "1px solid rgba(150,0,255,0.15)", paddingTop: 8 }}>
+                          {postComments.map((c, ci) => (
+                            <div key={ci} style={{
+                              background: "rgba(200,0,255,0.08)", borderRadius: 4, padding: "6px 10px", marginBottom: 4,
+                              fontSize: 11, fontFamily: "'Comic Sans MS', cursive",
+                            }}>
+                              <span style={{ color: "#F0F", fontWeight: "bold" }}>{c.pseudo}</span>
+                              <span style={{ color: "#666", fontSize: 9, marginLeft: 6 }}>{c.date}</span>
+                              <div style={{ color: "#ccc", marginTop: 2 }}>{c.text}</div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Comment input */}
+                      {commentingOn === idx && (
+                        <div style={{
+                          marginTop: 8, padding: 8, background: "rgba(200,0,255,0.06)",
+                          borderRadius: 4, animation: "fadeIn 0.2s ease-out",
+                        }}>
+                          <div style={{ fontSize: 10, color: "#C0F", marginBottom: 4, fontFamily: "'Comic Sans MS', cursive" }}>
+                            Pseudo : <strong>{username}</strong>
+                          </div>
+                          <textarea
+                            value={commentText}
+                            onChange={e => setCommentText(e.target.value)}
+                            placeholder="Lâche ton com' ici..."
+                            style={{
+                              width: "100%", height: 48, resize: "none",
+                              background: "rgba(0,0,0,0.4)", color: "#ddd",
+                              border: "1px solid rgba(200,0,255,0.3)", borderRadius: 3,
+                              padding: 6, fontSize: 11, fontFamily: "'Comic Sans MS', cursive",
+                              boxSizing: "border-box",
+                            }}
+                          />
+                          <button
+                            onClick={() => handleComment(idx)}
+                            disabled={!commentText.trim()}
+                            style={{
+                              marginTop: 4, padding: "4px 14px",
+                              background: commentText.trim() ? "rgba(200,0,255,0.3)" : "rgba(100,100,100,0.2)",
+                              color: commentText.trim() ? "#F0F" : "#666",
+                              border: "1px solid rgba(200,0,255,0.4)", borderRadius: 3,
+                              cursor: commentText.trim() ? "pointer" : "default",
+                              fontSize: 11, fontFamily: "'Comic Sans MS', cursive", fontWeight: "bold",
+                            }}
+                          >Lâcher un com'</button>
+                        </div>
+                      )}
                     </div>
-                    <div style={{
-                      color: "#ddd", fontSize: 12, lineHeight: 1.7,
-                      fontFamily: "'Comic Sans MS', cursive", marginBottom: 10, whiteSpace: "pre-line",
-                    }}>{post.content}</div>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid rgba(150,0,255,0.2)", paddingTop: 8 }}>
-                      <span style={{ color: "#0CF", fontSize: 11, cursor: "pointer" }}>💬 {post.comments} commentaires</span>
-                      <span
-                        onClick={() => {
-                          const idx = page * POSTS_PER_PAGE + i;
-                          setLikedPosts(prev => ({ ...prev, [idx]: !prev[idx] }));
-                        }}
-                        style={{ fontSize: 12, cursor: "pointer", color: likedPosts[page * POSTS_PER_PAGE + i] ? "#F00" : "#888", transition: "all 0.2s" }}
-                      >
-                        {likedPosts[page * POSTS_PER_PAGE + i] ? "❤️ Kiffé !" : "♡ Kiff cet article"}
-                      </span>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               {/* Pagination */}
