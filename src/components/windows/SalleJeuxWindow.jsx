@@ -49,7 +49,7 @@ export default function SalleJeuxWindow({ onClose, onMinimize, zIndex, onFocus }
     : "Salle de Jeux — Choisis ta console !";
 
   return (
-    <Win title={titleText} onClose={onClose} onMinimize={onMinimize} width={540} height={500} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 200, y: 50 }} color={titleColor}>
+    <Win title={titleText} onClose={onClose} onMinimize={onMinimize} width={660} height={580} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 200, y: 50 }} color={titleColor}>
       <div style={{ height: "100%", background: "linear-gradient(135deg, #1a1a2e, #16213e)", overflow: "hidden" }}>
         {activeConsole === null ? (
           /* ============ SHELF VIEW ============ */
@@ -84,7 +84,7 @@ export default function SalleJeuxWindow({ onClose, onMinimize, zIndex, onFocus }
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <NostalImg src={console.img} fallback={console.emoji} size={28} />
+                    <NostalImg src={console.img} fallback={console.emoji} size={36} />
                     <div>
                       <div style={{ color: "#E0E0E0", fontSize: 13, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif" }}>
                         {console.name}
@@ -218,7 +218,7 @@ export default function SalleJeuxWindow({ onClose, onMinimize, zIndex, onFocus }
                         }}
                       >
                         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                          <NostalImg src={game.img} fallback={game.emoji} size={24} />
+                          <NostalImg src={game.img} fallback={game.emoji} size={32} />
                           <div style={{ flex: 1 }}>
                             <span style={{
                               color: current.screenText,
@@ -244,7 +244,7 @@ export default function SalleJeuxWindow({ onClose, onMinimize, zIndex, onFocus }
                             animation: "slideUp 0.2s ease-out",
                           }}>
                             <div style={{ display: "flex", gap: 12 }}>
-                              <NostalImg src={game.img} fallback={game.emoji} size={120} style={{ borderRadius: 6, flexShrink: 0 }} />
+                              <NostalImg src={game.img} fallback={game.emoji} size={140} style={{ borderRadius: 6, flexShrink: 0 }} />
                               <div style={{
                                 color: `${current.screenText}CC`,
                                 fontSize: 11,

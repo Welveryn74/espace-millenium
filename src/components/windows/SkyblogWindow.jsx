@@ -3,7 +3,7 @@ import Win from "../Win";
 import NostalImg from "../NostalImg";
 import { SKYBLOG_POSTS } from "../../data/skyblogPosts";
 import { ieBtnStyle } from "../../styles/windowStyles";
-import { loadState, saveState } from "../../utils/storage";
+import { loadState, saveState, getUsername } from "../../utils/storage";
 
 const POSTS_PER_PAGE = 3;
 
@@ -35,7 +35,7 @@ export default function SkyblogWindow({ onClose, onMinimize, zIndex, onFocus }) 
   const urlSuffix = page > 0 ? `/page/${page + 1}` : "";
 
   return (
-    <Win title="Internet Explorer — xX-DaRk-PoWeR-2005-Xx.skyblog.com" onClose={onClose} onMinimize={onMinimize} width={540} height={500} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 90, y: 15 }} color="#0055E5">
+    <Win title="Internet Explorer — xX-DaRk-PoWeR-2005-Xx.skyblog.com" onClose={onClose} onMinimize={onMinimize} width={680} height={580} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 90, y: 15 }} color="#0055E5">
       <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
         {/* IE Toolbar */}
         <div style={{ background: "#ECE9D8", borderBottom: "1px solid #bbb" }}>
@@ -68,13 +68,13 @@ export default function SkyblogWindow({ onClose, onMinimize, zIndex, onFocus }) 
                 backgroundImage: "radial-gradient(ellipse at top, rgba(200,0,255,0.15), transparent 70%)",
               }}>
                 <div style={{
-                  fontFamily: "'Comic Sans MS', cursive", fontSize: 24, fontWeight: "bold",
+                  fontFamily: "'Comic Sans MS', cursive", fontSize: 28, fontWeight: "bold",
                   background: "linear-gradient(90deg, #F0F, #0FF, #FF0, #F0F, #0FF)",
                   backgroundSize: "200% 100%",
                   animation: "gradient 3s linear infinite",
                   WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
                   marginBottom: 8,
-                }}>~*~ xX DaRk PoWeR 2005 Xx ~*~</div>
+                }}>~*~ xX-{getUsername()}-2005-Xx ~*~</div>
                 <div style={{ color: "#C0F", fontSize: 12, fontFamily: "'Comic Sans MS', cursive", letterSpacing: 1 }}>
                   ★ LaCh3z VoS cOmS ★ +5 pOuR tOuT lE mOnDe ★
                 </div>
@@ -103,7 +103,7 @@ export default function SkyblogWindow({ onClose, onMinimize, zIndex, onFocus }) 
                         <div style={{ fontFamily: "'Comic Sans MS', cursive", fontSize: 16, color: "#F0F", fontWeight: "bold" }}>{post.title}</div>
                         <div style={{ color: "#888", fontSize: 10, marginTop: 2 }}>Posté le {post.date} à 18h42</div>
                       </div>
-                      <NostalImg src={post.img} fallback={post.emoji} size={80} style={{ borderRadius: 6 }} />
+                      <NostalImg src={post.img} fallback={post.emoji} size={100} style={{ borderRadius: 6 }} />
                     </div>
                     <div style={{
                       color: "#ddd", fontSize: 12, lineHeight: 1.7,

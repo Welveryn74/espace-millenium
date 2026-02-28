@@ -1,10 +1,11 @@
 import { DESKTOP_ICONS } from "../data/desktopIcons";
 import NostalImg from "./NostalImg";
+import { playClick } from "../utils/uiSounds";
 
 export default function Taskbar({ startMenu, setStartMenu, openWindowIds, isTopWindow, isMinimized, toggleMinimize, bringToFront, time, muted, toggleMute }) {
   return (
     <div style={{
-      position: "absolute", bottom: 0, left: 0, right: 0, height: 36,
+      position: "absolute", bottom: 0, left: 0, right: 0, height: 42,
       background: "linear-gradient(180deg, #3168D5 0%, #1941A5 40%, #1D4BC5 60%, #245BDB 100%)",
       borderTop: "2px solid #5B9BFF", display: "flex", alignItems: "center",
       padding: "0 3px", zIndex: 100,
@@ -12,20 +13,20 @@ export default function Taskbar({ startMenu, setStartMenu, openWindowIds, isTopW
       {/* Start button */}
       <button
         data-startbtn=""
-        onClick={(e) => { e.stopPropagation(); setStartMenu(!startMenu); }}
+        onClick={(e) => { e.stopPropagation(); playClick(); setStartMenu(!startMenu); }}
         style={{
-          height: 28, padding: "0 14px", display: "flex", alignItems: "center", gap: 5,
+          height: 34, padding: "0 14px", display: "flex", alignItems: "center", gap: 5,
           background: startMenu
             ? "linear-gradient(180deg, #2A6F2A 0%, #1A4F1A 100%)"
             : "linear-gradient(180deg, #3C9F3C 0%, #2A7F2A 50%, #1A5F1A 100%)",
           border: "1px solid #1A5F1A", borderRadius: "0 8px 8px 0", cursor: "pointer",
-          color: "#fff", fontWeight: "bold", fontSize: 12, fontFamily: "'Tahoma', sans-serif",
+          color: "#fff", fontWeight: "bold", fontSize: 13, fontFamily: "'Tahoma', sans-serif",
           textShadow: "1px 1px 1px rgba(0,0,0,0.5)",
-          boxShadow: startMenu ? "inset 1px 1px 3px rgba(0,0,0,0.3)" : "1px 1px 3px rgba(0,0,0,0.2)",
+          boxShadow: startMenu ? "inset 1px 1px 3px rgba(0,0,0,0.3)" : "inset 0 1px 0 rgba(255,255,255,0.4), 1px 1px 3px rgba(0,0,0,0.2)",
           letterSpacing: 0.5,
         }}
       >
-        <NostalImg src="/images/ui/start.png" fallback="🪟" size={16} /> démarrer
+        <NostalImg src="/images/ui/start.png" fallback="🪟" size={20} /> démarrer
       </button>
 
       {/* Separator */}
@@ -47,16 +48,16 @@ export default function Taskbar({ startMenu, setStartMenu, openWindowIds, isTopW
             }
           };
           return icon ? (
-            <button key={id} onClick={handleTabClick} style={{
-              height: 26, padding: "0 10px", maxWidth: 160,
+            <button key={id} onClick={() => { playClick(); handleTabClick(); }} style={{
+              height: 30, padding: "0 10px", maxWidth: 160,
               background: isTop ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.06)",
               border: isTop ? "1px solid rgba(255,255,255,0.25)" : "1px solid rgba(255,255,255,0.1)",
-              borderRadius: 3, color: "#fff", fontSize: 11, cursor: "pointer",
+              borderRadius: 3, color: "#fff", fontSize: 12, cursor: "pointer",
               display: "flex", alignItems: "center", gap: 4, overflow: "hidden",
               textOverflow: "ellipsis", whiteSpace: "nowrap", flexShrink: 1,
               opacity: minimizedState ? 0.6 : 1,
             }}>
-              <NostalImg src={icon.img} fallback={icon.emoji} size={14} style={{ flexShrink: 0 }} />
+              <NostalImg src={icon.img} fallback={icon.emoji} size={16} style={{ flexShrink: 0 }} />
               <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>{icon.label.split("\n")[0]}</span>
             </button>
           ) : null;
@@ -70,16 +71,16 @@ export default function Taskbar({ startMenu, setStartMenu, openWindowIds, isTopW
         borderLeft: "1px solid rgba(255,255,255,0.12)", borderRadius: 2,
       }}>
         <span style={{ cursor: "pointer", display: "flex", alignItems: "center" }} title={muted ? "Son coupé" : "Volume"} onClick={toggleMute}>
-          <NostalImg src={muted ? "/images/ui/volume-mute.png" : "/images/ui/volume.png"} fallback={muted ? "🔇" : "🔊"} size={12} />
+          <NostalImg src={muted ? "/images/ui/volume-mute.png" : "/images/ui/volume.png"} fallback={muted ? "🔇" : "🔊"} size={15} />
         </span>
         <span style={{ cursor: "pointer", display: "flex", alignItems: "center" }} title="Réseau">
-          <NostalImg src="/images/ui/network.png" fallback="🌐" size={12} />
+          <NostalImg src="/images/ui/network.png" fallback="🌐" size={15} />
         </span>
         <span style={{ cursor: "pointer", display: "flex", alignItems: "center" }} title="MSN">
-          <NostalImg src="/images/ui/chat.png" fallback="💬" size={12} />
+          <NostalImg src="/images/ui/chat.png" fallback="💬" size={15} />
         </span>
         <div style={{ width: 1, height: 16, background: "rgba(255,255,255,0.1)" }} />
-        <span style={{ color: "#fff", fontSize: 11, fontFamily: "'Tahoma', sans-serif", fontWeight: 500, letterSpacing: 0.3 }}>
+        <span style={{ color: "#fff", fontSize: 12, fontFamily: "'Tahoma', sans-serif", fontWeight: 500, letterSpacing: 0.3 }}>
           {time.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
         </span>
       </div>

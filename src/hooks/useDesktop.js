@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
+import { playWindowOpen, playWindowClose, playMinimize } from "../utils/uiSounds";
+import { logActivity } from "../utils/storage";
 
 export function useDesktop() {
   const [windows, setWindows] = useState({});
@@ -32,6 +34,8 @@ export function useDesktop() {
         setStartMenu(false);
         return prev;
       }
+      playWindowOpen();
+      logActivity(`open_${id}`);
       return { ...prev, [id]: true };
     });
     setZStack(prev => [...prev.filter(z => z !== id), id]);
@@ -39,11 +43,13 @@ export function useDesktop() {
   }, []);
 
   const closeWindow = useCallback((id) => {
+    playWindowClose();
     setWindows(prev => ({ ...prev, [id]: false }));
     setMinimized(prev => ({ ...prev, [id]: false }));
   }, []);
 
   const toggleMinimize = useCallback((id) => {
+    playMinimize();
     setMinimized(prev => {
       const wasMinimized = prev[id];
       if (wasMinimized) {

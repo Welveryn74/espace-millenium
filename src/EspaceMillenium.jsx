@@ -4,10 +4,37 @@ import { WINDOW_REGISTRY } from "./data/windowRegistry";
 import BootScreen from "./components/BootScreen";
 import ShutdownScreen from "./components/ShutdownScreen";
 import Y2KPopup from "./components/Y2KPopup";
-import Clippy, { CLIPPY_MESSAGES } from "./components/Clippy";
+import Clippy, { pickClippyMessage } from "./components/Clippy";
 import DesktopIcons from "./components/DesktopIcons";
 import Taskbar from "./components/Taskbar";
 import StartMenu from "./components/StartMenu";
+import Screensaver from "./components/Screensaver";
+import { startAmbient, stopAmbient, setAmbientMuted } from "./utils/ambientSounds";
+import { loadState, saveState } from "./utils/storage";
+
+const WALLPAPERS = {
+  colline: `
+    radial-gradient(ellipse at 30% 20%, rgba(0,80,180,0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(0,40,120,0.3) 0%, transparent 50%),
+    linear-gradient(135deg, #004E92 0%, #000428 50%, #003366 100%)
+  `,
+  espace: `
+    radial-gradient(ellipse at 20% 50%, rgba(80,0,160,0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(0,40,120,0.3) 0%, transparent 50%),
+    linear-gradient(135deg, #0D0221 0%, #150734 40%, #0A001A 100%)
+  `,
+  matrix: `
+    radial-gradient(ellipse at 50% 50%, rgba(0,60,0,0.3) 0%, transparent 60%),
+    linear-gradient(180deg, #000800 0%, #001200 50%, #000400 100%)
+  `,
+  aquarium: `
+    radial-gradient(ellipse at 30% 60%, rgba(0,100,180,0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 30%, rgba(0,180,200,0.2) 0%, transparent 50%),
+    linear-gradient(180deg, #006994 0%, #003D5B 50%, #001B2E 100%)
+  `,
+};
+
+const SCREENSAVER_DELAY = 120000; // 2 minutes
 
 export default function EspaceMillenium() {
   const [booted, setBooted] = useState(false);
@@ -19,14 +46,12 @@ export default function EspaceMillenium() {
   const [time, setTime] = useState(new Date());
   const [showClippy, setShowClippy] = useState(false);
   const [clippyMsg, setClippyMsg] = useState("");
-  const clippyUsed = useRef([]);
+  const [showScreensaver, setShowScreensaver] = useState(false);
+  const [wallpaper, setWallpaper] = useState(() => loadState('wallpaper', 'colline'));
+  const idleTimerRef = useRef(null);
 
-  const pickClippyMessage = useCallback(() => {
-    if (clippyUsed.current.length >= CLIPPY_MESSAGES.length) clippyUsed.current = [];
-    const available = CLIPPY_MESSAGES.filter((_, i) => !clippyUsed.current.includes(i));
-    const idx = CLIPPY_MESSAGES.indexOf(available[Math.floor(Math.random() * available.length)]);
-    clippyUsed.current.push(idx);
-    return CLIPPY_MESSAGES[idx];
+  const pickClippyMsg = useCallback(() => {
+    return pickClippyMessage();
   }, []);
 
   const {
@@ -43,20 +68,50 @@ export default function EspaceMillenium() {
     return () => clearInterval(iv);
   }, []);
 
+  // Start ambient PC sounds when booted
+  useEffect(() => {
+    if (booted) startAmbient();
+    return () => stopAmbient();
+  }, [booted]);
+
+  // Sync ambient mute with muted state
+  useEffect(() => {
+    setAmbientMuted(muted);
+  }, [muted]);
+
+  // Idle detection — screensaver after 2 min
+  useEffect(() => {
+    if (!booted) return;
+    const resetIdle = () => {
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+      idleTimerRef.current = setTimeout(() => setShowScreensaver(true), SCREENSAVER_DELAY);
+    };
+    resetIdle();
+    window.addEventListener("mousemove", resetIdle);
+    window.addEventListener("keydown", resetIdle);
+    window.addEventListener("mousedown", resetIdle);
+    return () => {
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+      window.removeEventListener("mousemove", resetIdle);
+      window.removeEventListener("keydown", resetIdle);
+      window.removeEventListener("mousedown", resetIdle);
+    };
+  }, [booted]);
+
   // Clippy timer: first at 15s, then every 40-80s
   useEffect(() => {
     if (!booted) return;
     let timeout;
     const scheduleClippy = (delay) => {
       timeout = setTimeout(() => {
-        setClippyMsg(pickClippyMessage());
+        setClippyMsg(pickClippyMsg());
         setShowClippy(true);
         scheduleClippy(40000 + Math.random() * 40000);
       }, delay);
     };
     scheduleClippy(15000);
     return () => clearTimeout(timeout);
-  }, [booted, pickClippyMessage]);
+  }, [booted, pickClippyMsg]);
 
   if (!booted) return <BootScreen onComplete={() => setBooted(true)} />;
 
@@ -64,11 +119,7 @@ export default function EspaceMillenium() {
     <div
       style={{
         width: "100vw", height: "100vh", overflow: "hidden", position: "relative",
-        background: `
-          radial-gradient(ellipse at 30% 20%, rgba(0,80,180,0.4) 0%, transparent 50%),
-          radial-gradient(ellipse at 70% 80%, rgba(0,40,120,0.3) 0%, transparent 50%),
-          linear-gradient(135deg, #004E92 0%, #000428 50%, #003366 100%)
-        `,
+        background: WALLPAPERS[wallpaper] || WALLPAPERS.colline,
         fontFamily: "'Tahoma', 'Segoe UI', sans-serif",
         animation: shaking ? "wizz 0.06s 7 alternate" : "none",
         cursor: "default",
@@ -109,7 +160,7 @@ export default function EspaceMillenium() {
               onMinimize={() => toggleMinimize(id)}
               zIndex={getZ(id)}
               onFocus={() => bringToFront(id)}
-              {...(entry.needsDesktopActions ? { onWizz: doWizz } : {})}
+              {...(entry.needsDesktopActions ? { onWizz: doWizz, openWindowIds } : {})}
             />
           </div>
         );
@@ -195,6 +246,14 @@ export default function EspaceMillenium() {
             { label: "Actualiser", action: () => { setRefreshAnim(true); setTimeout(() => setRefreshAnim(false), 400); setCtxMenu(null); } },
             { label: "Réorganiser les icônes", action: () => setCtxMenu(null) },
             { sep: true },
+            { label: "Fond d'écran ▸", action: () => setCtxMenu(prev => ({ ...prev, showWp: !prev?.showWp })) },
+            ...(ctxMenu?.showWp ? [
+              { label: `  ${wallpaper === 'colline' ? "●" : "○"} Colline verte`, action: () => { setWallpaper('colline'); saveState('wallpaper', 'colline'); setCtxMenu(null); } },
+              { label: `  ${wallpaper === 'espace' ? "●" : "○"} Espace`, action: () => { setWallpaper('espace'); saveState('wallpaper', 'espace'); setCtxMenu(null); } },
+              { label: `  ${wallpaper === 'matrix' ? "●" : "○"} Matrix`, action: () => { setWallpaper('matrix'); saveState('wallpaper', 'matrix'); setCtxMenu(null); } },
+              { label: `  ${wallpaper === 'aquarium' ? "●" : "○"} Aquarium`, action: () => { setWallpaper('aquarium'); saveState('wallpaper', 'aquarium'); setCtxMenu(null); } },
+            ] : []),
+            { sep: true },
             { label: "Propriétés", action: () => { setCtxMenu(null); setShowAbout(true); } },
           ].map((item, i) =>
             item.sep ? (
@@ -213,6 +272,8 @@ export default function EspaceMillenium() {
           )}
         </div>
       )}
+
+      {showScreensaver && <Screensaver onDismiss={() => setShowScreensaver(false)} />}
 
       {showShutdown && (
         <ShutdownScreen

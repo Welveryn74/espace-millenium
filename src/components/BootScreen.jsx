@@ -1,19 +1,35 @@
 import { useState, useEffect, useRef } from "react";
 import { playModemSound } from "../utils/playModemSound";
+import { loadState, saveState } from "../utils/storage";
+
+const PLACEHOLDERS = ["Kévin", "Cassandra", "Titouan", "Mathilde", "Jérémy"];
 
 export default function BootScreen({ onComplete }) {
   const [phase, setPhase] = useState(0);
   const [modemLines, setModemLines] = useState([]);
   const [loadProgress, setLoadProgress] = useState(0);
+  const [username, setUsername] = useState("");
+  const [placeholder] = useState(() => PLACEHOLDERS[Math.floor(Math.random() * PLACEHOLDERS.length)]);
   const audioCtxRef = useRef(null);
 
+  // Check if username already exists (skip login phase)
+  const hasUsername = !!loadState('username', null);
+
+  // Phase 0: cursor, 1: BIOS, 2: modem, 2.5: login (if no username), 3: XP logo, 4: loading
   useEffect(() => {
     const timers = [
       setTimeout(() => setPhase(1), 600),
       setTimeout(() => setPhase(2), 2200),
-      setTimeout(() => setPhase(3), 6500),
-      setTimeout(() => onComplete(), 8200),
     ];
+    if (hasUsername) {
+      // Skip login, go straight to XP logo then loading
+      timers.push(setTimeout(() => setPhase(3), 6500));
+      timers.push(setTimeout(() => setPhase(4), 8500));
+      timers.push(setTimeout(() => onComplete(), 10200));
+    } else {
+      // After modem, show login screen — user must submit manually
+      timers.push(setTimeout(() => setPhase(2.5), 6500));
+    }
     return () => timers.forEach(clearTimeout);
   }, []);
 
@@ -81,12 +97,50 @@ export default function BootScreen({ onComplete }) {
     return () => timers.forEach(clearTimeout);
   }, [phase]);
 
-  // Loading bar animation
+  // XP boot chime on phase 3
   useEffect(() => {
     if (phase !== 3) return;
+    if (localStorage.getItem('em_muted') === 'true') return;
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      // 4 notes sinus ascendantes en accord majeur
+      const notes = [
+        { freq: 523, start: 0, dur: 0.4 },   // C5
+        { freq: 659, start: 0.3, dur: 0.4 },  // E5
+        { freq: 784, start: 0.6, dur: 0.4 },  // G5
+        { freq: 1047, start: 0.9, dur: 0.6 },  // C6
+      ];
+      const now = ctx.currentTime;
+      notes.forEach(({ freq, start, dur }) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.06, now + start);
+        gain.gain.setValueAtTime(0.06, now + start + dur * 0.6);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + start + dur);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(now + start);
+        osc.stop(now + start + dur + 0.01);
+      });
+      setTimeout(() => ctx.close().catch(() => {}), 3000);
+    } catch (e) { /* audio not supported */ }
+  }, [phase]);
+
+  // Loading bar animation
+  useEffect(() => {
+    if (phase !== 4) return;
     const iv = setInterval(() => setLoadProgress(p => Math.min(p + 4, 100)), 50);
     return () => clearInterval(iv);
   }, [phase]);
+
+  const handleLogin = () => {
+    const name = username.trim() || placeholder;
+    saveState('username', name);
+    setPhase(3);
+    setTimeout(() => setPhase(4), 2000);
+    setTimeout(() => onComplete(), 3700);
+  };
 
   return (
     <div style={{
@@ -132,7 +186,87 @@ export default function BootScreen({ onComplete }) {
         </div>
       )}
 
+      {/* Login screen — XP welcome style */}
+      {phase === 2.5 && (
+        <div style={{
+          textAlign: "center",
+          background: "linear-gradient(180deg, #1A5BC4 0%, #2A7FEE 30%, #1A5BC4 100%)",
+          position: "fixed", inset: 0,
+          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+          fontFamily: "'Tahoma', 'Segoe UI', sans-serif",
+          animation: "fadeIn 0.5s ease-out",
+        }}>
+          <div style={{
+            fontSize: 28, color: "#fff", fontWeight: "bold", marginBottom: 8,
+            textShadow: "0 2px 8px rgba(0,0,0,0.3)",
+          }}>Bienvenue !</div>
+          <div style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, marginBottom: 30 }}>
+            L'Espace Millénium — Ton PC de 2005
+          </div>
+
+          <div style={{
+            width: 56, height: 56, borderRadius: "50%",
+            background: "linear-gradient(135deg, #6CF, #39F)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            border: "3px solid rgba(255,255,255,0.6)",
+            boxShadow: "0 4px 16px rgba(0,0,0,0.3)",
+            fontSize: 28, marginBottom: 20,
+          }}>👤</div>
+
+          <div style={{ color: "#fff", fontSize: 15, marginBottom: 12 }}>
+            Comment tu t'appelles ?
+          </div>
+          <input
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+            onKeyDown={e => e.key === "Enter" && handleLogin()}
+            placeholder={placeholder}
+            autoFocus
+            style={{
+              width: 220, padding: "10px 14px", border: "2px solid rgba(255,255,255,0.5)",
+              borderRadius: 6, fontSize: 15, fontFamily: "'Tahoma', sans-serif",
+              textAlign: "center", outline: "none", background: "rgba(255,255,255,0.95)",
+              color: "#333",
+            }}
+          />
+          <button
+            onClick={handleLogin}
+            style={{
+              marginTop: 16, padding: "8px 32px",
+              background: "linear-gradient(180deg, #3C9F3C 0%, #2A7F2A 50%, #1A5F1A 100%)",
+              border: "1px solid #1A5F1A", borderRadius: 6,
+              color: "#fff", fontWeight: "bold", fontSize: 14,
+              fontFamily: "'Tahoma', sans-serif", cursor: "pointer",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.3)",
+              letterSpacing: 0.5,
+            }}
+          >Connexion</button>
+        </div>
+      )}
+
+      {/* XP Logo screen */}
       {phase === 3 && (
+        <div style={{
+          textAlign: "center",
+          background: "linear-gradient(180deg, #1A5BC4 0%, #2A7FEE 30%, #1A5BC4 100%)",
+          position: "fixed", inset: 0,
+          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+          fontFamily: "'Tahoma', 'Segoe UI', sans-serif",
+          animation: "fadeIn 0.4s ease-out",
+        }}>
+          <div style={{ fontSize: 56, marginBottom: 16 }}>🖥️</div>
+          <div style={{
+            color: "#fff", fontSize: 22, fontWeight: "bold",
+            textShadow: "0 2px 8px rgba(0,0,0,0.3)",
+            marginBottom: 8,
+          }}>L'Espace Millénium</div>
+          <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 12, letterSpacing: 2 }}>
+            ÉDITION 2005
+          </div>
+        </div>
+      )}
+
+      {phase === 4 && (
         <div style={{ textAlign: "center" }}>
           <div style={{ fontSize: 48, marginBottom: 16 }}>🖥️</div>
           <div style={{ color: "#fff", fontSize: 18, fontFamily: "'Tahoma', sans-serif", marginBottom: 6 }}>

@@ -1,5 +1,48 @@
 import { useState } from "react";
+import { getUsername, getRecentActivities } from "../utils/storage";
 
+const ACTIVITY_MESSAGES = {
+  open_salleJeux: "Encore Snake ? Tu vas avoir les yeux carrés !",
+  open_mp3: "Tu écoutes encore de la musique ? Pense à tes devoirs !",
+  msn_message: "Arrête de discuter sur MSN, ta mère va voir la facture !",
+  open_skyblog: "Ton skyblog a reçu un nouveau commentaire ! Ah non, c'est juste moi.",
+  open_tv: "T'es encore devant la télé ? Va jouer dehors !",
+  open_paint: "Oh, tu dessines ? Montre-moi quand t'as fini !",
+  open_dressing: "Tu changes de tenue ? T'es déjà très bien comme ça.",
+  open_cartable: "T'as vérifié ton cartable ? T'as sûrement oublié un truc.",
+  open_chambre: "Range ta chambre avant que maman arrive !",
+};
+
+export function pickClippyMessage() {
+  const name = getUsername();
+  const baseMessages = [
+    "Il semblerait que vous essayez d'écrire une lettre. Puis-je vous aider ?",
+    "Conseil : appuyez sur Ctrl+S pour sauvegarder. Ah non, c'est un site web.",
+    "Saviez-vous que ce PC tourne sous un Pentium III à 800 MHz ? Impressionnant.",
+    "N'oubliez pas de vider votre corbeille de temps en temps !",
+    "Astuce : ne téléchargez JAMAIS kazaa_setup_definitive_final_v2.exe",
+    "Votre connexion 56K est optimale. Comptez 45 min pour une chanson MP3.",
+    "Je vois que vous ne faites rien. Moi non plus. On est pareils finalement.",
+    `Conseil : changez votre mot de passe MSN. '${name.toLowerCase()}2005' c'est pas sécurisé.`,
+    "Vous avez 0 nouveau message sur Caramail. Comme d'habitude.",
+    "Rappel : votre exposé sur les volcans est à rendre lundi.",
+    `Tiens ${name}, t'as pas cours demain ? Il est 23h quand même...`,
+    "Psst... tu veux voir un truc cool ? Tape 'about:blank' dans Internet Explorer.",
+  ];
+
+  // 30% chance de réagir à une activité récente
+  if (Math.random() < 0.3) {
+    const activities = getRecentActivities(5);
+    for (let i = activities.length - 1; i >= 0; i--) {
+      const msg = ACTIVITY_MESSAGES[activities[i].action];
+      if (msg) return msg;
+    }
+  }
+
+  return baseMessages[Math.floor(Math.random() * baseMessages.length)];
+}
+
+// Compatibility: export CLIPPY_MESSAGES for EspaceMillenium's used count system
 const MESSAGES = [
   "Il semblerait que vous essayez d'écrire une lettre. Puis-je vous aider ?",
   "Conseil : appuyez sur Ctrl+S pour sauvegarder. Ah non, c'est un site web.",
@@ -8,7 +51,7 @@ const MESSAGES = [
   "Astuce : ne téléchargez JAMAIS kazaa_setup_definitive_final_v2.exe",
   "Votre connexion 56K est optimale. Comptez 45 min pour une chanson MP3.",
   "Je vois que vous ne faites rien. Moi non plus. On est pareils finalement.",
-  "Conseil : changez votre mot de passe MSN. 'titouan2005' c'est pas sécurisé.",
+  "Conseil : changez votre mot de passe MSN. C'est pas sécurisé.",
   "Vous avez 0 nouveau message sur Caramail. Comme d'habitude.",
   "Rappel : votre exposé sur les volcans est à rendre lundi.",
   "Tiens, t'as pas cours demain ? Il est 23h quand même...",

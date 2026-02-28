@@ -211,7 +211,7 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
   };
 
   return (
-    <Win title="Ma Télévision Cathodique — Thomson 36cm" onClose={onClose} onMinimize={onMinimize} width={520} height={470} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 180, y: 40 }} color="#444">
+    <Win title="Ma Télévision Cathodique — Thomson 36cm" onClose={onClose} onMinimize={onMinimize} width={640} height={560} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 180, y: 40 }} color="#444">
       <div style={{ padding: 16, background: "#1a1a1a", height: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
         {/* TV Frame */}
         <div style={{
@@ -252,7 +252,7 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
               {/* Channel indicator */}
               <div style={{
                 position: "absolute", top: 10, right: 14,
-                color: CHANNELS[channel].color, fontSize: 16, fontFamily: "monospace", fontWeight: "bold",
+                color: CHANNELS[channel].color, fontSize: 20, fontFamily: "monospace", fontWeight: "bold",
                 textShadow: `0 0 8px ${CHANNELS[channel].color}80`,
               }}>CH {channel + 1}</div>
               {/* Volume indicator */}
@@ -264,7 +264,7 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
               </div>
               {/* Channel logo */}
               <div style={{ marginBottom: 6, textShadow: "0 0 20px rgba(255,255,255,0.2)" }}>
-                <NostalImg src={CHANNELS[channel].img} fallback={CHANNELS[channel].emoji} size={28} />
+                <NostalImg src={CHANNELS[channel].img} fallback={CHANNELS[channel].emoji} size={36} />
               </div>
               <div style={{ color: CHANNELS[channel].color, fontSize: 12, fontWeight: "bold", textAlign: "center", textShadow: `0 0 12px ${CHANNELS[channel].color}50`, marginBottom: 8 }}>
                 {CHANNELS[channel].name}

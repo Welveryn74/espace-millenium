@@ -1,10 +1,12 @@
 import { DESKTOP_ICONS } from "../data/desktopIcons";
 import NostalImg from "./NostalImg";
+import { playClick, playMenuHover } from "../utils/uiSounds";
+import { getUsername } from "../utils/storage";
 
 export default function StartMenu({ openWindow, onShutdown }) {
   return (
     <div data-startmenu="" style={{
-      position: "absolute", bottom: 38, left: 2, width: 280,
+      position: "absolute", bottom: 44, left: 2, width: 340,
       background: "#ECE9D8", border: "2px solid #0055E5",
       borderRadius: "8px 8px 0 0", boxShadow: "4px -4px 20px rgba(0,0,0,0.45)",
       zIndex: 101, overflow: "hidden", animation: "fadeIn 0.15s ease-out",
@@ -14,7 +16,7 @@ export default function StartMenu({ openWindow, onShutdown }) {
         padding: "12px 14px", display: "flex", alignItems: "center", gap: 10,
       }}>
         <div style={{
-          width: 40, height: 40, borderRadius: "50%",
+          width: 48, height: 48, borderRadius: "50%",
           background: "linear-gradient(135deg, #6CF, #39F)",
           display: "flex", alignItems: "center", justifyContent: "center",
           border: "2px solid rgba(255,255,255,0.5)",
@@ -23,21 +25,21 @@ export default function StartMenu({ openWindow, onShutdown }) {
           <NostalImg src="/images/ui/user.png" fallback="👤" size={24} />
         </div>
         <div>
-          <div style={{ color: "#fff", fontWeight: "bold", fontSize: 13, textShadow: "1px 1px 2px rgba(0,0,0,0.5)" }}>Utilisateur_2005</div>
+          <div style={{ color: "#fff", fontWeight: "bold", fontSize: 15, textShadow: "1px 1px 2px rgba(0,0,0,0.5)" }}>{getUsername()}</div>
           <div style={{ color: "rgba(255,255,255,0.7)", fontSize: 10 }}>Connecté</div>
         </div>
       </div>
       <div style={{ padding: "6px 0", borderTop: "1px solid rgba(0,0,0,0.05)" }}>
         {DESKTOP_ICONS.filter(i => i.id !== "poubelle").map(icon => (
-          <div key={icon.id} onClick={() => openWindow(icon.id)}
+          <div key={icon.id} onClick={() => { playClick(); openWindow(icon.id); }}
             style={{
-              padding: "8px 18px", cursor: "pointer", display: "flex", alignItems: "center", gap: 12,
-              fontSize: 12, color: "#333", transition: "all 0.1s",
+              padding: "10px 20px", cursor: "pointer", display: "flex", alignItems: "center", gap: 12,
+              fontSize: 13, color: "#333", transition: "all 0.1s",
             }}
-            onMouseEnter={e => { e.currentTarget.style.background = "#316AC5"; e.currentTarget.style.color = "#fff"; }}
+            onMouseEnter={e => { playMenuHover(); e.currentTarget.style.background = "#316AC5"; e.currentTarget.style.color = "#fff"; }}
             onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#333"; }}
           >
-            <NostalImg src={icon.img} fallback={icon.emoji} size={22} style={{ width: 26, textAlign: "center" }} />
+            <NostalImg src={icon.img} fallback={icon.emoji} size={26} style={{ width: 30, textAlign: "center" }} />
             <span style={{ fontFamily: "'Tahoma', sans-serif" }}>{icon.label.replace("\n", " ")}</span>
           </div>
         ))}

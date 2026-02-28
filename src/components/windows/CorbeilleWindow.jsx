@@ -22,7 +22,7 @@ export default function CorbeilleWindow({ onClose, onMinimize, zIndex, onFocus }
   const [locked, setLocked] = useState(false);
 
   return (
-    <Win title="Corbeille" onClose={onClose} onMinimize={onMinimize} width={460} height={360} zIndex={zIndex} onFocus={onFocus} color="#888">
+    <Win title="Corbeille" onClose={onClose} onMinimize={onMinimize} width={560} height={440} zIndex={zIndex} onFocus={onFocus} color="#888">
       <div style={{ display: "flex", flexDirection: "column", height: "100%", background: "#ECE9D8" }}>
         {/* Toolbar */}
         <div style={{

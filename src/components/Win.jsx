@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
-const TASKBAR_H = 38;
-const MIN_W = 220;
-const MIN_H = 160;
+const TASKBAR_H = 44;
+const MIN_W = 320;
+const MIN_H = 240;
 const HANDLE = 6;
 
 const CURSORS = {
@@ -114,9 +114,9 @@ export default function Win({ title, onClose, onMinimize, children, width = 480,
         top: maximized ? 0 : pos.y,
         width: maximized ? "100vw" : size.w,
         zIndex,
-        border: "2px solid #0055E5",
+        border: "3px solid #0055E5",
         borderRadius: maximized ? 0 : "8px 8px 0 0",
-        boxShadow: "3px 5px 20px rgba(0,0,50,0.5), inset 0 0 0 1px rgba(255,255,255,0.12)",
+        boxShadow: "4px 6px 24px rgba(0,0,50,0.55), inset 0 0 0 1px rgba(255,255,255,0.15)",
         background: "#ECE9D8", fontFamily: "'Tahoma', 'Segoe UI', sans-serif",
         overflow: "hidden", userSelect: isInteracting ? "none" : "auto",
         animation: isOpening ? "popIn 0.2s ease-out" : "none",
@@ -142,11 +142,11 @@ export default function Win({ title, onClose, onMinimize, children, width = 480,
           borderBottom: "1px solid #003399", flexShrink: 0, position: "relative", zIndex: 2,
         }}
       >
-        <span style={{ color: "white", fontWeight: "bold", fontSize: 12, textShadow: "1px 1px 2px rgba(0,0,0,0.5)", letterSpacing: 0.2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1 }}>{title}</span>
+        <span style={{ color: "white", fontWeight: "bold", fontSize: 13, textShadow: "1px 1px 2px rgba(0,0,0,0.5)", letterSpacing: 0.2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1 }}>{title}</span>
         <div style={{ display: "flex", gap: 2, flexShrink: 0 }}>
           {["─", maximized ? "❐" : "□", "✕"].map((sym, i) => (
             <button key={i} onClick={btnHandlers[i]} style={{
-              width: 22, height: 22, border: "1px solid rgba(0,0,0,0.3)", borderRadius: 3,
+              width: 24, height: 24, border: "1px solid rgba(0,0,0,0.3)", borderRadius: 3,
               background: i === 2 ? "linear-gradient(180deg, #E97 0%, #C44 100%)" : "linear-gradient(180deg, #D8D8D8 0%, #B8B8B8 100%)",
               color: i === 2 ? "#fff" : "#333", fontWeight: "bold", fontSize: i === 1 ? 8 : 12,
               cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", lineHeight: 1,
@@ -154,7 +154,7 @@ export default function Win({ title, onClose, onMinimize, children, width = 480,
           ))}
         </div>
       </div>
-      <div style={{ width: "100%", ...(maximized ? { flex: 1 } : { height: size.h - 32 }), overflow: "auto" }}>{children}</div>
+      <div style={{ width: "100%", ...(maximized ? { flex: 1 } : { height: size.h - 32 }), overflow: "auto", borderTop: "1px solid #fff", boxShadow: "inset 1px 1px 0 #fff, inset -1px -1px 0 #8e8f8a" }}>{children}</div>
     </div>
   );
 }

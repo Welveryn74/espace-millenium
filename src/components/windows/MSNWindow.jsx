@@ -3,8 +3,11 @@ import Win from "../Win";
 import NostalImg from "../NostalImg";
 import { MSN_RESPONSES } from "../../data/msnResponses";
 import { STATUS_OPTIONS } from "../../data/statusOptions";
+import { getContextResponse } from "../../data/msnContextResponses";
+import { playMSNMessage, playMSNNudge } from "../../utils/uiSounds";
+import { getUsername, logActivity } from "../../utils/storage";
 
-export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz }) {
+export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz, openWindowIds = [] }) {
   const [messages, setMessages] = useState([
     { from: "bot", msg: "cOuCou !! 😊 bienvenu sur msn !! sa fé plézir !!" }
   ]);
@@ -21,16 +24,27 @@ export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz
     setMessages(prev => [...prev, { from: "user", msg: input }]);
     setInput("");
     setTyping(true);
+    logActivity('msn_message');
     const delay = 1500 + Math.random() * 2500;
     setTimeout(() => {
       setTyping(false);
-      setMessages(prev => [...prev, { from: "bot", msg: MSN_RESPONSES[botIdx % MSN_RESPONSES.length] }]);
+      playMSNMessage();
+      // Essayer une réponse contextuelle d'abord, sinon réponse classique
+      const contextMsg = getContextResponse(openWindowIds);
+      const username = getUsername();
+      let botMsg = contextMsg || MSN_RESPONSES[botIdx % MSN_RESPONSES.length];
+      // Parfois le bot utilise le prénom (20% de chance)
+      if (!contextMsg && Math.random() < 0.2 && username !== 'Utilisateur') {
+        botMsg = `hey ${username} !! ${botMsg}`;
+      }
+      setMessages(prev => [...prev, { from: "bot", msg: botMsg }]);
       setBotIdx(prev => prev + 1);
     }, delay);
   };
 
   const doWizz = () => {
     onWizz();
+    playMSNNudge();
     setNudgeCount(n => n + 1);
     setMessages(prev => [...prev, { from: "system", msg: `🔔 Tu as envoyé un WIZZ ! (x${nudgeCount + 1})` }]);
     // Bot responds to wizz after a bit
@@ -48,12 +62,12 @@ export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz
   const botName = "~*~xX_DaRk_AnGeL_Xx~*~";
 
   return (
-    <Win title={`${botName} — Conversation`} onClose={onClose} onMinimize={onMinimize} width={430} height={480} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 120, y: 25 }} color="#0078D4">
+    <Win title={`${botName} — Conversation`} onClose={onClose} onMinimize={onMinimize} width={520} height={560} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 120, y: 25 }} color="#0078D4">
       <div style={{ display: "flex", flexDirection: "column", height: "100%", background: "#fff" }}>
         {/* Header with contact info */}
         <div style={{ padding: "8px 12px", background: "linear-gradient(180deg, #E8F4FF 0%, #D0E8FF 100%)", borderBottom: "1px solid #B0C8E8", display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ width: 36, height: 36, borderRadius: 4, background: "linear-gradient(135deg, #F0F, #60F)", display: "flex", alignItems: "center", justifyContent: "center", border: "2px solid #fff", boxShadow: "0 1px 4px rgba(0,0,0,0.2)", overflow: "hidden" }}>
-            <NostalImg src="/images/ui/msn-contact.png" fallback="😈" size={22} />
+          <div style={{ width: 44, height: 44, borderRadius: 4, background: "linear-gradient(135deg, #F0F, #60F)", display: "flex", alignItems: "center", justifyContent: "center", border: "2px solid #fff", boxShadow: "0 1px 4px rgba(0,0,0,0.2)", overflow: "hidden" }}>
+            <NostalImg src="/images/ui/msn-contact.png" fallback="😈" size={28} />
           </div>
           <div>
             <div style={{ fontSize: 12, fontWeight: "bold", color: "#003" }}>{botName}</div>
@@ -81,7 +95,7 @@ export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz
         </div>
 
         {/* Chat area */}
-        <div ref={chatRef} style={{ flex: 1, padding: 12, overflowY: "auto", fontSize: 12, background: "linear-gradient(180deg, #fff 0%, #FAFCFF 100%)", borderBottom: "1px solid #ccc" }}>
+        <div ref={chatRef} style={{ flex: 1, padding: 12, overflowY: "auto", fontSize: 14, background: "linear-gradient(180deg, #fff 0%, #FAFCFF 100%)", borderBottom: "1px solid #ccc" }}>
           {messages.map((m, i) => (
             <div key={i} style={{ marginBottom: 10, animation: "slideUp 0.2s ease-out" }}>
               {m.from === "system" ? (
@@ -89,10 +103,10 @@ export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz
               ) : (
                 <>
                   <div style={{ color: m.from === "bot" ? "#C800C8" : "#0000C8", fontWeight: "bold", fontSize: 10, marginBottom: 2 }}>
-                    {m.from === "bot" ? `${botName} dit :` : "Toi dit :"}
+                    {m.from === "bot" ? `${botName} dit :` : `${getUsername()} dit :`}
                   </div>
                   <div style={{
-                    color: "#333", fontSize: 13, lineHeight: 1.5,
+                    color: "#333", fontSize: 14, lineHeight: 1.5,
                     fontFamily: m.from === "bot" ? "'Comic Sans MS', 'Comic Sans', cursive" : "'Tahoma', sans-serif",
                   }}>{m.msg}</div>
                 </>
@@ -109,7 +123,7 @@ export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz
         {/* Emote bar — intentionally kept as emojis */}
         <div style={{ padding: "3px 8px", background: "#F8F8F8", borderBottom: "1px solid #e0e0e0", display: "flex", gap: 4 }}>
           {["😊", "😂", "😢", "😍", "😡", "🤣", "😘", "🙄"].map((e, i) => (
-            <span key={i} onClick={() => setInput(prev => prev + e)} style={{ cursor: "pointer", fontSize: 16, padding: 2, borderRadius: 3, transition: "background 0.1s" }}
+            <span key={i} onClick={() => setInput(prev => prev + e)} style={{ cursor: "pointer", fontSize: 20, padding: 2, borderRadius: 3, transition: "background 0.1s" }}
               onMouseEnter={ev => ev.target.style.background = "#E0E0FF"}
               onMouseLeave={ev => ev.target.style.background = "transparent"}>{e}</span>
           ))}

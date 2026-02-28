@@ -128,7 +128,7 @@ export default function ChambreWindow({ onClose, onMinimize, zIndex, onFocus }) 
     : "La Chambre d'Enfant";
 
   return (
-    <Win title={titleText} onClose={onClose} onMinimize={onMinimize} width={560} height={520} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 160, y: 40 }} color="#8B6BAE">
+    <Win title={titleText} onClose={onClose} onMinimize={onMinimize} width={660} height={580} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 160, y: 40 }} color="#8B6BAE">
       <div style={{ height: "100%", background: "linear-gradient(180deg, #1a1028 0%, #2d1f3d 50%, #1a1028 100%)", overflow: "hidden" }}>
         {activeItem === null ? (
           /* ============ ROOM VIEW ============ */

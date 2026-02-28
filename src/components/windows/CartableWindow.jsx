@@ -18,10 +18,10 @@ export default function CartableWindow({ onClose, onMinimize, zIndex, onFocus })
   };
 
   return (
-    <Win title="Mon Cartable — Année scolaire 2004-2005" onClose={onClose} onMinimize={onMinimize} width={500} height={460} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 160, y: 45 }} color="#8B4513">
+    <Win title="Mon Cartable — Année scolaire 2004-2005" onClose={onClose} onMinimize={onMinimize} width={620} height={540} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 160, y: 45 }} color="#8B4513">
       <div style={{ height: "100%", background: "linear-gradient(180deg, #FFF8F0 0%, #F0E8D8 100%)", padding: 16, overflowY: "auto" }}>
         <div style={{ textAlign: "center", marginBottom: 16 }}>
-          <NostalImg src="/images/desktop/cartable.png" fallback="🎒" size={42} />
+          <NostalImg src="/images/desktop/cartable.png" fallback="🎒" size={52} />
           <div style={{ fontSize: 14, fontWeight: "bold", color: "#5A3E1B", marginTop: 4 }}>
             Qu'est-ce qu'il y a dans le sac ?
           </div>
@@ -56,12 +56,12 @@ export default function CartableWindow({ onClose, onMinimize, zIndex, onFocus })
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: opened === i ? 8 : 0 }}>
-                <NostalImg src={item.img} fallback={item.emoji} size={26} />
+                <NostalImg src={item.img} fallback={item.emoji} size={32} />
                 <span style={{ fontSize: 12, fontWeight: "bold", color: "#5A3E1B" }}>{item.name}</span>
               </div>
               {opened === i && (
                 <div style={{ display: "flex", gap: 12, paddingTop: 8, borderTop: "1px solid #E8E0D0", animation: "slideUp 0.2s ease-out" }}>
-                  <NostalImg src={item.img} fallback={item.emoji} size={100} style={{ borderRadius: 6, flexShrink: 0 }} />
+                  <NostalImg src={item.img} fallback={item.emoji} size={120} style={{ borderRadius: 6, flexShrink: 0 }} />
                   <div style={{ fontSize: 11, color: "#666", lineHeight: 1.6 }}>{item.desc}</div>
                 </div>
               )}

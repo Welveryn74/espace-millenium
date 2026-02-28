@@ -97,7 +97,7 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
   const ipodColor = "#F0F0F0";
 
   return (
-    <Win title="iPod — Lecteur Musical" onClose={() => { chiptune.destroy(); onClose(); }} onMinimize={onMinimize} width={280} height={450} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 320, y: 50 }} color="#555">
+    <Win title="iPod — Lecteur Musical" onClose={() => { chiptune.destroy(); onClose(); }} onMinimize={onMinimize} width={360} height={520} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 320, y: 50 }} color="#555">
       <div style={{ background: `linear-gradient(180deg, ${ipodColor} 0%, #D8D8D8 100%)`, height: "100%", display: "flex", flexDirection: "column", alignItems: "center", padding: "14px 12px" }}>
         {/* iPod Screen */}
         <div style={{
@@ -128,9 +128,9 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
             <>
               <div style={{ color: "#0FF", fontSize: 9, marginBottom: 4, fontFamily: "monospace", textAlign: "center" }}>♪ NOW PLAYING ♪</div>
               <div style={{ textAlign: "center", marginBottom: 4 }}>
-                <NostalImg src={TRACKS[track].cover} fallback="🎵" size={60} style={{ borderRadius: 4 }} />
+                <NostalImg src={TRACKS[track].cover} fallback="🎵" size={80} style={{ borderRadius: 4 }} />
               </div>
-              <div style={{ color: "#fff", fontSize: 12, fontWeight: "bold", textAlign: "center", marginBottom: 2, fontFamily: "monospace" }}>
+              <div style={{ color: "#fff", fontSize: 14, fontWeight: "bold", textAlign: "center", marginBottom: 2, fontFamily: "monospace" }}>
                 {TRACKS[track].title}
               </div>
               <div style={{ color: "#888", fontSize: 9, textAlign: "center", marginBottom: 8, fontFamily: "monospace" }}>

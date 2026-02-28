@@ -25,3 +25,24 @@ export function clearState(key) {
     // Silent fail
   }
 }
+
+export function getUsername() {
+  return loadState('username', 'Utilisateur');
+}
+
+export function logActivity(activity) {
+  try {
+    const log = loadState('activity_log', []);
+    log.push({ action: activity, time: Date.now() });
+    // Garder les 50 dernières
+    if (log.length > 50) log.splice(0, log.length - 50);
+    saveState('activity_log', log);
+  } catch {
+    // Silent fail
+  }
+}
+
+export function getRecentActivities(count = 10) {
+  const log = loadState('activity_log', []);
+  return log.slice(-count);
+}

@@ -296,8 +296,8 @@ export default function PaintWindow({ onClose, onMinimize, zIndex, onFocus }) {
       title="Sans titre - Paint"
       onClose={onClose}
       onMinimize={onMinimize}
-      width={800}
-      height={560}
+      width={860}
+      height={620}
       zIndex={zIndex}
       onFocus={onFocus}
       color="#808080"

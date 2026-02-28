@@ -14,7 +14,7 @@ export default function DressingWindow({ onClose, onMinimize, zIndex, onFocus })
     : "linear-gradient(135deg, #330022 0%, #660044 50%, #330022 100%)";
 
   return (
-    <Win title="Le Dressing Temporel — Mode des années 2000" onClose={onClose} onMinimize={onMinimize} width={520} height={460} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 140, y: 35 }} color={era === "y2k" ? "#0088CC" : "#CC0088"}>
+    <Win title="Le Dressing Temporel — Mode des années 2000" onClose={onClose} onMinimize={onMinimize} width={640} height={540} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 140, y: 35 }} color={era === "y2k" ? "#0088CC" : "#CC0088"}>
       <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
         <div style={{ display: "flex" }}>
           {[
@@ -52,12 +52,12 @@ export default function DressingWindow({ onClose, onMinimize, zIndex, onFocus })
                   onMouseLeave={e => { if (!isSelected) { e.currentTarget.style.background = `${accent}10`; e.currentTarget.style.transform = "translateY(0)"; } }}
                 >
                   <div style={{ marginBottom: 6, display: "flex", alignItems: "center" }}>
-                    <NostalImg src={item.img} fallback={item.emoji} size={30} />
+                    <NostalImg src={item.img} fallback={item.emoji} size={38} />
                   </div>
                   <div style={{ color: accent, fontSize: 12, fontWeight: "bold", marginBottom: 2 }}>{item.name}</div>
                   {isSelected ? (
                     <div style={{ display: "flex", gap: 12, marginTop: 8, paddingTop: 8, borderTop: `1px solid ${accent}30`, animation: "fadeIn 0.2s ease-out" }}>
-                      <NostalImg src={item.img} fallback={item.emoji} size={120} style={{ borderRadius: 6, flexShrink: 0 }} />
+                      <NostalImg src={item.img} fallback={item.emoji} size={140} style={{ borderRadius: 6, flexShrink: 0 }} />
                       <div style={{ color: `${accent}DD`, fontSize: 11, lineHeight: 1.6 }}>{item.desc}</div>
                     </div>
                   ) : (
