@@ -15,11 +15,19 @@ const DELETED_ITEMS = [
   { icon: "\u{1F4C4}", name: "Sms_brouillon_pour_Julie.txt", type: "Fichier texte", date: "30/05/2005", size: "1 Ko", img: "/images/corbeille/doc.png" },
 ];
 
+const HIDDEN_MESSAGES = {
+  "Exposé_volcans_FINAL_v3.doc": "Volcan : montagne qui crache du feu. Voilà, exposé terminé.\n\n(J'ai eu 14/20 avec ça. Merci Encarta.)",
+  "Lettre_au_Père_Noël_2004.doc": "Cher Père Noël,\n\nCette année je voudrais une PS2, un téléphone Nokia 3310 et la paix dans le monde.\n\nBisous.\n\nPS : si c'est trop, laisse tomber la paix dans le monde.",
+  "Sms_brouillon_pour_Julie.txt": "Slt julie sa va ?\ntu veu sorti ac moi ?\nlol\n\n(jamais envoyé... évidemment)",
+  "age_of_empires_2_crack.exe": "⚠ VIRUS DÉTECTÉ !\n\nScan en cours...\n████████████░░ 87%\n\n...nan jdéconne, c'est juste un crack.\nWololo.",
+};
+
 const COL_WIDTHS = { name: "40%", type: "22%", date: "22%", size: "14%" };
 
 export default function CorbeilleWindow({ onClose, onMinimize, zIndex, onFocus }) {
   const [hoveredRow, setHoveredRow] = useState(null);
   const [locked, setLocked] = useState(false);
+  const [previewMsg, setPreviewMsg] = useState(null);
 
   return (
     <Win title="Corbeille" onClose={onClose} onMinimize={onMinimize} width={560} height={440} zIndex={zIndex} onFocus={onFocus} color="#888">
@@ -75,6 +83,7 @@ export default function CorbeilleWindow({ onClose, onMinimize, zIndex, onFocus }
                 key={i}
                 onMouseEnter={() => setHoveredRow(i)}
                 onMouseLeave={() => setHoveredRow(null)}
+                onDoubleClick={() => { if (HIDDEN_MESSAGES[item.name]) setPreviewMsg({ title: item.name, text: HIDDEN_MESSAGES[item.name] }); }}
                 style={{
                   display: "flex",
                   fontSize: 11, fontFamily: "'Tahoma', sans-serif",
@@ -95,6 +104,45 @@ export default function CorbeilleWindow({ onClose, onMinimize, zIndex, onFocus }
             );
           })}
         </div>
+        {/* Preview dialog */}
+        {previewMsg && (
+          <div style={{
+            position: "absolute", inset: 0, zIndex: 999,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            background: "rgba(0,0,0,0.3)",
+          }} onClick={() => setPreviewMsg(null)}>
+            <div onClick={e => e.stopPropagation()} style={{
+              background: "#ECE9D8", border: "2px solid #0055E5",
+              borderRadius: "8px 8px 0 0", width: 320,
+              boxShadow: "4px 4px 16px rgba(0,0,50,0.4)",
+              animation: "popIn 0.2s ease-out",
+            }}>
+              <div style={{
+                background: "linear-gradient(180deg, #0055E5 0%, #0033AA 100%)",
+                padding: "4px 8px", color: "#fff", fontWeight: "bold", fontSize: 11,
+                display: "flex", justifyContent: "space-between", alignItems: "center",
+              }}>
+                <span>Aperçu — {previewMsg.title}</span>
+                <button onClick={() => setPreviewMsg(null)} style={{
+                  width: 18, height: 18, border: "1px solid rgba(0,0,0,0.3)", borderRadius: 3,
+                  background: "linear-gradient(180deg, #E97 0%, #C44 100%)", color: "#fff",
+                  fontWeight: "bold", fontSize: 10, cursor: "pointer", display: "flex",
+                  alignItems: "center", justifyContent: "center",
+                }}>✕</button>
+              </div>
+              <div style={{ padding: 16, fontSize: 11, lineHeight: 1.7, whiteSpace: "pre-wrap", fontFamily: "'Tahoma', sans-serif", color: "#333" }}>
+                {previewMsg.text}
+              </div>
+              <div style={{ padding: "8px 16px 12px", textAlign: "center" }}>
+                <button onClick={() => setPreviewMsg(null)} style={{
+                  padding: "4px 28px", background: "linear-gradient(180deg, #F0F0F0 0%, #D0D0D0 100%)",
+                  border: "1px solid #888", borderRadius: 3, cursor: "pointer", fontSize: 11,
+                  fontFamily: "'Tahoma', sans-serif",
+                }}>OK</button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Win>
   );

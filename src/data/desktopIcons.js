@@ -10,4 +10,5 @@ export const DESKTOP_ICONS = [
   { id: "demineur", label: "Démineur", emoji: "\u{1F4A3}", img: "/images/desktop/demineur.png" },
   { id: "paint", label: "Paint", emoji: "\u{1F3A8}", img: "/images/desktop/paint.png" },
   { id: "poubelle", label: "Corbeille", emoji: "\u{1F5D1}\uFE0F", img: "/images/desktop/poubelle.png" },
+  { id: "caramail", label: "Caramail", emoji: "\u{1F4E7}", img: "/images/desktop/caramail.png" },
 ];

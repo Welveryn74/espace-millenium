@@ -6,6 +6,8 @@ export function useDesktop() {
   const [windows, setWindows] = useState({});
   const [zStack, setZStack] = useState([]);
   const [minimized, setMinimized] = useState({});
+  const [closing, setClosing] = useState({}); // {id: 'close'|'minimize'}
+  const [restoring, setRestoring] = useState({}); // {id: true}
   const [shaking, setShaking] = useState(false);
   const [startMenu, setStartMenu] = useState(false);
   const [selectedIcon, setSelectedIcon] = useState(null);
@@ -44,8 +46,12 @@ export function useDesktop() {
 
   const closeWindow = useCallback((id) => {
     playWindowClose();
-    setWindows(prev => ({ ...prev, [id]: false }));
-    setMinimized(prev => ({ ...prev, [id]: false }));
+    setClosing(prev => ({ ...prev, [id]: 'close' }));
+    setTimeout(() => {
+      setClosing(prev => { const n = { ...prev }; delete n[id]; return n; });
+      setWindows(prev => ({ ...prev, [id]: false }));
+      setMinimized(prev => ({ ...prev, [id]: false }));
+    }, 200);
   }, []);
 
   const toggleMinimize = useCallback((id) => {
@@ -53,10 +59,21 @@ export function useDesktop() {
     setMinimized(prev => {
       const wasMinimized = prev[id];
       if (wasMinimized) {
-        // Restoring — bring to front
+        // Restoring — bring to front with animation
         setZStack(s => [...s.filter(z => z !== id), id]);
+        setRestoring(r => ({ ...r, [id]: true }));
+        setTimeout(() => {
+          setRestoring(r => { const n = { ...r }; delete n[id]; return n; });
+        }, 200);
+        return { ...prev, [id]: false };
       }
-      return { ...prev, [id]: !wasMinimized };
+      // Minimizing — animate then hide
+      setClosing(c => ({ ...c, [id]: 'minimize' }));
+      setTimeout(() => {
+        setClosing(c => { const n = { ...c }; delete n[id]; return n; });
+        setMinimized(m => ({ ...m, [id]: true }));
+      }, 200);
+      return prev;
     });
   }, []);
 
@@ -109,6 +126,8 @@ export function useDesktop() {
     openWindowIds,
     toggleMinimize,
     isMinimized,
+    closing,
+    restoring,
     muted,
     toggleMute,
   };

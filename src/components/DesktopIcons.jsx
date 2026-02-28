@@ -2,7 +2,7 @@ import { DESKTOP_ICONS } from "../data/desktopIcons";
 import NostalImg from "./NostalImg";
 import { playIconSelect } from "../utils/uiSounds";
 
-export default function DesktopIcons({ selectedIcon, setSelectedIcon, openWindow }) {
+export default function DesktopIcons({ selectedIcon, setSelectedIcon, openWindow, konamiActive }) {
   return (
     <div style={{ position: "absolute", top: 18, left: 18, display: "flex", flexDirection: "column", gap: 10, zIndex: 1 }}>
       {DESKTOP_ICONS.map((icon) => (
@@ -20,7 +20,11 @@ export default function DesktopIcons({ selectedIcon, setSelectedIcon, openWindow
           onMouseEnter={e => { if (selectedIcon !== icon.id) e.currentTarget.style.background = "rgba(80,130,255,0.15)"; }}
           onMouseLeave={e => { if (selectedIcon !== icon.id) e.currentTarget.style.background = "transparent"; }}
         >
-          <div style={{ filter: "drop-shadow(1px 2px 3px rgba(0,0,0,0.5))", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{
+            filter: "drop-shadow(1px 2px 3px rgba(0,0,0,0.5))",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            animation: konamiActive ? "konamiSpin 0.5s linear infinite" : "none",
+          }}>
             <NostalImg src={icon.img} fallback={icon.emoji} size={52} alt={icon.label} />
           </div>
           <div style={{

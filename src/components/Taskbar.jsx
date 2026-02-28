@@ -80,7 +80,14 @@ export default function Taskbar({ startMenu, setStartMenu, openWindowIds, isTopW
           <NostalImg src="/images/ui/chat.png" fallback="💬" size={15} />
         </span>
         <div style={{ width: 1, height: 16, background: "rgba(255,255,255,0.1)" }} />
-        <span style={{ color: "#fff", fontSize: 12, fontFamily: "'Tahoma', sans-serif", fontWeight: 500, letterSpacing: 0.3 }}>
+        <span
+          style={{ color: "#fff", fontSize: 12, fontFamily: "'Tahoma', sans-serif", fontWeight: 500, letterSpacing: 0.3, cursor: "default" }}
+          title={(() => {
+            const jours = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+            const mois = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+            return `${jours[time.getDay()]} ${time.getDate()} ${mois[time.getMonth()]} 2005`;
+          })()}
+        >
           {time.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
         </span>
       </div>

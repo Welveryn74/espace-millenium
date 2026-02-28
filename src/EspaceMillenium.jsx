@@ -9,6 +9,7 @@ import DesktopIcons from "./components/DesktopIcons";
 import Taskbar from "./components/Taskbar";
 import StartMenu from "./components/StartMenu";
 import Screensaver from "./components/Screensaver";
+import MSNNotification from "./components/MSNNotification";
 import { startAmbient, stopAmbient, setAmbientMuted } from "./utils/ambientSounds";
 import { loadState, saveState } from "./utils/storage";
 
@@ -48,7 +49,11 @@ export default function EspaceMillenium() {
   const [clippyMsg, setClippyMsg] = useState("");
   const [showScreensaver, setShowScreensaver] = useState(false);
   const [wallpaper, setWallpaper] = useState(() => loadState('wallpaper', 'colline'));
+  const [msnNotification, setMsnNotification] = useState(false);
+  const [konamiActive, setKonamiActive] = useState(false);
+  const [showBSOD, setShowBSOD] = useState(false);
   const idleTimerRef = useRef(null);
+  const konamiRef = useRef([]);
 
   const pickClippyMsg = useCallback(() => {
     return pickClippyMessage();
@@ -60,6 +65,7 @@ export default function EspaceMillenium() {
     bringToFront, openWindow, closeWindow, getZ,
     doWizz, isTopWindow, openWindowIds,
     toggleMinimize, isMinimized,
+    closing, restoring,
     muted, toggleMute,
   } = useDesktop();
 
@@ -98,6 +104,23 @@ export default function EspaceMillenium() {
     };
   }, [booted]);
 
+  // Konami code: ↑↑↓↓←→←→BA
+  useEffect(() => {
+    if (!booted) return;
+    const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    const handler = (e) => {
+      konamiRef.current.push(e.key);
+      if (konamiRef.current.length > KONAMI.length) konamiRef.current.shift();
+      if (konamiRef.current.length === KONAMI.length && konamiRef.current.every((k, i) => k.toLowerCase() === KONAMI[i].toLowerCase())) {
+        konamiRef.current = [];
+        setKonamiActive(true);
+        setTimeout(() => setKonamiActive(false), 3000);
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [booted]);
+
   // Clippy timer: first at 15s, then every 40-80s
   useEffect(() => {
     if (!booted) return;
@@ -132,7 +155,7 @@ export default function EspaceMillenium() {
       }}
     >
       <div style={{ opacity: refreshAnim ? 0 : 1, transition: "opacity 0.15s" }}>
-        <DesktopIcons selectedIcon={selectedIcon} setSelectedIcon={setSelectedIcon} openWindow={openWindow} />
+        <DesktopIcons selectedIcon={selectedIcon} setSelectedIcon={setSelectedIcon} openWindow={openWindow} konamiActive={konamiActive} />
       </div>
 
       {/* Y2K Bug button */}
@@ -153,22 +176,35 @@ export default function EspaceMillenium() {
       {Object.entries(WINDOW_REGISTRY).map(([id, entry]) => {
         if (!windows[id]) return null;
         const Comp = entry.component;
+        const anim = closing[id] === 'close' ? 'windowClose 0.2s ease-in forwards'
+                   : closing[id] === 'minimize' ? 'windowMinimize 0.2s ease-in forwards'
+                   : restoring[id] ? 'windowRestore 0.2s ease-out forwards'
+                   : undefined;
         return (
-          <div key={id} style={{ display: isMinimized(id) ? 'none' : undefined }}>
+          <div key={id} style={{ display: isMinimized(id) && !closing[id] ? 'none' : undefined, animation: anim }}>
             <Comp
               onClose={() => closeWindow(id)}
               onMinimize={() => toggleMinimize(id)}
               zIndex={getZ(id)}
               onFocus={() => bringToFront(id)}
               {...(entry.needsDesktopActions ? { onWizz: doWizz, openWindowIds } : {})}
+              {...(id === 'msn' ? { isMinimized: isMinimized('msn'), onNotification: () => setMsnNotification(true) } : {})}
             />
           </div>
         );
       })}
 
-      {showY2K && <Y2KPopup onClose={() => setShowY2K(false)} />}
+      {showY2K && <Y2KPopup onClose={() => setShowY2K(false)} onBSOD={() => { setShowBSOD(true); setTimeout(() => setShowBSOD(false), 3000); }} />}
 
       {showClippy && <Clippy message={clippyMsg} onClose={() => setShowClippy(false)} />}
+
+      {msnNotification && (
+        <MSNNotification
+          botName="~*~xX_DaRk_AnGeL_Xx~*~"
+          onOpen={() => { setMsnNotification(false); toggleMinimize('msn'); bringToFront('msn'); }}
+          onDismiss={() => setMsnNotification(false)}
+        />
+      )}
 
       <Taskbar
         startMenu={startMenu}
@@ -272,6 +308,64 @@ export default function EspaceMillenium() {
           )}
         </div>
       )}
+
+      {/* Konami code overlay */}
+      {konamiActive && (
+        <div style={{
+          position: "fixed", inset: 0, zIndex: 99997,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          background: "rgba(0,0,0,0.6)", pointerEvents: "none",
+        }}>
+          <div style={{
+            fontSize: 48, fontWeight: "bold", color: "#0F0",
+            fontFamily: "'Courier New', monospace",
+            textShadow: "0 0 20px #0F0, 0 0 40px #0F0",
+            animation: "pulse 0.5s infinite",
+            textAlign: "center",
+          }}>
+            MODE TRICHE ACTIVÉ !<br />
+            <span style={{ fontSize: 20 }}>↑↑↓↓←→←→BA</span>
+          </div>
+        </div>
+      )}
+
+      {/* BSOD comedy */}
+      {showBSOD && (
+        <div
+          style={{
+            position: "fixed", inset: 0, zIndex: 99999,
+            background: "#0000AA", color: "#fff",
+            fontFamily: "'Courier New', monospace", fontSize: 14,
+            padding: "15vh 10vw", lineHeight: 1.8,
+          }}
+        >
+          <div style={{ textAlign: "center", marginBottom: 20 }}>Windows</div>
+          <div>
+            *** STOP: 0x000000Y2K (0xDEADBEEF, 0xCAFEBABE)<br />
+            MILLENNIUM_BUG_EXCEPTION<br /><br />
+            Si c'est la première fois que vous voyez cet écran,<br />
+            redémarrez votre ordinateur. Si le problème persiste,<br />
+            demandez à votre grand frère.<br /><br />
+            <span style={{ color: "#AAA" }}>Informations techniques :</span><br />
+            *** STOP: 0x0000Y2K (le bug c'était pas vrai en fait)
+          </div>
+        </div>
+      )}
+
+      {/* Overlay vespéral — assombrissement selon l'heure */}
+      {(() => {
+        const h = time.getHours();
+        let opacity = 0;
+        if (h >= 18 && h < 21) opacity = 0.03 + (h - 18) * 0.03;
+        else if (h >= 21 || h < 6) opacity = 0.15;
+        return opacity > 0 ? (
+          <div style={{
+            position: "fixed", inset: 0, pointerEvents: "none", zIndex: 98,
+            background: `rgba(0,0,30,${opacity})`,
+            transition: "background 60s linear",
+          }} />
+        ) : null;
+      })()}
 
       {showScreensaver && <Screensaver onDismiss={() => setShowScreensaver(false)} />}
 

@@ -1,5 +1,11 @@
 export const GRID = { rows: 9, cols: 9, mines: 10 };
 
+export const DIFFICULTIES = {
+  debutant:      { label: "Débutant",      rows: 9,  cols: 9,  mines: 10, cellSize: 28, width: 320, height: 420 },
+  intermediaire: { label: "Intermédiaire", rows: 16, cols: 16, mines: 40, cellSize: 28, width: 520, height: 560 },
+  expert:        { label: "Expert",        rows: 16, cols: 30, mines: 99, cellSize: 22, width: 880, height: 560 },
+};
+
 export const NUMBER_COLORS = {
   1: "#0000FF", // blue
   2: "#008000", // green

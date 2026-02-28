@@ -9,6 +9,7 @@ import ChambreWindow from "../components/windows/ChambreWindow";
 import DemineurWindow from "../components/windows/DemineurWindow";
 import PaintWindow from "../components/windows/PaintWindow";
 import CorbeilleWindow from "../components/windows/CorbeilleWindow";
+import CaramailWindow from "../components/windows/CaramailWindow";
 
 export const WINDOW_REGISTRY = {
   msn:      { component: MSNWindow, needsDesktopActions: true },
@@ -22,4 +23,5 @@ export const WINDOW_REGISTRY = {
   demineur: { component: DemineurWindow },
   paint:    { component: PaintWindow },
   poubelle: { component: CorbeilleWindow },
+  caramail: { component: CaramailWindow },
 };

@@ -30,6 +30,21 @@ export function pickClippyMessage() {
     "Psst... tu veux voir un truc cool ? Tape 'about:blank' dans Internet Explorer.",
   ];
 
+  // Messages nocturnes (22h-6h)
+  const hour = new Date().getHours();
+  if (hour >= 22 || hour < 6) {
+    const nightMessages = [
+      "Il est tard ! Éteins cet ordinateur !",
+      `${name}, tu devrais dormir... t'as école demain !`,
+      "Ta mère va te gronder si elle voit que t'es encore debout.",
+      "Les yeux rivés sur l'écran à cette heure... classique.",
+      "Psst... tu sais quelle heure il est ? Moi oui, et c'est TARD.",
+    ];
+    if (Math.random() < 0.4) {
+      return nightMessages[Math.floor(Math.random() * nightMessages.length)];
+    }
+  }
+
   // 30% chance de réagir à une activité récente
   if (Math.random() < 0.3) {
     const activities = getRecentActivities(5);

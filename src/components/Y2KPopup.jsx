@@ -1,4 +1,12 @@
-export default function Y2KPopup({ onClose }) {
+export default function Y2KPopup({ onClose, onBSOD }) {
+  const handleClose = () => {
+    onClose();
+    // 10% chance de faux BSOD
+    if (Math.random() < 0.1 && onBSOD) {
+      setTimeout(() => onBSOD(), 300);
+    }
+  };
+
   return (
     <div style={{
       position: "fixed", inset: 0, zIndex: 9999,
@@ -41,7 +49,7 @@ export default function Y2KPopup({ onClose }) {
             </div>
           </div>
           <div style={{ display: "flex", justifyContent: "center", gap: 10, marginTop: 18 }}>
-            <button onClick={onClose} style={{
+            <button onClick={handleClose} style={{
               padding: "7px 44px", background: "linear-gradient(180deg, #F0F0F0 0%, #D0D0D0 100%)",
               border: "1px solid #888", borderRadius: 3, cursor: "pointer", fontWeight: "bold",
               fontSize: 12, fontFamily: "'Tahoma', sans-serif",

@@ -7,7 +7,7 @@ import { getContextResponse } from "../../data/msnContextResponses";
 import { playMSNMessage, playMSNNudge } from "../../utils/uiSounds";
 import { getUsername, logActivity } from "../../utils/storage";
 
-export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz, openWindowIds = [] }) {
+export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz, openWindowIds = [], isMinimized = false, onNotification }) {
   const [messages, setMessages] = useState([
     { from: "bot", msg: "cOuCou !! 😊 bienvenu sur msn !! sa fé plézir !!" }
   ]);
@@ -28,7 +28,6 @@ export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz
     const delay = 1500 + Math.random() * 2500;
     setTimeout(() => {
       setTyping(false);
-      playMSNMessage();
       // Essayer une réponse contextuelle d'abord, sinon réponse classique
       const contextMsg = getContextResponse(openWindowIds);
       const username = getUsername();
@@ -39,6 +38,12 @@ export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz
       }
       setMessages(prev => [...prev, { from: "bot", msg: botMsg }]);
       setBotIdx(prev => prev + 1);
+      // Notification si minimisé
+      if (isMinimized && onNotification) {
+        onNotification(botMsg);
+      } else {
+        playMSNMessage();
+      }
     }, delay);
   };
 

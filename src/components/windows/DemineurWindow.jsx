@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Win from "../Win";
-import { GRID, NUMBER_COLORS, CELL_STATES, SMILEY_STATES } from "../../data/demineurConfig";
+import { DIFFICULTIES, NUMBER_COLORS, SMILEY_STATES } from "../../data/demineurConfig";
 
-function createEmptyGrid() {
+function createEmptyGrid(rows, cols) {
   const grid = [];
-  for (let r = 0; r < GRID.rows; r++) {
+  for (let r = 0; r < rows; r++) {
     const row = [];
-    for (let c = 0; c < GRID.cols; c++) {
+    for (let c = 0; c < cols; c++) {
       row.push({ mine: false, revealed: false, flagged: false, adjacent: 0 });
     }
     grid.push(row);
@@ -14,7 +14,7 @@ function createEmptyGrid() {
   return grid;
 }
 
-function placeMines(grid, safeRow, safeCol) {
+function placeMines(grid, safeRow, safeCol, rows, cols, mines) {
   const newGrid = grid.map((row) => row.map((cell) => ({ ...cell })));
   const forbidden = new Set();
   for (let dr = -1; dr <= 1; dr++) {
@@ -24,24 +24,23 @@ function placeMines(grid, safeRow, safeCol) {
   }
 
   let placed = 0;
-  while (placed < GRID.mines) {
-    const r = Math.floor(Math.random() * GRID.rows);
-    const c = Math.floor(Math.random() * GRID.cols);
+  while (placed < mines) {
+    const r = Math.floor(Math.random() * rows);
+    const c = Math.floor(Math.random() * cols);
     if (newGrid[r][c].mine || forbidden.has(`${r},${c}`)) continue;
     newGrid[r][c].mine = true;
     placed++;
   }
 
-  // Compute adjacency
-  for (let r = 0; r < GRID.rows; r++) {
-    for (let c = 0; c < GRID.cols; c++) {
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
       if (newGrid[r][c].mine) continue;
       let count = 0;
       for (let dr = -1; dr <= 1; dr++) {
         for (let dc = -1; dc <= 1; dc++) {
           const nr = r + dr;
           const nc = c + dc;
-          if (nr >= 0 && nr < GRID.rows && nc >= 0 && nc < GRID.cols && newGrid[nr][nc].mine) {
+          if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && newGrid[nr][nc].mine) {
             count++;
           }
         }
@@ -52,14 +51,13 @@ function placeMines(grid, safeRow, safeCol) {
   return newGrid;
 }
 
-function revealCell(grid, row, col) {
+function revealCell(grid, row, col, rows, cols) {
   const newGrid = grid.map((r) => r.map((c) => ({ ...c })));
   if (newGrid[row][col].mine) {
     newGrid[row][col].revealed = true;
     return { grid: newGrid, hitMine: true };
   }
 
-  // BFS flood-fill
   const queue = [[row, col]];
   newGrid[row][col].revealed = true;
 
@@ -71,8 +69,8 @@ function revealCell(grid, row, col) {
           const nr = r + dr;
           const nc = c + dc;
           if (
-            nr >= 0 && nr < GRID.rows &&
-            nc >= 0 && nc < GRID.cols &&
+            nr >= 0 && nr < rows &&
+            nc >= 0 && nc < cols &&
             !newGrid[nr][nc].revealed &&
             !newGrid[nr][nc].flagged
           ) {
@@ -88,9 +86,9 @@ function revealCell(grid, row, col) {
   return { grid: newGrid, hitMine: false };
 }
 
-function checkWin(grid) {
-  for (let r = 0; r < GRID.rows; r++) {
-    for (let c = 0; c < GRID.cols; c++) {
+function checkWin(grid, rows, cols) {
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
       if (!grid[r][c].mine && !grid[r][c].revealed) return false;
     }
   }
@@ -114,15 +112,18 @@ function countFlags(grid) {
 }
 
 export default function DemineurWindow({ onClose, onMinimize, zIndex, onFocus }) {
-  const [grid, setGrid] = useState(createEmptyGrid);
-  const [gameState, setGameState] = useState("ready"); // ready | playing | won | lost
+  const [difficulty, setDifficulty] = useState("debutant");
+  const [showMenu, setShowMenu] = useState(false);
+  const level = DIFFICULTIES[difficulty];
+
+  const [grid, setGrid] = useState(() => createEmptyGrid(level.rows, level.cols));
+  const [gameState, setGameState] = useState("ready");
   const [timer, setTimer] = useState(0);
   const [firstClick, setFirstClick] = useState(true);
   const [clicking, setClicking] = useState(false);
   const [clickedMine, setClickedMine] = useState(null);
   const timerRef = useRef(null);
 
-  // Timer effect
   useEffect(() => {
     if (gameState === "playing") {
       timerRef.current = setInterval(() => {
@@ -134,15 +135,19 @@ export default function DemineurWindow({ onClose, onMinimize, zIndex, onFocus })
     };
   }, [gameState]);
 
-  const resetGame = useCallback(() => {
+  const resetGame = useCallback((newDifficulty) => {
     if (timerRef.current) clearInterval(timerRef.current);
-    setGrid(createEmptyGrid());
+    const d = newDifficulty || difficulty;
+    const lv = DIFFICULTIES[d];
+    if (newDifficulty) setDifficulty(newDifficulty);
+    setGrid(createEmptyGrid(lv.rows, lv.cols));
     setGameState("ready");
     setTimer(0);
     setFirstClick(true);
     setClicking(false);
     setClickedMine(null);
-  }, []);
+    setShowMenu(false);
+  }, [difficulty]);
 
   const handleReveal = useCallback(
     (row, col) => {
@@ -152,26 +157,26 @@ export default function DemineurWindow({ onClose, onMinimize, zIndex, onFocus })
       let currentGrid = grid;
 
       if (firstClick) {
-        currentGrid = placeMines(grid, row, col);
+        currentGrid = placeMines(grid, row, col, level.rows, level.cols, level.mines);
         setFirstClick(false);
         setGameState("playing");
       }
 
-      const result = revealCell(currentGrid, row, col);
+      const result = revealCell(currentGrid, row, col, level.rows, level.cols);
 
       if (result.hitMine) {
         const finalGrid = revealAllMines(result.grid);
         setGrid(finalGrid);
         setGameState("lost");
         setClickedMine(`${row},${col}`);
-      } else if (checkWin(result.grid)) {
+      } else if (checkWin(result.grid, level.rows, level.cols)) {
         setGrid(result.grid);
         setGameState("won");
       } else {
         setGrid(result.grid);
       }
     },
-    [grid, gameState, firstClick]
+    [grid, gameState, firstClick, level]
   );
 
   const handleFlag = useCallback(
@@ -189,7 +194,7 @@ export default function DemineurWindow({ onClose, onMinimize, zIndex, onFocus })
     [gameState, grid]
   );
 
-  const minesLeft = GRID.mines - countFlags(grid);
+  const minesLeft = level.mines - countFlags(grid);
   const smiley =
     gameState === "lost"
       ? SMILEY_STATES.dead
@@ -206,8 +211,8 @@ export default function DemineurWindow({ onClose, onMinimize, zIndex, onFocus })
       title="Démineur"
       onClose={onClose}
       onMinimize={onMinimize}
-      width={320}
-      height={420}
+      width={level.width}
+      height={level.height}
       zIndex={zIndex}
       onFocus={onFocus}
       color="#808080"
@@ -222,6 +227,47 @@ export default function DemineurWindow({ onClose, onMinimize, zIndex, onFocus })
           userSelect: "none",
         }}
       >
+        {/* Menu bar */}
+        <div style={{
+          display: "flex", alignItems: "center", padding: "2px 4px",
+          background: "#ECE9D8", borderBottom: "1px solid #ACA899",
+          fontSize: 11, position: "relative",
+        }}>
+          <span
+            onClick={() => setShowMenu(!showMenu)}
+            style={{
+              padding: "2px 8px", cursor: "pointer",
+              background: showMenu ? "#316AC5" : "transparent",
+              color: showMenu ? "#fff" : "#000",
+              borderRadius: 2,
+            }}
+          >Jeu</span>
+          {showMenu && (
+            <div style={{
+              position: "absolute", top: 20, left: 0, background: "#fff",
+              border: "1px solid #888", boxShadow: "2px 2px 6px rgba(0,0,0,0.2)",
+              zIndex: 999, minWidth: 160,
+            }}>
+              <div
+                onClick={() => resetGame(difficulty)}
+                style={{ padding: "4px 20px", cursor: "pointer", fontSize: 11 }}
+                onMouseEnter={e => { e.currentTarget.style.background = "#316AC5"; e.currentTarget.style.color = "#fff"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = ""; e.currentTarget.style.color = "#000"; }}
+              >Nouvelle partie</div>
+              <div style={{ height: 1, background: "#ccc", margin: "2px 4px" }} />
+              {Object.entries(DIFFICULTIES).map(([key, val]) => (
+                <div
+                  key={key}
+                  onClick={() => resetGame(key)}
+                  style={{ padding: "4px 20px", cursor: "pointer", fontSize: 11 }}
+                  onMouseEnter={e => { e.currentTarget.style.background = "#316AC5"; e.currentTarget.style.color = "#fff"; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = ""; e.currentTarget.style.color = "#000"; }}
+                >{difficulty === key ? "● " : "○ "}{val.label} ({val.rows}×{val.cols}, {val.mines} mines)</div>
+              ))}
+            </div>
+          )}
+        </div>
+
         {/* Header: mine counter, smiley, timer */}
         <div
           style={{
@@ -235,61 +281,33 @@ export default function DemineurWindow({ onClose, onMinimize, zIndex, onFocus })
             background: "#C0C0C0",
           }}
         >
-          {/* Mine counter */}
           <div
             style={{
-              background: "#000",
-              color: "#FF0000",
-              fontFamily: "'Courier New', monospace",
-              fontSize: 22,
-              fontWeight: "bold",
-              padding: "2px 6px",
-              minWidth: 46,
-              textAlign: "center",
-              letterSpacing: 2,
-              border: "1px inset #808080",
+              background: "#000", color: "#FF0000",
+              fontFamily: "'Courier New', monospace", fontSize: 22,
+              fontWeight: "bold", padding: "2px 6px", minWidth: 46,
+              textAlign: "center", letterSpacing: 2, border: "1px inset #808080",
             }}
-          >
-            {pad3(minesLeft)}
-          </div>
+          >{pad3(minesLeft)}</div>
 
-          {/* Smiley button */}
           <button
-            onClick={resetGame}
+            onClick={() => resetGame()}
             style={{
-              fontSize: 22,
-              width: 36,
-              height: 36,
-              cursor: "pointer",
-              border: "2px outset #fff",
-              background: "#C0C0C0",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: 0,
-              lineHeight: 1,
+              fontSize: 22, width: 36, height: 36, cursor: "pointer",
+              border: "2px outset #fff", background: "#C0C0C0",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              padding: 0, lineHeight: 1,
             }}
-          >
-            {smiley}
-          </button>
+          >{smiley}</button>
 
-          {/* Timer */}
           <div
             style={{
-              background: "#000",
-              color: "#FF0000",
-              fontFamily: "'Courier New', monospace",
-              fontSize: 22,
-              fontWeight: "bold",
-              padding: "2px 6px",
-              minWidth: 46,
-              textAlign: "center",
-              letterSpacing: 2,
-              border: "1px inset #808080",
+              background: "#000", color: "#FF0000",
+              fontFamily: "'Courier New', monospace", fontSize: 22,
+              fontWeight: "bold", padding: "2px 6px", minWidth: 46,
+              textAlign: "center", letterSpacing: 2, border: "1px inset #808080",
             }}
-          >
-            {pad3(timer)}
-          </div>
+          >{pad3(timer)}</div>
         </div>
 
         {/* Grid */}
@@ -300,13 +318,14 @@ export default function DemineurWindow({ onClose, onMinimize, zIndex, onFocus })
             alignItems: "center",
             justifyContent: "center",
             padding: 6,
+            overflow: "auto",
           }}
         >
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: `repeat(${GRID.cols}, 28px)`,
-              gridTemplateRows: `repeat(${GRID.rows}, 28px)`,
+              gridTemplateColumns: `repeat(${level.cols}, ${level.cellSize}px)`,
+              gridTemplateRows: `repeat(${level.rows}, ${level.cellSize}px)`,
               border: "2px inset #fff",
               background: "#C0C0C0",
             }}
@@ -332,8 +351,6 @@ export default function DemineurWindow({ onClose, onMinimize, zIndex, onFocus })
                   }
                 } else if (cell.flagged) {
                   content = "\u{1F6A9}";
-                } else {
-                  // Unrevealed cell
                 }
 
                 return (
@@ -349,15 +366,15 @@ export default function DemineurWindow({ onClose, onMinimize, zIndex, onFocus })
                     onMouseUp={() => setClicking(false)}
                     onMouseLeave={() => setClicking(false)}
                     style={{
-                      width: 28,
-                      height: 28,
+                      width: level.cellSize,
+                      height: level.cellSize,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       border: borderStyle,
                       background: bg,
                       cursor: "pointer",
-                      fontSize: cell.revealed && cell.adjacent > 0 ? 14 : 13,
+                      fontSize: cell.revealed && cell.adjacent > 0 ? (level.cellSize > 24 ? 14 : 11) : (level.cellSize > 24 ? 13 : 10),
                       fontWeight,
                       color,
                       boxSizing: "border-box",
