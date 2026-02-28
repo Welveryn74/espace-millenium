@@ -1,12 +1,14 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Win from "../Win";
 import NostalImg from "../NostalImg";
-import { ROOM_ITEMS, COUETTES, BILLES_COLLECTION, LEGO_SETS, PELUCHES, SCOUBIDOUS, JEUX_SOCIETE } from "../../data/chambreItems";
+import { ROOM_ITEMS, COUETTES, BILLES_COLLECTION, LEGO_SETS, PELUCHES, SCOUBIDOUS, JEUX_SOCIETE, SOUS_LE_LIT } from "../../data/chambreItems";
 import { ALBUM_PAGES, ALBUM_TITLE, TOTAL_STICKERS, ALL_STICKER_NAMES } from "../../data/paniniAlbum";
 import { loadState, saveState, clearState } from "../../utils/storage";
 import BeybladeArena from "./BeybladeArena";
 import BillesGame from "./minigames/BillesGame";
 import PetitsChevauxGame from "./minigames/PetitsChevauxGame";
+import { startChambreAmbient, stopChambreAmbient, setChambreNightMode, playLampClick, playHugSound } from "../../utils/chambreSounds";
+import { getStationList, startRadio, stopRadio } from "../../utils/radioMelodies";
 
 const TAMA_TICK_MS = 10_000; // stats decay every 10s
 const TAMA_MAX = 5;
@@ -62,6 +64,34 @@ export default function ChambreWindow({ onClose, onMinimize, zIndex, onFocus }) 
 
   // --- Pâte à prout state ---
   const [proutAnim, setProutAnim] = useState(false);
+
+  // --- Sous le lit state ---
+  const [sousLeLitFound, setSousLeLitFound] = useState(() => loadState('sous_le_lit', []));
+  const [sousLeLitSearching, setSousLeLitSearching] = useState(false);
+  const [sousLeLitLast, setSousLeLitLast] = useState(null);
+
+  // --- Journal intime state ---
+  const [journalEntries, setJournalEntries] = useState(() => loadState('journal_entries', []));
+  const [journalText, setJournalText] = useState("");
+
+  // --- Radio state ---
+  const [radioOn, setRadioOn] = useState(false);
+  const [radioStation, setRadioStation] = useState(() => loadState('radio_station', 'nrj'));
+
+  // --- Chambre ambient sounds ---
+  useEffect(() => {
+    startChambreAmbient();
+    return () => stopChambreAmbient();
+  }, []);
+
+  useEffect(() => {
+    setChambreNightMode(!lampOn);
+  }, [lampOn]);
+
+  // --- Cleanup radio on unmount ---
+  useEffect(() => {
+    return () => stopRadio();
+  }, []);
 
   // Save tama state on every change
   useEffect(() => {
@@ -139,7 +169,7 @@ export default function ChambreWindow({ onClose, onMinimize, zIndex, onFocus }) 
             setActiveItem={setActiveItem}
             couetteColor={currentCouette.color}
             lampOn={lampOn}
-            onToggleLamp={() => setLampOn(l => !l)}
+            onToggleLamp={() => { playLampClick(); setLampOn(l => !l); }}
           />
         ) : (
           /* ============ DETAIL VIEWS ============ */
@@ -179,6 +209,18 @@ export default function ChambreWindow({ onClose, onMinimize, zIndex, onFocus }) 
               )}
               {activeItem === "jeuxSociete" && (
                 <JeuxSocieteView />
+              )}
+              {activeItem === "reveil" && (
+                <ReveilView />
+              )}
+              {activeItem === "sousLelit" && (
+                <SousLeLitView found={sousLeLitFound} setFound={setSousLeLitFound} searching={sousLeLitSearching} setSearching={setSousLeLitSearching} lastFound={sousLeLitLast} setLastFound={setSousLeLitLast} />
+              )}
+              {activeItem === "journal" && (
+                <JournalView entries={journalEntries} setEntries={setJournalEntries} text={journalText} setText={setJournalText} />
+              )}
+              {activeItem === "radio" && (
+                <RadioView radioOn={radioOn} setRadioOn={setRadioOn} station={radioStation} setStation={setRadioStation} />
               )}
             </div>
           </div>
@@ -276,29 +318,57 @@ function RoomScene({ items, hoveredItem, setHoveredItem, setActiveItem, couetteC
         `,
       }} />
 
-      {/* ====== WINDOW ON WALL (night sky) ====== */}
+      {/* ====== WINDOW ON WALL (night/dusk sky) ====== */}
       <div style={{
         position: "absolute", top: "5%", left: "4%", width: 95, height: 110,
-        background: "linear-gradient(180deg, #060620, #0B0B3E 50%, #141450)",
+        background: lampOn
+          ? "linear-gradient(180deg, #1a1050, #2E1B6B 40%, #5B3A8C 70%, #D4956B)"
+          : "linear-gradient(180deg, #020210, #060620 50%, #0B0B3E)",
         border: "5px solid #6B4830", borderRadius: 3,
-        boxShadow: "inset 0 0 20px rgba(0,0,80,0.5), 0 3px 10px rgba(0,0,0,0.5), inset 0 0 40px rgba(30,30,100,0.2)",
+        boxShadow: lampOn
+          ? "inset 0 0 20px rgba(100,60,160,0.3), 0 3px 10px rgba(0,0,0,0.5)"
+          : "inset 0 0 20px rgba(0,0,80,0.5), 0 3px 10px rgba(0,0,0,0.5), inset 0 0 40px rgba(30,30,100,0.2)",
         overflow: "hidden",
+        transition: "background 0.8s ease",
       }}>
         {/* Window cross frame */}
         <div style={{ position: "absolute", top: "50%", left: 0, right: 0, height: 4, background: "#6B4830", transform: "translateY(-50%)", zIndex: 2 }} />
         <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 4, background: "#6B4830", transform: "translateX(-50%)", zIndex: 2 }} />
+        {/* Warm horizon glow (lamp on) */}
+        {lampOn && (
+          <div style={{
+            position: "absolute", bottom: 0, left: 0, right: 0, height: "40%",
+            background: "linear-gradient(180deg, transparent, rgba(255,180,100,0.2))",
+            pointerEvents: "none",
+          }} />
+        )}
         {/* Moon */}
         <div style={{
           position: "absolute", top: 10, right: 12, width: 20, height: 20, borderRadius: "50%",
           background: "radial-gradient(circle at 35% 30%, #FFFDE8, #F5E6A0 70%, #E8D080)",
-          boxShadow: "0 0 16px rgba(255,253,224,0.5), 0 0 40px rgba(255,240,180,0.15)",
+          boxShadow: lampOn
+            ? "0 0 16px rgba(255,253,224,0.3), 0 0 30px rgba(255,240,180,0.1)"
+            : "0 0 20px rgba(255,253,224,0.7), 0 0 50px rgba(255,240,180,0.3), 0 0 80px rgba(200,200,255,0.15)",
+          transition: "box-shadow 0.8s ease",
         }} />
         {/* Stars */}
         {[{t:6,l:10,s:2},{t:18,l:6,s:1.5},{t:12,l:55,s:2},{t:4,l:35,s:1.5},{t:28,l:22,s:2},{t:35,l:58,s:1.5},{t:8,l:68,s:1},{t:44,l:12,s:1.5},{t:50,l:42,s:1},{t:22,l:40,s:1}].map((s,i) => (
           <div key={i} style={{
             position: "absolute", top: s.t, left: s.l, width: s.s, height: s.s, borderRadius: "50%",
-            background: "#fff", opacity: 0.6 + Math.sin(i) * 0.3,
+            background: "#fff", opacity: lampOn ? 0.2 : (0.6 + Math.sin(i) * 0.3),
             animation: `blink ${1.8 + i * 0.4}s infinite`,
+            transition: "opacity 0.8s ease",
+          }} />
+        ))}
+        {/* Shooting stars (lamp off only) */}
+        {!lampOn && [0,1,2].map(i => (
+          <div key={`shoot${i}`} style={{
+            position: "absolute",
+            top: 5 + i * 18, left: 10 + i * 20,
+            width: 0, height: 1,
+            background: "linear-gradient(90deg, rgba(255,255,255,0.9), transparent)",
+            animation: `shootingStar ${2 + i * 1.5}s linear ${i * 3}s infinite`,
+            pointerEvents: "none",
           }} />
         ))}
         {/* Curtain left */}
@@ -357,11 +427,15 @@ function RoomScene({ items, hoveredItem, setHoveredItem, setActiveItem, couetteC
       </div>
 
       {/* ====== GLOW-IN-THE-DARK STARS (on wall) ====== */}
-      {[{t:"3%",l:"52%"},{t:"6%",l:"60%"},{t:"2%",l:"70%"},{t:"9%",l:"56%"},{t:"4%",l:"48%"}].map((s,i) => (
+      {[{t:"3%",l:"52%"},{t:"6%",l:"60%"},{t:"2%",l:"70%"},{t:"9%",l:"56%"},{t:"4%",l:"48%"},{t:"7%",l:"64%"},{t:"1%",l:"58%"},{t:"10%",l:"72%"}].map((s,i) => (
         <div key={`glow${i}`} style={{
           position: "absolute", top: s.t, left: s.l,
-          fontSize: 7, color: lampOn ? "rgba(180,255,180,0.1)" : "rgba(150,255,150,0.85)",
-          transition: "color 0.6s ease", zIndex: 1, pointerEvents: "none",
+          fontSize: 7,
+          color: lampOn ? "rgba(180,255,180,0.1)" : "rgba(150,255,150,0.85)",
+          textShadow: lampOn ? "none" : `0 0 6px rgba(150,255,150,0.8), 0 0 12px rgba(150,255,150,0.4)`,
+          transition: "color 0.6s ease, text-shadow 0.6s ease",
+          animation: lampOn ? "none" : `starPulse ${2 + i * 0.3}s ease-in-out infinite`,
+          zIndex: 1, pointerEvents: "none",
         }}>✦</div>
       ))}
 
@@ -666,30 +740,86 @@ function RoomScene({ items, hoveredItem, setHoveredItem, setActiveItem, couetteC
         </div>
       ), { top: 430, right: 90, zIndex: 4 })}
 
+      {/* ====== NIGHTSTAND NEW ITEMS (visual spots) ====== */}
+      {/* Réveil digital on nightstand */}
+      {spot("reveil", (
+        <div style={{
+          width: 28, height: 16, background: "#1a1a1a", borderRadius: 2,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          border: "1px solid #333", boxShadow: "0 0 6px rgba(255,50,50,0.2)",
+        }}>
+          <span style={{ fontFamily: "monospace", fontSize: 8, color: "#FF3333", fontWeight: "bold", textShadow: "0 0 4px rgba(255,50,50,0.6)" }}>
+            {new Date().getHours().toString().padStart(2,'0')}:{new Date().getMinutes().toString().padStart(2,'0')}
+          </span>
+        </div>
+      ), { top: 234, left: 22, zIndex: 6 })}
+
+      {/* Journal intime on nightstand */}
+      {spot("journal", (
+        <div style={{
+          width: 22, height: 28, background: "linear-gradient(180deg, #8B4513, #A0522D)",
+          borderRadius: "2px 2px 1px 1px", border: "1px solid #6B3410",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          boxShadow: "1px 2px 4px rgba(0,0,0,0.4)",
+        }}>
+          <span style={{ fontSize: 8 }}>📓</span>
+        </div>
+      ), { top: 226, left: 74, zIndex: 6 })}
+
+      {/* Radio on nightstand */}
+      {spot("radio", (
+        <div style={{
+          width: 26, height: 18, background: "linear-gradient(180deg, #8B7355, #6B5335)",
+          borderRadius: 3, border: "1px solid #5C4528",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          boxShadow: "1px 1px 3px rgba(0,0,0,0.4)",
+        }}>
+          <span style={{ fontSize: 8 }}>📻</span>
+        </div>
+      ), { top: 238, left: 50, zIndex: 6 })}
+
+      {/* Sous le lit */}
+      {spot("sousLelit", (
+        <div style={{
+          fontSize: 11, background: "rgba(0,0,0,0.4)", borderRadius: 4, padding: "2px 6px",
+          border: "1px dashed rgba(200,176,232,0.3)", color: "#C8B0E8",
+          fontFamily: "'Tahoma', sans-serif", fontWeight: "bold",
+        }}>
+          👀 <span style={{ fontSize: 8 }}>Sous le lit</span>
+        </div>
+      ), { top: 420, right: 176, zIndex: 4 })}
+
       {/* ====== LAMP AMBIENT GLOW ====== */}
       {lampOn && (
         <>
           <div style={{
-            position: "absolute", top: 170, left: 0, width: 150, height: 150,
-            background: "radial-gradient(ellipse at center, rgba(255,220,80,0.1) 0%, rgba(255,200,50,0.04) 40%, transparent 70%)",
+            position: "absolute", top: 170, left: 0, width: 180, height: 180,
+            background: "radial-gradient(ellipse at center, rgba(255,220,80,0.12) 0%, rgba(255,200,50,0.05) 40%, transparent 70%)",
             pointerEvents: "none", zIndex: 0,
           }} />
           <div style={{
-            position: "absolute", top: 244, left: 15, width: 80, height: 80,
-            background: "radial-gradient(circle, rgba(255,240,180,0.06) 0%, transparent 60%)",
+            position: "absolute", top: 244, left: 15, width: 100, height: 100,
+            background: "radial-gradient(circle, rgba(255,240,180,0.08) 0%, transparent 60%)",
+            pointerEvents: "none", zIndex: 0,
+          }} />
+          {/* Warm overlay on whole room */}
+          <div style={{
+            position: "absolute", inset: 0,
+            background: "rgba(255,220,140,0.03)",
             pointerEvents: "none", zIndex: 0,
           }} />
         </>
       )}
 
       {/* ====== DARK OVERLAY (lamp off) ====== */}
-      {!lampOn && (
-        <div style={{
-          position: "absolute", inset: 0,
-          background: "radial-gradient(ellipse at 10% 40%, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.72) 100%)",
-          pointerEvents: "none", transition: "opacity 0.5s ease", zIndex: 8,
-        }} />
-      )}
+      <div style={{
+        position: "absolute", inset: 0,
+        background: !lampOn
+          ? "radial-gradient(ellipse at 10% 40%, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.78) 100%)"
+          : "transparent",
+        pointerEvents: "none", transition: "background 0.8s ease", zIndex: 8,
+        opacity: !lampOn ? 1 : 0,
+      }} />
 
       {/* ====== TITLE OVERLAY ====== */}
       <div style={{
@@ -1351,6 +1481,7 @@ function PeluchesView() {
 
   const doHug = (id) => {
     setHugged(id);
+    playHugSound();
     setTimeout(() => setHugged(null), 1500);
   };
 
@@ -1480,6 +1611,400 @@ function LegoGallery() {
 
       <div style={{ textAlign: "center", marginTop: 14, color: "#8B6BAE", fontSize: 10, fontStyle: "italic" }}>
         L'odeur des briques neuves quand tu ouvrais le sachet. Inoubliable.
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   REVEIL DIGITAL
+   ============================================================ */
+function ReveilView() {
+  const [time, setTime] = useState(new Date());
+  const [alarmPlaying, setAlarmPlaying] = useState(false);
+
+  useEffect(() => {
+    const iv = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(iv);
+  }, []);
+
+  const playAlarm = () => {
+    if (alarmPlaying) return;
+    setAlarmPlaying(true);
+    if (localStorage.getItem('em_muted') !== 'true') {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        for (let i = 0; i < 8; i++) {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'square';
+          osc.frequency.value = i % 2 === 0 ? 880 : 660;
+          const t = ctx.currentTime + i * 0.25;
+          gain.gain.setValueAtTime(0.06, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
+          osc.connect(gain).connect(ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.22);
+        }
+      } catch (_) {}
+    }
+    setTimeout(() => setAlarmPlaying(false), 2000);
+  };
+
+  const hh = time.getHours().toString().padStart(2, '0');
+  const mm = time.getMinutes().toString().padStart(2, '0');
+  const ss = time.getSeconds().toString().padStart(2, '0');
+
+  return (
+    <div style={{ textAlign: "center", animation: "fadeIn 0.3s ease-out" }}>
+      <div style={{ marginBottom: 20 }}>
+        <div style={{ color: "#C8B0E8", fontSize: 15, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif" }}>
+          Réveil Digital
+        </div>
+        <div style={{ color: "#8B6BAE", fontSize: 11, marginTop: 4, fontStyle: "italic" }}>
+          Le petit rectangle rouge qui brillait dans le noir. Tu le regardais quand tu n'arrivais pas à dormir.
+        </div>
+      </div>
+
+      {/* LED display */}
+      <div style={{
+        display: "inline-block", padding: "24px 40px", borderRadius: 8,
+        background: "#1a1a1a", border: "2px solid #333",
+        boxShadow: "inset 0 0 20px rgba(0,0,0,0.5), 0 0 15px rgba(255,50,50,0.1)",
+      }}>
+        <div style={{
+          fontFamily: "monospace", fontSize: 48, fontWeight: "bold",
+          color: "#FF3333",
+          textShadow: "0 0 10px rgba(255,50,50,0.6), 0 0 30px rgba(255,50,50,0.3)",
+          letterSpacing: 4,
+        }}>
+          {hh}:{mm}
+        </div>
+        <div style={{
+          fontFamily: "monospace", fontSize: 14, color: "#FF333380",
+          textShadow: "0 0 4px rgba(255,50,50,0.3)", marginTop: 4,
+        }}>
+          :{ss}
+        </div>
+      </div>
+
+      <div style={{ marginTop: 16 }}>
+        <button
+          onClick={playAlarm}
+          disabled={alarmPlaying}
+          style={{
+            background: alarmPlaying ? "rgba(255,50,50,0.3)" : "rgba(255,50,50,0.15)",
+            color: "#FF6666", border: "1px solid rgba(255,50,50,0.4)",
+            padding: "8px 24px", borderRadius: 6, cursor: alarmPlaying ? "default" : "pointer",
+            fontFamily: "'Tahoma', sans-serif", fontSize: 12, fontWeight: "bold",
+            transition: "all 0.15s",
+          }}
+        >
+          {alarmPlaying ? "🔔 BIP BIP BIP !" : "🔔 Tester l'alarme"}
+        </button>
+      </div>
+
+      <div style={{ marginTop: 20, color: "#666", fontSize: 10, lineHeight: 1.6 }}>
+        Modèle Radio-Réveil FM circa 2001. Les chiffres rouges dans l'obscurité,<br/>
+        c'était à la fois rassurant et un peu flippant.
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   SOUS LE LIT
+   ============================================================ */
+function SousLeLitView({ found, setFound, searching, setSearching, lastFound, setLastFound }) {
+  const doSearch = () => {
+    if (searching) return;
+    const remaining = SOUS_LE_LIT.filter(o => !found.includes(o.id));
+    if (remaining.length === 0) return;
+    setSearching(true);
+    setLastFound(null);
+    setTimeout(() => {
+      const item = remaining[Math.floor(Math.random() * remaining.length)];
+      const updated = [...found, item.id];
+      setFound(updated);
+      saveState('sous_le_lit', updated);
+      setLastFound(item);
+      setSearching(false);
+    }, 500);
+  };
+
+  const allFound = found.length >= SOUS_LE_LIT.length;
+
+  return (
+    <div style={{ animation: "fadeIn 0.3s ease-out" }}>
+      <div style={{ textAlign: "center", marginBottom: 16 }}>
+        <div style={{ color: "#C8B0E8", fontSize: 15, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif" }}>
+          Sous le lit
+        </div>
+        <div style={{ color: "#8B6BAE", fontSize: 11, marginTop: 4, fontStyle: "italic" }}>
+          Tout un monde caché sous le sommier... {found.length}/{SOUS_LE_LIT.length} objets trouvés
+        </div>
+      </div>
+
+      {!allFound && (
+        <div style={{ textAlign: "center", marginBottom: 16 }}>
+          <button
+            onClick={doSearch}
+            disabled={searching}
+            style={{
+              background: searching ? "rgba(200,176,232,0.3)" : "rgba(200,176,232,0.15)",
+              color: "#C8B0E8", border: "1px solid rgba(200,176,232,0.4)",
+              padding: "10px 28px", borderRadius: 8, cursor: searching ? "default" : "pointer",
+              fontFamily: "'Tahoma', sans-serif", fontSize: 13, fontWeight: "bold",
+              transition: "all 0.15s",
+              animation: searching ? "searchAnim 0.5s ease-in-out infinite" : "none",
+            }}
+          >
+            {searching ? "🔍 Fouille en cours..." : "🔦 Fouiller sous le lit"}
+          </button>
+        </div>
+      )}
+
+      {lastFound && (
+        <div style={{
+          textAlign: "center", marginBottom: 16, padding: 16,
+          background: "rgba(200,176,232,0.1)", border: "1px solid rgba(200,176,232,0.3)",
+          borderRadius: 10, animation: "popIn 0.4s ease-out",
+        }}>
+          <div style={{ fontSize: 40 }}>{lastFound.emoji}</div>
+          <div style={{ color: "#E0E0E0", fontSize: 14, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif", marginTop: 8 }}>
+            {lastFound.name}
+          </div>
+          <div style={{ color: "#AAA", fontSize: 11, marginTop: 6, lineHeight: 1.6 }}>
+            {lastFound.desc}
+          </div>
+          <div style={{ color: "#8B6BAE", fontSize: 10, fontStyle: "italic", marginTop: 6 }}>
+            {lastFound.flavor}
+          </div>
+        </div>
+      )}
+
+      {/* Grid of found items */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
+        {SOUS_LE_LIT.map((item) => {
+          const isFound = found.includes(item.id);
+          return (
+            <div key={item.id} style={{
+              textAlign: "center", padding: 10, borderRadius: 8,
+              background: isFound ? "rgba(200,176,232,0.08)" : "rgba(100,100,100,0.06)",
+              border: isFound ? "1px solid rgba(200,176,232,0.25)" : "1px dashed rgba(100,100,100,0.2)",
+            }}>
+              <div style={{ fontSize: 24, opacity: isFound ? 1 : 0.2 }}>
+                {isFound ? item.emoji : "❓"}
+              </div>
+              <div style={{
+                fontSize: 9, marginTop: 4, fontFamily: "'Tahoma', sans-serif",
+                color: isFound ? "#C8B0E8" : "#555",
+              }}>
+                {isFound ? item.name : "???"}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {allFound && (
+        <div style={{ textAlign: "center", marginTop: 14, color: "#C8B0E8", fontSize: 12, fontWeight: "bold" }}>
+          🎉 Tu as tout retrouvé ! Le sous-lit n'a plus de secrets pour toi.
+        </div>
+      )}
+
+      <div style={{ textAlign: "center", marginTop: 14, color: "#8B6BAE", fontSize: 10, fontStyle: "italic" }}>
+        La poussière, les moutons, et des trésors oubliés depuis des années.
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   JOURNAL INTIME
+   ============================================================ */
+function JournalView({ entries, setEntries, text, setText }) {
+  const addEntry = () => {
+    if (!text.trim()) return;
+    const d = new Date();
+    const dateStr = d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    const updated = [{ date: dateStr, content: text.trim() }, ...entries].slice(0, 20);
+    setEntries(updated);
+    saveState('journal_entries', updated);
+    setText("");
+  };
+
+  return (
+    <div style={{ animation: "fadeIn 0.3s ease-out" }}>
+      <div style={{ textAlign: "center", marginBottom: 16 }}>
+        <div style={{ color: "#C8B0E8", fontSize: 15, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif" }}>
+          Mon Journal Intime 🔒
+        </div>
+        <div style={{ color: "#8B6BAE", fontSize: 11, marginTop: 4, fontStyle: "italic" }}>
+          "Cher journal, aujourd'hui..."
+        </div>
+      </div>
+
+      {/* Writing area — lined paper style */}
+      <div style={{
+        background: "#FFFEF5",
+        backgroundImage: `
+          repeating-linear-gradient(transparent, transparent 23px, #D4C9B8 23px, #D4C9B8 24px),
+          linear-gradient(90deg, transparent 39px, #E8A0A0 39px, #E8A0A0 40px, transparent 40px)
+        `,
+        borderRadius: 6, padding: "12px 12px 12px 46px", minHeight: 100,
+        border: "1px solid #D0C8B0",
+        boxShadow: "inset 2px 2px 6px rgba(0,0,0,0.05)",
+      }}>
+        <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value.slice(0, 500))}
+          placeholder="Écris ici..."
+          style={{
+            width: "100%", minHeight: 70, background: "transparent", border: "none", outline: "none",
+            fontFamily: "'Comic Sans MS', 'Chalkboard SE', cursive",
+            fontSize: 12, color: "#333", lineHeight: "24px", resize: "vertical",
+          }}
+        />
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 6 }}>
+          <span style={{ fontSize: 9, color: "#999" }}>{text.length}/500</span>
+          <button
+            onClick={addEntry}
+            disabled={!text.trim()}
+            style={{
+              background: text.trim() ? "#8B6BAE" : "#CCC", color: "#FFF",
+              border: "none", padding: "4px 14px", borderRadius: 4, cursor: text.trim() ? "pointer" : "default",
+              fontFamily: "'Tahoma', sans-serif", fontSize: 11, fontWeight: "bold",
+            }}
+          >
+            ✏️ Écrire
+          </button>
+        </div>
+      </div>
+
+      {/* Entries */}
+      {entries.length > 0 && (
+        <div style={{ marginTop: 16 }}>
+          <div style={{ color: "#C8B0E8", fontSize: 11, fontWeight: "bold", marginBottom: 8, fontFamily: "'Tahoma', sans-serif" }}>
+            Mes entrées ({entries.length})
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 200, overflowY: "auto" }}>
+            {entries.map((e, i) => (
+              <div key={i} style={{
+                background: "rgba(255,254,245,0.08)", borderRadius: 6, padding: 10,
+                border: "1px solid rgba(200,176,232,0.15)",
+                backgroundImage: "repeating-linear-gradient(transparent, transparent 19px, rgba(200,180,150,0.1) 19px, rgba(200,180,150,0.1) 20px)",
+              }}>
+                <div style={{ fontSize: 9, color: "#8B6BAE", fontWeight: "bold", marginBottom: 4 }}>
+                  📅 {e.date}
+                </div>
+                <div style={{
+                  fontSize: 11, color: "#DDD", lineHeight: 1.6,
+                  fontFamily: "'Comic Sans MS', 'Chalkboard SE', cursive",
+                }}>
+                  {e.content}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div style={{ textAlign: "center", marginTop: 14, color: "#8B6BAE", fontSize: 10, fontStyle: "italic" }}>
+        Cadenas en plastique inclus. Sécurité maximale contre les petits frères.
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   POSTE RADIO
+   ============================================================ */
+function RadioView({ radioOn, setRadioOn, station, setStation }) {
+  const stations = getStationList();
+
+  const toggleRadio = () => {
+    if (radioOn) {
+      stopRadio();
+      setRadioOn(false);
+    } else {
+      startRadio(station);
+      setRadioOn(true);
+    }
+  };
+
+  const changeStation = (id) => {
+    setStation(id);
+    saveState('radio_station', id);
+    if (radioOn) {
+      startRadio(id);
+    }
+  };
+
+  return (
+    <div style={{ textAlign: "center", animation: "fadeIn 0.3s ease-out" }}>
+      <div style={{ marginBottom: 20 }}>
+        <div style={{ color: "#C8B0E8", fontSize: 15, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif" }}>
+          Poste Radio
+        </div>
+        <div style={{ color: "#8B6BAE", fontSize: 11, marginTop: 4, fontStyle: "italic" }}>
+          Le petit poste gris-marron de la table de nuit. Tu t'endormais en écoutant la musique le soir.
+        </div>
+      </div>
+
+      {/* Radio body */}
+      <div style={{
+        display: "inline-block", padding: "20px 30px", borderRadius: 12,
+        background: "linear-gradient(180deg, #8B7355, #6B5335, #5C4528)",
+        border: "2px solid #4A3328",
+        boxShadow: "inset 0 2px 8px rgba(255,255,255,0.08), 0 4px 15px rgba(0,0,0,0.4)",
+      }}>
+        {/* Speaker grille */}
+        <div style={{
+          width: 120, height: 40, borderRadius: 4, marginBottom: 14,
+          background: "repeating-linear-gradient(0deg, #5C4528 0px, #5C4528 2px, #4A3328 2px, #4A3328 4px)",
+          border: "1px solid #4A3328",
+          boxShadow: "inset 0 1px 4px rgba(0,0,0,0.3)",
+        }} />
+
+        {/* On/Off */}
+        <button
+          onClick={toggleRadio}
+          style={{
+            width: "100%", padding: "8px 0", borderRadius: 6,
+            background: radioOn ? "rgba(100,255,100,0.2)" : "rgba(255,100,100,0.15)",
+            color: radioOn ? "#88FF88" : "#FF8888",
+            border: radioOn ? "1px solid rgba(100,255,100,0.4)" : "1px solid rgba(255,100,100,0.3)",
+            fontFamily: "'Tahoma', sans-serif", fontSize: 13, fontWeight: "bold",
+            cursor: "pointer", transition: "all 0.15s",
+          }}
+        >
+          {radioOn ? "🔊 ON — Éteindre" : "🔇 OFF — Allumer"}
+        </button>
+
+        {/* Station selector */}
+        <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 6 }}>
+          {stations.map((s) => (
+            <button
+              key={s.id}
+              onClick={() => changeStation(s.id)}
+              style={{
+                background: station === s.id ? "rgba(200,176,232,0.2)" : "rgba(255,255,255,0.05)",
+                border: station === s.id ? "1px solid rgba(200,176,232,0.5)" : "1px solid rgba(255,255,255,0.1)",
+                color: station === s.id ? "#C8B0E8" : "#AAA",
+                padding: "5px 10px", borderRadius: 4, cursor: "pointer",
+                fontFamily: "'Tahoma', sans-serif", fontSize: 11, fontWeight: station === s.id ? "bold" : "normal",
+                transition: "all 0.15s", textAlign: "left",
+              }}
+            >
+              {station === s.id && radioOn ? "▶ " : "○ "}{s.name}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ marginTop: 20, color: "#666", fontSize: 10 }}>
+        Volume non réglable. Les voisins adorent.
       </div>
     </div>
   );

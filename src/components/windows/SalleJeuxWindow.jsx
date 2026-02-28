@@ -5,11 +5,17 @@ import { CONSOLES } from "../../data/consoles";
 import SnakeGame from "./minigames/SnakeGame";
 import MemoryGame from "./minigames/MemoryGame";
 import MorpionGame from "./minigames/MorpionGame";
+import TetrisGame from "./minigames/TetrisGame";
+import PongGame from "./minigames/PongGame";
+import CasseBriquesGame from "./minigames/CasseBriquesGame";
 
 const MINIGAME_COMPONENTS = {
   snake: SnakeGame,
   memory: MemoryGame,
   morpion: MorpionGame,
+  tetris: TetrisGame,
+  pong: PongGame,
+  cassebriques: CasseBriquesGame,
 };
 
 export default function SalleJeuxWindow({ onClose, onMinimize, zIndex, onFocus }) {

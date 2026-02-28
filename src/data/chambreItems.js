@@ -59,6 +59,17 @@ export const JEUX_SOCIETE = [
   { id: "unMille", name: "Le 1000 Bornes", emoji: "🚗", color: "#C62828", players: "2-4", desc: "Crevaison ! Panne d'essence ! Limitation de vitesse ! Le jeu de cartes qui rendait les trajets en voiture encore plus longs.", img: "/images/chambre/jeux/1000bornes.png" },
 ];
 
+export const SOUS_LE_LIT = [
+  { id: "carambar", emoji: "🍬", name: "Vieux Carambar", desc: "Un Carambar collé au parquet depuis 2003. La blague est illisible mais tu essaies quand même.", flavor: "Quelle est la diff... (illisible)" },
+  { id: "chaussette", emoji: "🧦", name: "Chaussette perdue", desc: "La chaussette droite des Pokémon. La gauche a disparu au lavage en 2001. Mystère toujours non résolu.", flavor: "Elle sent encore un peu le propre !" },
+  { id: "gameboy", emoji: "🎮", name: "Game Boy Pocket", desc: "La Game Boy Pocket grise que tu croyais perdue ! L'écran est un peu rayé et les piles ont coulé, mais elle est là.", flavor: "Il reste une sauvegarde de Pokémon Rouge !" },
+  { id: "titeuf", emoji: "📕", name: "Titeuf Tome 3", desc: "\"Ça épate les filles\". Le tome que tu as lu 400 fois sous la couette avec la lampe de poche.", flavor: "Tchô la page de Nadia est cornée..." },
+  { id: "piece", emoji: "🪙", name: "Pièce de 1€", desc: "Une pièce de 1 euro qui a roulé sous le lit un jour de 2002. Elle vaut toujours 1€ mais la trouver ça vaut de l'or.", flavor: "Tu te sens riche !" },
+  { id: "powerranger", emoji: "🦸", name: "Figurine Power Rangers", desc: "Le Ranger Rouge, bras cassé. Il a survécu à 1000 batailles contre des Lego et des dinosaures en plastique.", flavor: "IT'S MORPHIN' TIME !" },
+  { id: "bille", emoji: "🔵", name: "Bille perdue", desc: "Un calot bleu transparent. Perdu lors du Grand Match de la Récré 2002. Enfin retrouvé.", flavor: "Elle brille encore !" },
+  { id: "dessin", emoji: "🖍️", name: "Dessin pour maman", desc: "Un dessin au feutre avec écrit \"je t'aime maman\" et un soleil avec des bras. Tu avais 5 ans.", flavor: "Il est un peu froissé mais toujours beau." },
+];
+
 export const ROOM_ITEMS = [
   // --- Le Lit (center) ---
   {
@@ -166,5 +177,45 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "82%", left: "82%" },
     hint: "3, 2, 1... LET IT RIP !",
+  },
+
+  // --- Table de nuit (new items) ---
+  {
+    id: "reveil",
+    emoji: "⏰",
+    label: "Réveil digital",
+    zone: "tableDenuit",
+    interactive: true,
+    position: { top: "44%", left: "4%" },
+    hint: "Quelle heure il est ?",
+  },
+  {
+    id: "journal",
+    emoji: "📓",
+    label: "Journal intime",
+    zone: "tableDenuit",
+    interactive: true,
+    position: { top: "36%", left: "16%" },
+    hint: "Cher journal...",
+  },
+  {
+    id: "radio",
+    emoji: "📻",
+    label: "Poste radio",
+    zone: "tableDenuit",
+    interactive: true,
+    position: { top: "38%", left: "2%" },
+    hint: "Écoute la radio !",
+  },
+
+  // --- Sous le lit ---
+  {
+    id: "sousLelit",
+    emoji: "👀",
+    label: "Sous le lit",
+    zone: "lit",
+    interactive: true,
+    position: { top: "62%", left: "42%" },
+    hint: "Qu'est-ce qui se cache là-dessous ?",
   },
 ];

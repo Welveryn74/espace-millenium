@@ -13,7 +13,7 @@ export const CONSOLES = [
     games: [
       { name: "Pokémon Rouge", emoji: "🔴", img: "/images/consoles/games/pokemon-rouge.png", desc: "Été 1999. Tu trades des Pokémon avec le câble link dans la cour de récré. Ton starter c'est Salamèche, évidemment. Tu connais le glitch MissingNo par cœur.", year: "1996" },
       { name: "Snake", emoji: "🐍", img: "/images/consoles/games/super-mario-land.png", desc: "Le serpent qui grandit en mangeant. Simple, addictif, éternel. Tu battais ton high score dans le bus en rentrant du collège.", year: "1998", playable: true, miniGame: "snake" },
-      { name: "Tetris", emoji: "🧱", img: "/images/consoles/games/tetris.png", desc: "Le jeu qui était DANS la boîte. Ta mère y jouait plus que toi. La musique tourne encore dans ta tête à 3h du mat quand tu fermes les yeux.", year: "1989" },
+      { name: "Tetris", emoji: "🧱", img: "/images/consoles/games/tetris.png", desc: "Le jeu qui était DANS la boîte. Ta mère y jouait plus que toi. La musique tourne encore dans ta tête à 3h du mat quand tu fermes les yeux.", year: "1989", playable: true, miniGame: "tetris" },
       { name: "Kirby's Dream Land", emoji: "⭐", img: "/images/consoles/games/kirbys-dream-land.png", desc: "Le jeu que tu finissais en 45 minutes mais que tu recommençais quand même. Kirby qui aspire tout, c'était la belle vie.", year: "1992" },
     ],
   },
@@ -33,6 +33,7 @@ export const CONSOLES = [
       { name: "Advance Wars", emoji: "🎖️", img: "/images/consoles/games/advance-wars.png", desc: "Le jeu de stratégie qui t'a appris à réfléchir. Chaque tour prenait 20 minutes parce que tu voulais le S-Rank. Andy vs Sturm, la guerre totale.", year: "2001" },
       { name: "Mario Kart: Super Circuit", emoji: "🏎️", img: "/images/consoles/games/mario-kart-super-circuit.png", desc: "Mario Kart dans ta poche. Les circuits SNES en bonus, le mode multijoueur avec le câble link. Les dérapages n'avaient pas de secret pour toi.", year: "2001" },
       { name: "Metroid Fusion", emoji: "🔬", img: "/images/consoles/games/metroid-fusion.png", desc: "Samus dans un vaisseau spatial infesté de parasites X. L'ambiance flippante, le SA-X qui te pourchasse... T'avais la chair de poule sur un écran de 6cm.", year: "2002" },
+      { name: "Casse-briques", emoji: "🧱", img: "/images/consoles/games/casse-briques.png", desc: "La raquette, la balle, les briques colorées. Simple comme bonjour mais impossible de s'arrêter. \"Encore un level !\" jusqu'à ce que maman éteigne la lumière.", year: "2001", playable: true, miniGame: "cassebriques" },
     ],
   },
   {
@@ -126,6 +127,7 @@ export const CONSOLES = [
       { name: "Jeux Flash Miniclip", emoji: "🌐", img: "/images/consoles/games/jeux-flash.png", desc: "On The Run, Heli Attack, Club Penguin... La barre de chargement du jeu Flash, l'excitation quand ça atteint 100%. RIP Flash Player, gone but never forgotten.", year: "~2004", playable: true, miniGame: "morpion" },
       { name: "Age of Empires II", emoji: "🏰", img: "/images/consoles/games/age-of-empires-2.png", desc: "WOLOLO. Tu convertissais les unités ennemies avec les prêtres. \"Start the game already!\" dans le lobby. Les parties de 4 heures un mercredi après-midi.", year: "1999" },
       { name: "Les Sims", emoji: "🏠", img: "/images/consoles/games/les-sims.png", desc: "Tu construisais la maison de tes rêves, tu enlevais l'échelle de la piscine... on sait tous ce qui se passait après. Sul sul ! Dag dag !", year: "2000" },
+      { name: "Pong", emoji: "🏓", img: "/images/consoles/games/pong.png", desc: "Le tout premier. Deux barres blanches, une balle carrée, et pourtant c'était suffisant pour passer des heures dessus. Le jeu qui a tout inventé.", year: "1972", playable: true, miniGame: "pong" },
     ],
   },
 ];
