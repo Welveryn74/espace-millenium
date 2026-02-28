@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Win from "../Win";
+import NostalImg from "../NostalImg";
 import { TRACKS } from "../../data/tracks";
 
 export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
@@ -24,7 +25,7 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
       <div style={{ background: `linear-gradient(180deg, ${ipodColor} 0%, #D8D8D8 100%)`, height: "100%", display: "flex", flexDirection: "column", alignItems: "center", padding: "14px 12px" }}>
         {/* iPod Screen */}
         <div style={{
-          width: 230, height: showPlaylist ? 200 : 140, background: "#1a1a2e", borderRadius: 6,
+          width: 230, height: showPlaylist ? 200 : 210, background: "#1a1a2e", borderRadius: 6,
           border: "2px solid #888", padding: 10, display: "flex", flexDirection: "column",
           boxShadow: "inset 0 2px 10px rgba(0,0,0,0.5), 0 1px 2px rgba(255,255,255,0.5)",
           transition: "height 0.2s",
@@ -50,6 +51,9 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
           ) : (
             <>
               <div style={{ color: "#0FF", fontSize: 9, marginBottom: 4, fontFamily: "monospace", textAlign: "center" }}>♪ NOW PLAYING ♪</div>
+              <div style={{ textAlign: "center", marginBottom: 4 }}>
+                <NostalImg src={TRACKS[track].cover} fallback="🎵" size={60} style={{ borderRadius: 4 }} />
+              </div>
               <div style={{ color: "#fff", fontSize: 12, fontWeight: "bold", textAlign: "center", marginBottom: 2, fontFamily: "monospace" }}>
                 {TRACKS[track].title}
               </div>

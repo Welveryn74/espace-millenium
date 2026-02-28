@@ -192,7 +192,7 @@ export default function SalleJeuxWindow({ onClose, onMinimize, zIndex, onFocus }
                     }}
                   >
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      <span style={{ fontSize: 20 }}>{game.emoji}</span>
+                      <NostalImg src={game.img} fallback={game.emoji} size={24} />
                       <div style={{ flex: 1 }}>
                         <span style={{
                           color: current.screenText,
@@ -215,13 +215,19 @@ export default function SalleJeuxWindow({ onClose, onMinimize, zIndex, onFocus }
                         marginTop: 8,
                         paddingTop: 8,
                         borderTop: `1px solid ${current.screenText}20`,
-                        color: `${current.screenText}CC`,
-                        fontSize: 11,
-                        lineHeight: 1.7,
-                        fontStyle: "italic",
+                        display: "flex",
+                        gap: 12,
                         animation: "slideUp 0.2s ease-out",
                       }}>
-                        {game.desc}
+                        <NostalImg src={game.img} fallback={game.emoji} size={120} style={{ borderRadius: 6, flexShrink: 0 }} />
+                        <div style={{
+                          color: `${current.screenText}CC`,
+                          fontSize: 11,
+                          lineHeight: 1.7,
+                          fontStyle: "italic",
+                        }}>
+                          {game.desc}
+                        </div>
                       </div>
                     )}
                   </div>

@@ -70,7 +70,7 @@ export default function SkyblogWindow({ onClose, onMinimize, zIndex, onFocus }) 
                     <div style={{ fontFamily: "'Comic Sans MS', cursive", fontSize: 16, color: "#F0F", fontWeight: "bold" }}>{post.title}</div>
                     <div style={{ color: "#888", fontSize: 10, marginTop: 2 }}>Posté le {post.date} à 18h42</div>
                   </div>
-                  <div style={{ fontSize: 32 }}>{post.img}</div>
+                  <NostalImg src={post.img} fallback={post.emoji} size={80} style={{ borderRadius: 6 }} />
                 </div>
                 <div style={{
                   color: "#ddd", fontSize: 12, lineHeight: 1.7,

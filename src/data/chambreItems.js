@@ -9,21 +9,21 @@ export const COUETTES = [
 ];
 
 export const BEYBLADE_TOUPIES = [
-  { id: "dragoon", name: "Dragoon Storm", color: "#3B82F6", accent: "#93C5FD", stat: 7, desc: "La toupie de Tyson. Le Dragon Bleu. Celle que tout le monde voulait dans la cour." },
-  { id: "dranzer", name: "Dranzer Flame", color: "#EF4444", accent: "#FCA5A5", stat: 8, desc: "Le Phoenix de Kai. Puissante, élégante, et avec cette aura de rival cool." },
-  { id: "driger", name: "Driger Fang", color: "#22C55E", accent: "#86EFAC", stat: 6, desc: "Le Tigre Blanc de Ray. Rapide comme l'éclair, fidèle comme un ami." },
-  { id: "draciel", name: "Draciel Shield", color: "#A855F7", accent: "#D8B4FE", stat: 9, desc: "La Tortue de Max. La meilleure défense. Increvable dans l'arène." },
+  { id: "dragoon", name: "Dragoon Storm", color: "#3B82F6", accent: "#93C5FD", stat: 7, desc: "La toupie de Tyson. Le Dragon Bleu. Celle que tout le monde voulait dans la cour.", img: "/images/chambre/beyblades/dragoon.png" },
+  { id: "dranzer", name: "Dranzer Flame", color: "#EF4444", accent: "#FCA5A5", stat: 8, desc: "Le Phoenix de Kai. Puissante, élégante, et avec cette aura de rival cool.", img: "/images/chambre/beyblades/dranzer.png" },
+  { id: "driger", name: "Driger Fang", color: "#22C55E", accent: "#86EFAC", stat: 6, desc: "Le Tigre Blanc de Ray. Rapide comme l'éclair, fidèle comme un ami.", img: "/images/chambre/beyblades/driger.png" },
+  { id: "draciel", name: "Draciel Shield", color: "#A855F7", accent: "#D8B4FE", stat: 9, desc: "La Tortue de Max. La meilleure défense. Increvable dans l'arène.", img: "/images/chambre/beyblades/draciel.png" },
 ];
 
 export const BILLES_COLLECTION = [
-  { id: "calot", name: "Le Calot", colors: ["#1E90FF", "#87CEFA", "#1E90FF"], size: 44, desc: "La grosse. La reine de la cour. Celui qui avait un calot en verre bleu était respecté de tous." },
-  { id: "agate", name: "L'Agate", colors: ["#FF6347", "#FFD700", "#FF4500"], size: 30, desc: "Avec ses veines de couleur qui tourbillonnent à l'intérieur. On pouvait la regarder pendant des heures." },
-  { id: "terre", name: "La Terre", colors: ["#8B4513", "#D2691E", "#A0522D"], size: 28, desc: "La bille de base. Celle qu'on avait en 50 exemplaires. Monnaie d'échange universelle." },
-  { id: "galaxie", name: "La Galaxie", colors: ["#191970", "#9370DB", "#000080"], size: 32, desc: "Bleu nuit avec des paillettes. On aurait dit qu'elle contenait l'univers." },
-  { id: "oeilDeChat", name: "L'Œil de Chat", colors: ["#32CD32", "#ADFF2F", "#228B22"], size: 28, desc: "Verte avec une bande claire au milieu. Le nom faisait un peu peur et un peu envie." },
-  { id: "cristal", name: "La Cristal", colors: ["#E0E0E0", "#FFFFFF", "#C0C0C0"], size: 28, desc: "Transparente comme du verre. Fragile, précieuse. Tu la sortais jamais pour jouer, juste pour montrer." },
-  { id: "boulard", name: "Le Boulard", colors: ["#FF1493", "#FF69B4", "#FF1493"], size: 48, desc: "L'ÉNORME. Interdite dans certaines cours parce qu'elle écrasait tout. La bille nucléaire." },
-  { id: "chinoise", name: "La Chinoise", colors: ["#FFD700", "#FF8C00", "#FFD700"], size: 26, desc: "Toute petite, dorée, avec des motifs. Personne savait pourquoi on l'appelait comme ça." },
+  { id: "calot", name: "Le Calot", colors: ["#1E90FF", "#87CEFA", "#1E90FF"], size: 44, desc: "La grosse. La reine de la cour. Celui qui avait un calot en verre bleu était respecté de tous.", img: "/images/chambre/billes/calot.png" },
+  { id: "agate", name: "L'Agate", colors: ["#FF6347", "#FFD700", "#FF4500"], size: 30, desc: "Avec ses veines de couleur qui tourbillonnent à l'intérieur. On pouvait la regarder pendant des heures.", img: "/images/chambre/billes/agate.png" },
+  { id: "terre", name: "La Terre", colors: ["#8B4513", "#D2691E", "#A0522D"], size: 28, desc: "La bille de base. Celle qu'on avait en 50 exemplaires. Monnaie d'échange universelle.", img: "/images/chambre/billes/terre.png" },
+  { id: "galaxie", name: "La Galaxie", colors: ["#191970", "#9370DB", "#000080"], size: 32, desc: "Bleu nuit avec des paillettes. On aurait dit qu'elle contenait l'univers.", img: "/images/chambre/billes/galaxie.png" },
+  { id: "oeilDeChat", name: "L'Œil de Chat", colors: ["#32CD32", "#ADFF2F", "#228B22"], size: 28, desc: "Verte avec une bande claire au milieu. Le nom faisait un peu peur et un peu envie.", img: "/images/chambre/billes/oeil-de-chat.png" },
+  { id: "cristal", name: "La Cristal", colors: ["#E0E0E0", "#FFFFFF", "#C0C0C0"], size: 28, desc: "Transparente comme du verre. Fragile, précieuse. Tu la sortais jamais pour jouer, juste pour montrer.", img: "/images/chambre/billes/cristal.png" },
+  { id: "boulard", name: "Le Boulard", colors: ["#FF1493", "#FF69B4", "#FF1493"], size: 48, desc: "L'ÉNORME. Interdite dans certaines cours parce qu'elle écrasait tout. La bille nucléaire.", img: "/images/chambre/billes/boulard.png" },
+  { id: "chinoise", name: "La Chinoise", colors: ["#FFD700", "#FF8C00", "#FFD700"], size: 26, desc: "Toute petite, dorée, avec des motifs. Personne savait pourquoi on l'appelait comme ça.", img: "/images/chambre/billes/chinoise.png" },
 ];
 
 export const LEGO_SETS = [
@@ -43,12 +43,12 @@ export const PELUCHES = [
 ];
 
 export const SCOUBIDOUS = [
-  { id: "rond", name: "Le Rond", colors: ["#FF4444", "#FFDD44"], desc: "Le premier qu'on apprenait. Quatre fils, dessus-dessous. T'avais mal aux doigts mais tu lâchais pas." },
-  { id: "carre", name: "Le Carré", colors: ["#4488FF", "#44FF88"], desc: "Le niveau 2. Un peu plus classe. Tu le faisais pendre à ta trousse comme un trophée." },
-  { id: "torsade", name: "Le Torsadé", colors: ["#FF44FF", "#44FFFF"], desc: "Le twist. Littéralement. Celui qui impressionnait tout le monde au centre aéré." },
-  { id: "spirale", name: "La Spirale", colors: ["#FF8844", "#8844FF"], desc: "Le niveau expert. Si tu savais faire celui-là, tu étais le maître incontesté du scoubidou." },
-  { id: "plat", name: "Le Plat", colors: ["#44FF44", "#FF4488"], desc: "Le bracelet. Tu en faisais pour tes copains et ta maman. Cadeau de fête des mères officiel." },
-  { id: "etoile", name: "L'Étoile", colors: ["#FFDD44", "#FF4444", "#4488FF"], desc: "Le mythique. Six fils. Personne dans la classe savait vraiment le faire. On faisait semblant." },
+  { id: "rond", name: "Le Rond", colors: ["#FF4444", "#FFDD44"], desc: "Le premier qu'on apprenait. Quatre fils, dessus-dessous. T'avais mal aux doigts mais tu lâchais pas.", img: "/images/chambre/scoubidous/rond.png" },
+  { id: "carre", name: "Le Carré", colors: ["#4488FF", "#44FF88"], desc: "Le niveau 2. Un peu plus classe. Tu le faisais pendre à ta trousse comme un trophée.", img: "/images/chambre/scoubidous/carre.png" },
+  { id: "torsade", name: "Le Torsadé", colors: ["#FF44FF", "#44FFFF"], desc: "Le twist. Littéralement. Celui qui impressionnait tout le monde au centre aéré.", img: "/images/chambre/scoubidous/torsade.png" },
+  { id: "spirale", name: "La Spirale", colors: ["#FF8844", "#8844FF"], desc: "Le niveau expert. Si tu savais faire celui-là, tu étais le maître incontesté du scoubidou.", img: "/images/chambre/scoubidous/spirale.png" },
+  { id: "plat", name: "Le Plat", colors: ["#44FF44", "#FF4488"], desc: "Le bracelet. Tu en faisais pour tes copains et ta maman. Cadeau de fête des mères officiel.", img: "/images/chambre/scoubidous/plat.png" },
+  { id: "etoile", name: "L'Étoile", colors: ["#FFDD44", "#FF4444", "#4488FF"], desc: "Le mythique. Six fils. Personne dans la classe savait vraiment le faire. On faisait semblant.", img: "/images/chambre/scoubidous/etoile.png" },
 ];
 
 export const JEUX_SOCIETE = [

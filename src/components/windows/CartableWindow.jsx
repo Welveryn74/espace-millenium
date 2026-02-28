@@ -60,8 +60,9 @@ export default function CartableWindow({ onClose, onMinimize, zIndex, onFocus })
                 <span style={{ fontSize: 12, fontWeight: "bold", color: "#5A3E1B" }}>{item.name}</span>
               </div>
               {opened === i && (
-                <div style={{ fontSize: 11, color: "#666", lineHeight: 1.6, animation: "slideUp 0.2s ease-out", borderTop: "1px solid #E8E0D0", paddingTop: 8 }}>
-                  {item.desc}
+                <div style={{ display: "flex", gap: 12, paddingTop: 8, borderTop: "1px solid #E8E0D0", animation: "slideUp 0.2s ease-out" }}>
+                  <NostalImg src={item.img} fallback={item.emoji} size={100} style={{ borderRadius: 6, flexShrink: 0 }} />
+                  <div style={{ fontSize: 11, color: "#666", lineHeight: 1.6 }}>{item.desc}</div>
                 </div>
               )}
             </div>

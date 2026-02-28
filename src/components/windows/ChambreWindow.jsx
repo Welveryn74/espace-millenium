@@ -737,7 +737,7 @@ function CouetteSelector({ couette, setCouette }) {
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <NostalImg src={c.img} fallback={c.emoji} size={28} />
+                <NostalImg src={c.img} fallback={c.emoji} size={selected ? 80 : 28} style={selected ? { borderRadius: 6 } : undefined} />
                 <div style={{ color: "#E0E0E0", fontSize: 13, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif" }}>
                   {c.label}
                 </div>
@@ -1108,12 +1108,16 @@ function BillesView() {
           background: `rgba(${parseInt(current.colors[0].slice(1,3),16)},${parseInt(current.colors[0].slice(3,5),16)},${parseInt(current.colors[0].slice(5,7),16)},0.08)`,
           border: `1px solid ${current.colors[0]}40`,
           borderRadius: 8, animation: "fadeIn 0.2s ease-out",
+          display: "flex", gap: 12,
         }}>
-          <div style={{ color: "#E0E0E0", fontSize: 13, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif", marginBottom: 6 }}>
-            {current.name}
-          </div>
-          <div style={{ color: "#AAA", fontSize: 11, lineHeight: 1.6 }}>
-            {current.desc}
+          <NostalImg src={current.img} fallback="🔮" size={80} style={{ borderRadius: 6, flexShrink: 0 }} />
+          <div>
+            <div style={{ color: "#E0E0E0", fontSize: 13, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif", marginBottom: 6 }}>
+              {current.name}
+            </div>
+            <div style={{ color: "#AAA", fontSize: 11, lineHeight: 1.6 }}>
+              {current.desc}
+            </div>
           </div>
         </div>
       )}
@@ -1175,8 +1179,9 @@ function JeuxSocieteView() {
                 <span style={{ color: "#666", fontSize: 10, transition: "transform 0.2s", transform: isOpen ? "rotate(90deg)" : "rotate(0deg)" }}>▶</span>
               </div>
               {isOpen && (
-                <div style={{ padding: "0 14px 12px 14px", color: "#AAA", fontSize: 11, lineHeight: 1.6, animation: "fadeIn 0.2s ease-out" }}>
-                  {g.desc}
+                <div style={{ padding: "0 14px 12px 14px", display: "flex", gap: 12, animation: "fadeIn 0.2s ease-out" }}>
+                  <NostalImg src={g.img} fallback={g.emoji} size={100} style={{ borderRadius: 6, flexShrink: 0 }} />
+                  <div style={{ color: "#AAA", fontSize: 11, lineHeight: 1.6 }}>{g.desc}</div>
                 </div>
               )}
             </div>
@@ -1256,17 +1261,21 @@ function ScoubidousView() {
           background: `${current.colors[0]}12`,
           border: `1px solid ${current.colors[0]}30`,
           borderRadius: 8, animation: "fadeIn 0.2s ease-out",
+          display: "flex", gap: 12,
         }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-            {current.colors.map((c, i) => (
-              <div key={i} style={{ width: 10, height: 10, borderRadius: "50%", background: c }} />
-            ))}
-            <span style={{ color: "#E0E0E0", fontSize: 13, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif" }}>
-              {current.name}
-            </span>
-          </div>
-          <div style={{ color: "#AAA", fontSize: 11, lineHeight: 1.6 }}>
-            {current.desc}
+          <NostalImg src={current.img} fallback="🪢" size={80} style={{ borderRadius: 6, flexShrink: 0 }} />
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+              {current.colors.map((c, i) => (
+                <div key={i} style={{ width: 10, height: 10, borderRadius: "50%", background: c }} />
+              ))}
+              <span style={{ color: "#E0E0E0", fontSize: 13, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif" }}>
+                {current.name}
+              </span>
+            </div>
+            <div style={{ color: "#AAA", fontSize: 11, lineHeight: 1.6 }}>
+              {current.desc}
+            </div>
           </div>
         </div>
       )}
@@ -1322,7 +1331,7 @@ function PeluchesView() {
                 transform: isHugged ? "scale(1.3)" : "scale(1)",
                 animation: isHugged ? "pulse 0.4s ease-in-out 3" : "none",
               }}>
-                <NostalImg src={p.img} fallback={p.emoji} size={40} />
+                <NostalImg src={p.img} fallback={p.emoji} size={isHugged ? 80 : 40} />
               </div>
               <div style={{ color: "#E0E0E0", fontSize: 12, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif", marginTop: 6 }}>
                 {p.name}
@@ -1403,8 +1412,9 @@ function LegoGallery() {
                 <span style={{ color: "#666", fontSize: 10, transition: "transform 0.2s", transform: isOpen ? "rotate(90deg)" : "rotate(0deg)" }}>▶</span>
               </div>
               {isOpen && (
-                <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid ${set.color}30`, color: "#AAA", fontSize: 11, lineHeight: 1.6, animation: "fadeIn 0.2s ease-out" }}>
-                  {set.desc}
+                <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid ${set.color}30`, display: "flex", gap: 12, animation: "fadeIn 0.2s ease-out" }}>
+                  <NostalImg src={set.img} fallback={set.emoji} size={100} style={{ borderRadius: 6, flexShrink: 0 }} />
+                  <div style={{ color: "#AAA", fontSize: 11, lineHeight: 1.6 }}>{set.desc}</div>
                 </div>
               )}
             </div>
