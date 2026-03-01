@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 200">
+  <!-- Feuille Diddl — papier à lettre parfumé -->
+  <defs>
+    <linearGradient id="dd" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF8DC"/>
+      <stop offset="100%" stop-color="#FAEBD7"/>
+    </linearGradient>
+  </defs>
+  <!-- Feuille de papier -->
+  <rect x="10" y="10" width="140" height="180" rx="5" fill="url(#dd)" stroke="#DEB887" stroke-width="2"/>
+  <!-- Lignes -->
+  <line x1="25" y1="50" x2="135" y2="50" stroke="#FFB6C1" stroke-width="1" opacity="0.6"/>
+  <line x1="25" y1="70" x2="135" y2="70" stroke="#FFB6C1" stroke-width="1" opacity="0.6"/>
+  <line x1="25" y1="90" x2="135" y2="90" stroke="#FFB6C1" stroke-width="1" opacity="0.6"/>
+  <line x1="25" y1="110" x2="135" y2="110" stroke="#FFB6C1" stroke-width="1" opacity="0.6"/>
+  <line x1="25" y1="130" x2="135" y2="130" stroke="#FFB6C1" stroke-width="1" opacity="0.6"/>
+  <line x1="25" y1="150" x2="135" y2="150" stroke="#FFB6C1" stroke-width="1" opacity="0.6"/>
+  <!-- Petite souris Diddl stylisée (coin bas-droit) -->
+  <g transform="translate(105, 155)">
+    <!-- Corps -->
+    <ellipse cx="15" cy="18" rx="12" ry="14" fill="white" stroke="#999" stroke-width="1"/>
+    <!-- Oreilles -->
+    <ellipse cx="6" cy="4" rx="7" ry="5" fill="white" stroke="#999" stroke-width="1"/>
+    <ellipse cx="6" cy="4" rx="4" ry="3" fill="#FFB6C1"/>
+    <ellipse cx="24" cy="4" rx="7" ry="5" fill="white" stroke="#999" stroke-width="1"/>
+    <ellipse cx="24" cy="4" rx="4" ry="3" fill="#FFB6C1"/>
+    <!-- Yeux -->
+    <circle cx="10" cy="14" r="3" fill="#333"/>
+    <circle cx="20" cy="14" r="3" fill="#333"/>
+    <circle cx="11" cy="13" r="1" fill="white"/>
+    <circle cx="21" cy="13" r="1" fill="white"/>
+    <!-- Nez -->
+    <ellipse cx="15" cy="18" rx="2" ry="1.5" fill="#FFB6C1"/>
+    <!-- Grands pieds -->
+    <ellipse cx="8" cy="32" rx="8" ry="4" fill="#FFD700" stroke="#DAA520" stroke-width="1"/>
+    <ellipse cx="22" cy="32" rx="8" ry="4" fill="#FFD700" stroke="#DAA520" stroke-width="1"/>
+  </g>
+  <!-- Petits coeurs décoratifs -->
+  <text x="20" y="38" font-size="12" fill="#FF69B4" opacity="0.7">♥</text>
+  <text x="120" y="38" font-size="10" fill="#FF69B4" opacity="0.5">♥</text>
+  <text x="70" y="175" font-size="8" fill="#FF69B4" opacity="0.4">♥</text>
+</svg>

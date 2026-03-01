@@ -283,7 +283,7 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
               }}>CH {channel + 1}</div>
               {/* Volume indicator */}
               <div style={{ position: "absolute", top: 10, left: 14, display: "flex", gap: 2, alignItems: "center" }}>
-                <NostalImg src="/images/ui/volume.png" fallback="🔊" size={10} />
+                <NostalImg src="/images/ui/volume.svg" fallback="🔊" size={10} />
                 <div style={{ width: 50, height: 4, background: "#333", borderRadius: 2, overflow: "hidden" }}>
                   <div style={{ width: `${volume}%`, height: "100%", background: CHANNELS[channel].color, transition: "width 0.2s" }} />
                 </div>

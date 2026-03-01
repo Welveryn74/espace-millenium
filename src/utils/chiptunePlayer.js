@@ -58,8 +58,15 @@ function stopScheduled() {
   }
 }
 
+function cleanAudioHandlers(el) {
+  el.onerror = null;
+  el.onended = null;
+  el.onloadedmetadata = null;
+}
+
 function stopPreview() {
   const el = getAudioElement();
+  cleanAudioHandlers(el);
   el.pause();
   el.removeAttribute('src');
   el.load();
@@ -132,32 +139,39 @@ function playPreview(url, melody) {
   const ctx = getCtx();
   const el = getAudioElement();
 
+  // Nettoyer tout ancien handler avant d'en poser de nouveaux
+  cleanAudioHandlers(el);
+
   playbackMode = 'preview';
   el.src = url;
 
-  const fallbackToChiptune = () => {
+  // Flag anti-doublon : le fallback ne peut se déclencher qu'une seule fois
+  let didFallback = false;
+  const fallback = () => {
+    if (didFallback) return;
+    didFallback = true;
+    cleanAudioHandlers(el);
+    el.pause();
     if (melody && isPlaying) {
       playbackMode = 'chiptune';
       scheduleMelody(melody);
     }
   };
 
-  el.addEventListener('error', () => fallbackToChiptune(), { once: true });
+  el.onerror = fallback;
 
-  el.addEventListener('loadedmetadata', () => {
+  el.onloadedmetadata = () => {
     totalDuration = el.duration || 30;
     startTime = ctx.currentTime;
-  }, { once: true });
+  };
 
-  el.addEventListener('ended', () => {
+  el.onended = () => {
     if (isPlaying && onEndedCallback) onEndedCallback();
-  }, { once: true });
+  };
 
   const playPromise = el.play();
   if (playPromise) {
-    playPromise.catch(() => {
-      fallbackToChiptune();
-    });
+    playPromise.catch(fallback);
   }
 }
 
@@ -218,6 +232,7 @@ export function stop() {
 export function destroy() {
   stop();
   if (audioElement) {
+    cleanAudioHandlers(audioElement);
     audioElement.removeAttribute('src');
     audioElement.load();
     audioElement = null;

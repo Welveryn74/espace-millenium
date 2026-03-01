@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="drz" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF4444"/>
+      <stop offset="60%" stop-color="#CC0000"/>
+      <stop offset="100%" stop-color="#660000"/>
+    </radialGradient>
+    <linearGradient id="met3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8E8E8"/>
+      <stop offset="50%" stop-color="#A0A0A0"/>
+      <stop offset="100%" stop-color="#E8E8E8"/>
+    </linearGradient>
+  </defs>
+  <!-- Outer ring -->
+  <circle cx="100" cy="100" r="88" fill="url(#met3)" stroke="#666" stroke-width="2"/>
+  <!-- Attack ring teeth -->
+  <g fill="#888" stroke="#666" stroke-width="1">
+    <polygon points="100,12 94,22 106,22"/>
+    <polygon points="100,188 94,178 106,178"/>
+    <polygon points="12,100 22,94 22,106"/>
+    <polygon points="188,100 178,94 178,106"/>
+    <polygon points="38,38 48,34 42,46"/>
+    <polygon points="162,38 158,48 152,34"/>
+    <polygon points="38,162 34,152 48,158"/>
+    <polygon points="162,162 152,166 166,152"/>
+  </g>
+  <!-- Main disc -->
+  <circle cx="100" cy="100" r="72" fill="url(#drz)" stroke="#800" stroke-width="2"/>
+  <!-- Phoenix flame pattern -->
+  <g fill="#FF6600" opacity="0.7">
+    <path d="M 100 35 Q 85 55 90 70 Q 95 60 100 50 Q 105 60 110 70 Q 115 55 100 35"/>
+    <path d="M 60 75 Q 55 90 65 100 Q 65 88 70 80 Q 72 92 80 100 Q 70 85 60 75"/>
+    <path d="M 140 75 Q 145 90 135 100 Q 135 88 130 80 Q 128 92 120 100 Q 130 85 140 75"/>
+  </g>
+  <!-- Phoenix wings (stylized) -->
+  <path d="M 70 90 Q 50 70 55 100 Q 60 85 70 90" fill="#FF4444" opacity="0.5"/>
+  <path d="M 130 90 Q 150 70 145 100 Q 140 85 130 90" fill="#FF4444" opacity="0.5"/>
+  <!-- Center bolt -->
+  <circle cx="100" cy="100" r="16" fill="url(#met3)" stroke="#666" stroke-width="2"/>
+  <circle cx="100" cy="100" r="8" fill="#CC0000" stroke="#800" stroke-width="1.5"/>
+  <!-- Phoenix emblem center -->
+  <path d="M 100 94 L 96 102 L 100 99 L 104 102 Z" fill="#FFD700"/>
+</svg>

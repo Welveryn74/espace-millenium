@@ -338,7 +338,7 @@ function RoomScene({ items, hoveredItem, setHoveredItem, setActiveItem, couetteC
       }}>
         {/* Window illustration (covers CSS fallback) */}
         <NostalImg
-          src={lampOn ? "/images/chambre/room/window-day.png" : "/images/chambre/room/window-night.png"}
+          src={lampOn ? "/images/chambre/room/window-day.svg" : "/images/chambre/room/window-night.svg"}
           fallback=""
           size={110}
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 1 }}

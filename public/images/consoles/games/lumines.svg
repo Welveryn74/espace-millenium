@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 250">
+  <defs>
+    <linearGradient id="lbg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a0033"/>
+      <stop offset="50%" stop-color="#330066"/>
+      <stop offset="100%" stop-color="#000033"/>
+    </linearGradient>
+  </defs>
+  <rect width="180" height="250" fill="url(#lbg)"/>
+  <!-- Grid of luminous blocks -->
+  <g opacity="0.6">
+    <rect x="20" y="120" width="20" height="20" fill="#FF6600" rx="2"/>
+    <rect x="40" y="120" width="20" height="20" fill="#FF6600" rx="2"/>
+    <rect x="20" y="140" width="20" height="20" fill="white" rx="2"/>
+    <rect x="40" y="140" width="20" height="20" fill="#FF6600" rx="2"/>
+  </g>
+  <g opacity="0.6">
+    <rect x="80" y="140" width="20" height="20" fill="white" rx="2"/>
+    <rect x="100" y="140" width="20" height="20" fill="white" rx="2"/>
+    <rect x="80" y="160" width="20" height="20" fill="#FF6600" rx="2"/>
+    <rect x="100" y="160" width="20" height="20" fill="white" rx="2"/>
+  </g>
+  <g opacity="0.4">
+    <rect x="120" y="80" width="20" height="20" fill="#FF6600" rx="2"/>
+    <rect x="140" y="80" width="20" height="20" fill="white" rx="2"/>
+    <rect x="120" y="100" width="20" height="20" fill="#FF6600" rx="2"/>
+    <rect x="140" y="100" width="20" height="20" fill="#FF6600" rx="2"/>
+  </g>
+  <!-- Timeline sweep line -->
+  <line x1="70" y1="60" x2="70" y2="200" stroke="#FF6600" stroke-width="2" opacity="0.8"/>
+  <!-- Musical notes -->
+  <text x="30" y="50" font-size="16" fill="#FF6600" opacity="0.5">♪</text>
+  <text x="130" y="70" font-size="12" fill="white" opacity="0.4">♫</text>
+  <text x="60" y="210" font-size="14" fill="#FF6600" opacity="0.3">♪</text>
+  <!-- Title -->
+  <text x="90" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="white" font-weight="bold" letter-spacing="8">LUMINES</text>
+  <!-- PSP tag -->
+  <text x="90" y="235" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">PUZZLE ★ MUSIC</text>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 250">
+  <rect width="180" height="250" fill="#000"/>
+  <!-- Center line -->
+  <g stroke="white" stroke-width="3" stroke-dasharray="10,8">
+    <line x1="90" y1="40" x2="90" y2="220"/>
+  </g>
+  <!-- Score -->
+  <text x="65" y="70" text-anchor="middle" font-family="monospace" font-size="36" fill="white">3</text>
+  <text x="115" y="70" text-anchor="middle" font-family="monospace" font-size="36" fill="white">5</text>
+  <!-- Left paddle -->
+  <rect x="15" y="100" width="8" height="40" fill="white"/>
+  <!-- Right paddle -->
+  <rect x="157" y="130" width="8" height="40" fill="white"/>
+  <!-- Ball -->
+  <rect x="88" y="118" width="8" height="8" fill="white"/>
+  <!-- Title -->
+  <text x="90" y="245" text-anchor="middle" font-family="monospace" font-size="16" fill="white" letter-spacing="6">PONG</text>
+</svg>

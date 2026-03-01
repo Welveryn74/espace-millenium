@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100">
+  <!-- Lunettes colorées Y2K style -->
+  <!-- Branche gauche -->
+  <path d="M 5 50 L 40 48" stroke="#FF69B4" stroke-width="4" stroke-linecap="round"/>
+  <!-- Verre gauche -->
+  <ellipse cx="70" cy="48" rx="30" ry="24" fill="#FF69B4" fill-opacity="0.3" stroke="#FF69B4" stroke-width="3"/>
+  <!-- Pont -->
+  <path d="M 100 48 Q 110 38 120 48" fill="none" stroke="#FF69B4" stroke-width="3"/>
+  <!-- Verre droit -->
+  <ellipse cx="140" cy="48" rx="30" ry="24" fill="#87CEEB" fill-opacity="0.3" stroke="#FF69B4" stroke-width="3"/>
+  <!-- Branche droite -->
+  <path d="M 170 48 L 198 50" stroke="#FF69B4" stroke-width="4" stroke-linecap="round"/>
+  <!-- Reflets -->
+  <ellipse cx="58" cy="40" rx="8" ry="5" fill="white" opacity="0.3" transform="rotate(-20 58 40)"/>
+  <ellipse cx="128" cy="40" rx="8" ry="5" fill="white" opacity="0.3" transform="rotate(-20 128 40)"/>
+  <!-- Petites étoiles Y2K -->
+  <text x="65" y="55" font-size="10" fill="#FFD700" opacity="0.6">★</text>
+  <text x="145" y="55" font-size="8" fill="#FFD700" opacity="0.6">★</text>
+</svg>

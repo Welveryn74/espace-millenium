@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 250">
+  <defs>
+    <linearGradient id="cbbg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#000033"/>
+      <stop offset="100%" stop-color="#000066"/>
+    </linearGradient>
+  </defs>
+  <rect width="180" height="250" fill="url(#cbbg)"/>
+  <!-- Briques -->
+  <g>
+    <rect x="10" y="30" width="30" height="12" rx="2" fill="#FF4444"/>
+    <rect x="44" y="30" width="30" height="12" rx="2" fill="#FF8844"/>
+    <rect x="78" y="30" width="30" height="12" rx="2" fill="#FF4444"/>
+    <rect x="112" y="30" width="30" height="12" rx="2" fill="#FF8844"/>
+    <rect x="146" y="30" width="24" height="12" rx="2" fill="#FF4444"/>
+    <rect x="10" y="46" width="30" height="12" rx="2" fill="#FFDD44"/>
+    <rect x="44" y="46" width="30" height="12" rx="2" fill="#44FF44"/>
+    <rect x="78" y="46" width="30" height="12" rx="2" fill="#FFDD44"/>
+    <rect x="112" y="46" width="30" height="12" rx="2" fill="#44FF44"/>
+    <rect x="146" y="46" width="24" height="12" rx="2" fill="#FFDD44"/>
+    <rect x="10" y="62" width="30" height="12" rx="2" fill="#4488FF"/>
+    <rect x="44" y="62" width="30" height="12" rx="2" fill="#44DDFF"/>
+    <rect x="78" y="62" width="30" height="12" rx="2" fill="#4488FF"/>
+    <rect x="112" y="62" width="30" height="12" rx="2" fill="#44DDFF"/>
+    <rect x="146" y="62" width="24" height="12" rx="2" fill="#4488FF"/>
+    <rect x="44" y="78" width="30" height="12" rx="2" fill="#AA44FF"/>
+    <rect x="78" y="78" width="30" height="12" rx="2" fill="#FF44AA"/>
+    <rect x="112" y="78" width="30" height="12" rx="2" fill="#AA44FF"/>
+  </g>
+  <!-- Balle -->
+  <circle cx="90" cy="160" r="6" fill="white"/>
+  <!-- Trajectoire -->
+  <line x1="90" y1="160" x2="120" y2="90" stroke="white" stroke-width="1" stroke-dasharray="4,4" opacity="0.4"/>
+  <!-- Raquette -->
+  <rect x="60" y="210" width="60" height="10" rx="5" fill="#C0C0C0" stroke="#888" stroke-width="1"/>
+  <!-- Titre -->
+  <text x="90" y="195" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="14" fill="#FFD700" font-weight="bold">CASSE-BRIQUES</text>
+</svg>

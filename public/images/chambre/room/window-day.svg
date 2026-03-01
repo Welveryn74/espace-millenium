@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140">
+  <!-- Fenêtre jour -->
+  <rect x="5" y="5" width="110" height="130" rx="3" fill="#8B7355" stroke="#6B4226" stroke-width="3"/>
+  <!-- Vitre gauche -->
+  <rect x="12" y="12" width="46" height="55" fill="#87CEEB"/>
+  <!-- Vitre droite -->
+  <rect x="62" y="12" width="46" height="55" fill="#87CEEB"/>
+  <!-- Vitre bas gauche -->
+  <rect x="12" y="72" width="46" height="55" fill="#87CEEB"/>
+  <!-- Vitre bas droite -->
+  <rect x="62" y="72" width="46" height="55" fill="#87CEEB"/>
+  <!-- Soleil -->
+  <circle cx="90" cy="30" r="12" fill="#FFD700" opacity="0.9"/>
+  <g stroke="#FFD700" stroke-width="1.5" opacity="0.6">
+    <line x1="90" y1="14" x2="90" y2="10"/>
+    <line x1="90" y1="46" x2="90" y2="50"/>
+    <line x1="74" y1="30" x2="70" y2="30"/>
+    <line x1="106" y1="30" x2="108" y2="30"/>
+  </g>
+  <!-- Nuage -->
+  <g fill="white" opacity="0.8">
+    <ellipse cx="40" cy="28" rx="14" ry="8"/>
+    <ellipse cx="52" cy="26" rx="10" ry="7"/>
+    <ellipse cx="30" cy="26" rx="8" ry="6"/>
+  </g>
+  <!-- Croisillons -->
+  <line x1="58" y1="12" x2="58" y2="127" stroke="#6B4226" stroke-width="4"/>
+  <line x1="12" y1="67" x2="108" y2="67" stroke="#6B4226" stroke-width="4"/>
+  <!-- Poignée -->
+  <rect x="54" y="82" width="3" height="14" rx="1" fill="#DAA520"/>
+</svg>

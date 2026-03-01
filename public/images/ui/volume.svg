@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <!-- Icône volume / haut-parleur -->
+  <!-- Corps du haut-parleur -->
+  <polygon points="3,9 3,15 7,15 13,20 13,4 7,9" fill="#5B9BD5" stroke="#3A7CC0" stroke-width="0.8" stroke-linejoin="round"/>
+  <!-- Ondes sonores -->
+  <path d="M 16 8 Q 19 12 16 16" fill="none" stroke="#5B9BD5" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M 18 5 Q 23 12 18 19" fill="none" stroke="#5B9BD5" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

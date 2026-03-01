@@ -23,7 +23,7 @@ export default function CartableWindow({ onClose, onMinimize, zIndex, onFocus })
     <Win title="Mon Cartable — Année scolaire 2004-2005" onClose={onClose} onMinimize={onMinimize} width={620} height={540} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 160, y: 45 }} color="#8B4513">
       <div style={{ height: "100%", background: "linear-gradient(180deg, #FFF8F0 0%, #F0E8D8 100%)", padding: 16, overflowY: "auto" }}>
         <div style={{ textAlign: "center", marginBottom: 16 }}>
-          <NostalImg src="/images/desktop/cartable.png" fallback="🎒" size={52} />
+          <NostalImg src="/images/desktop/cartable.svg" fallback="🎒" size={52} />
           <div style={{ fontSize: 14, fontWeight: "bold", color: "#5A3E1B", marginTop: 4 }}>
             Qu'est-ce qu'il y a dans le sac ?
           </div>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <!-- Icône fichier image — cadre avec paysage -->
+  <rect x="4" y="4" width="40" height="40" rx="3" fill="white" stroke="#999" stroke-width="2"/>
+  <!-- Ciel -->
+  <rect x="6" y="6" width="36" height="20" fill="#87CEEB"/>
+  <!-- Soleil -->
+  <circle cx="34" cy="14" r="5" fill="#FFD700"/>
+  <!-- Montagne arrière -->
+  <polygon points="6,26 20,12 34,26" fill="#4CAF50"/>
+  <!-- Montagne avant -->
+  <polygon points="18,26 32,16 42,26" fill="#2E7D32"/>
+  <!-- Sol -->
+  <rect x="6" y="26" width="36" height="16" fill="#8BC34A"/>
+</svg>

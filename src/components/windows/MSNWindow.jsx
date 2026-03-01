@@ -144,7 +144,7 @@ export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz
         {/* Header with contact info */}
         <div style={{ padding: "8px 12px", background: "linear-gradient(180deg, #E8F4FF 0%, #D0E8FF 100%)", borderBottom: "1px solid #B0C8E8", display: "flex", alignItems: "center", gap: 10 }}>
           <div style={{ width: 44, height: 44, borderRadius: 4, background: "linear-gradient(135deg, #F0F, #60F)", display: "flex", alignItems: "center", justifyContent: "center", border: "2px solid #fff", boxShadow: "0 1px 4px rgba(0,0,0,0.2)", overflow: "hidden" }}>
-            <NostalImg src="/images/ui/msn-contact.png" fallback="😈" size={28} />
+            <NostalImg src="/images/ui/msn-contact.svg" fallback="😈" size={28} />
           </div>
           <div>
             <div style={{ fontSize: 12, fontWeight: "bold", color: "#003", display: "flex", alignItems: "center", gap: 4 }}>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <!-- Icône contact MSN — bonhomme vert -->
+  <!-- Tête -->
+  <circle cx="12" cy="7" r="4.5" fill="#6DC066" stroke="#4A9A42" stroke-width="1"/>
+  <!-- Corps -->
+  <path d="M 4 22 Q 4 14 12 14 Q 20 14 20 22" fill="#6DC066" stroke="#4A9A42" stroke-width="1"/>
+  <!-- Yeux -->
+  <circle cx="10" cy="6" r="1" fill="white"/>
+  <circle cx="14" cy="6" r="1" fill="white"/>
+  <circle cx="10" cy="6" r="0.4" fill="#333"/>
+  <circle cx="14" cy="6" r="0.4" fill="#333"/>
+  <!-- Sourire -->
+  <path d="M 10 9 Q 12 11 14 9" fill="none" stroke="white" stroke-width="0.8" stroke-linecap="round"/>
+</svg>

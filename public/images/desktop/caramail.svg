@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <!-- Icône Caramail — enveloppe orange/caramel -->
+  <defs>
+    <linearGradient id="cmg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FF8C00"/>
+      <stop offset="100%" stop-color="#CC6600"/>
+    </linearGradient>
+  </defs>
+  <!-- Enveloppe -->
+  <rect x="4" y="12" width="40" height="26" rx="3" fill="url(#cmg)" stroke="#995500" stroke-width="1.5"/>
+  <!-- Rabat -->
+  <path d="M 4 12 L 24 28 L 44 12" fill="none" stroke="#995500" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- Pli bas -->
+  <path d="M 4 38 L 18 25" fill="none" stroke="#B37300" stroke-width="1" opacity="0.5"/>
+  <path d="M 44 38 L 30 25" fill="none" stroke="#B37300" stroke-width="1" opacity="0.5"/>
+  <!-- @ symbole -->
+  <text x="24" y="24" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white" font-weight="bold" opacity="0.8">@</text>
+</svg>

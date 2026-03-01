@@ -62,7 +62,7 @@ export default function Taskbar({ startMenu, setStartMenu, openWindowIds, isTopW
           letterSpacing: 0.5,
         }}
       >
-        <NostalImg src="/images/ui/start.png" fallback="🪟" size={20} /> démarrer
+        <NostalImg src="/images/ui/start.svg" fallback="🪟" size={20} /> démarrer
       </button>
 
       {/* Separator */}

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150">
+  <!-- Accessoires Y2K — barrettes papillon, bracelets, etc. -->
+  <!-- Barrette papillon -->
+  <g transform="translate(30, 20)">
+    <path d="M 25 20 Q 10 5 5 15 Q 0 25 15 20" fill="#FF69B4" stroke="#FF1493" stroke-width="1"/>
+    <path d="M 25 20 Q 40 5 45 15 Q 50 25 35 20" fill="#FF69B4" stroke="#FF1493" stroke-width="1"/>
+    <path d="M 25 20 Q 10 35 5 25 Q 0 15 15 20" fill="#FF87B4" stroke="#FF1493" stroke-width="1"/>
+    <path d="M 25 20 Q 40 35 45 25 Q 50 15 35 20" fill="#FF87B4" stroke="#FF1493" stroke-width="1"/>
+    <circle cx="25" cy="20" r="3" fill="#FF1493"/>
+    <!-- Antennes -->
+    <line x1="25" y1="20" x2="20" y2="8" stroke="#FF1493" stroke-width="1"/>
+    <line x1="25" y1="20" x2="30" y2="8" stroke="#FF1493" stroke-width="1"/>
+    <circle cx="20" cy="7" r="1.5" fill="#FF1493"/>
+    <circle cx="30" cy="7" r="1.5" fill="#FF1493"/>
+    <!-- Clip -->
+    <rect x="18" y="25" width="14" height="4" rx="1" fill="#C0C0C0"/>
+  </g>
+  <!-- Bracelet en perles -->
+  <g transform="translate(100, 15)">
+    <circle cx="10" cy="20" r="6" fill="#FF4444"/>
+    <circle cx="22" cy="18" r="6" fill="#4488FF"/>
+    <circle cx="34" cy="18" r="6" fill="#FFDD44"/>
+    <circle cx="46" cy="20" r="6" fill="#44FF44"/>
+    <circle cx="56" cy="25" r="6" fill="#FF69B4"/>
+    <circle cx="62" cy="35" r="6" fill="#AA44FF"/>
+    <circle cx="56" cy="45" r="6" fill="#FF8844"/>
+    <circle cx="46" cy="50" r="6" fill="#44DDFF"/>
+    <circle cx="34" cy="52" r="6" fill="#FF4444"/>
+    <circle cx="22" cy="50" r="6" fill="#FFDD44"/>
+    <circle cx="12" cy="45" r="6" fill="#4488FF"/>
+    <circle cx="6" cy="35" r="6" fill="#44FF44"/>
+    <!-- Lettres sur perles -->
+    <text x="10" y="23" text-anchor="middle" font-size="7" fill="white" font-weight="bold">B</text>
+    <text x="22" y="21" text-anchor="middle" font-size="7" fill="white" font-weight="bold">F</text>
+    <text x="34" y="21" text-anchor="middle" font-size="7" fill="white" font-weight="bold">F</text>
+  </g>
+  <!-- Chouchou -->
+  <g transform="translate(20, 80)">
+    <ellipse cx="30" cy="25" rx="25" ry="18" fill="none" stroke="#9370DB" stroke-width="8" stroke-linecap="round"/>
+    <path d="M 10 15 Q 15 8 25 10 Q 20 18 12 20" fill="#9370DB" opacity="0.5"/>
+    <path d="M 40 35 Q 45 28 50 32 Q 45 38 38 38" fill="#9370DB" opacity="0.5"/>
+  </g>
+  <!-- Collier ras-de-cou tatoo -->
+  <g transform="translate(100, 85)">
+    <path d="M 0 25 Q 10 15 20 20 Q 30 10 40 18 Q 50 8 60 15 Q 70 10 80 20 Q 90 15 95 25" fill="none" stroke="#333" stroke-width="1.5"/>
+    <path d="M 0 25 Q 10 35 20 30 Q 30 40 40 32 Q 50 42 60 35 Q 70 40 80 30 Q 90 35 95 25" fill="none" stroke="#333" stroke-width="1.5"/>
+    <text x="47" y="30" text-anchor="middle" font-size="7" fill="#666">tattoo choker</text>
+  </g>
+</svg>

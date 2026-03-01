@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 180">
+  <!-- Top Y2K — crop top à paillettes -->
+  <defs>
+    <linearGradient id="topg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF69B4"/>
+      <stop offset="100%" stop-color="#FF1493"/>
+    </linearGradient>
+  </defs>
+  <!-- Bretelles -->
+  <path d="M 50 30 Q 48 10 55 5" fill="none" stroke="url(#topg)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 110 30 Q 112 10 105 5" fill="none" stroke="url(#topg)" stroke-width="5" stroke-linecap="round"/>
+  <!-- Corps du top -->
+  <path d="M 35 50 Q 30 35 50 30 L 110 30 Q 130 35 125 50 L 130 120 Q 80 130 30 120 Z" fill="url(#topg)" stroke="#CC1166" stroke-width="1.5"/>
+  <!-- Décolleté -->
+  <path d="M 50 30 Q 80 50 110 30" fill="none" stroke="#CC1166" stroke-width="1.5"/>
+  <!-- Paillettes / étoiles -->
+  <circle cx="60" cy="55" r="2" fill="#FFD700" opacity="0.7"/>
+  <circle cx="85" cy="70" r="1.5" fill="#FFD700" opacity="0.6"/>
+  <circle cx="100" cy="50" r="2" fill="#FFD700" opacity="0.8"/>
+  <circle cx="70" cy="85" r="1.5" fill="#FFD700" opacity="0.5"/>
+  <circle cx="110" cy="80" r="2" fill="#FFD700" opacity="0.7"/>
+  <circle cx="50" cy="95" r="1.5" fill="#FFD700" opacity="0.6"/>
+  <circle cx="95" cy="100" r="2" fill="#FFD700" opacity="0.5"/>
+  <circle cx="55" cy="75" r="1" fill="white" opacity="0.5"/>
+  <circle cx="105" cy="65" r="1" fill="white" opacity="0.4"/>
+  <!-- Texte "BABY" style Y2K -->
+  <text x="80" y="98" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="16" fill="white" opacity="0.3" letter-spacing="4">BABY</text>
+</svg>

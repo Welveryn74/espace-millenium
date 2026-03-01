@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <!-- Icône Internet Explorer — e bleu avec anneau -->
+  <defs>
+    <linearGradient id="iebg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00AAFF"/>
+      <stop offset="100%" stop-color="#0055CC"/>
+    </linearGradient>
+  </defs>
+  <!-- Anneau orbital -->
+  <ellipse cx="24" cy="24" rx="22" ry="10" fill="none" stroke="url(#iebg)" stroke-width="3.5" transform="rotate(-30 24 24)"/>
+  <!-- Lettre e -->
+  <circle cx="24" cy="24" r="14" fill="url(#iebg)"/>
+  <!-- Inner e shape -->
+  <path d="M 15 24 Q 15 16 24 16 Q 33 16 33 24" fill="none" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  <line x1="15" y1="24" x2="33" y2="24" stroke="white" stroke-width="3"/>
+  <path d="M 33 24 Q 33 33 24 33 Q 18 33 16 29" fill="none" stroke="white" stroke-width="4" stroke-linecap="round"/>
+</svg>

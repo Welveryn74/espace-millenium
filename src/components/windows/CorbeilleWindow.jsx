@@ -8,12 +8,12 @@ const DELETED_ITEMS = [
   { icon: "\u{1F4C4}", name: "Exposé_volcans_FINAL_v3.doc", type: "Document Word", date: "12/03/2004", size: "245 Ko", img: "/images/corbeille/doc.png" },
   { icon: "\u{1F3B5}", name: "Crazy_In_Love-Beyonce.mp3", type: "Fichier MP3", date: "08/11/2003", size: "4.2 Mo", img: "/images/corbeille/mp3.png" },
   { icon: "\u{1F4C1}", name: "Nouveau dossier (3)", type: "Dossier", date: "15/06/2005", size: "0 Ko", img: "/images/corbeille/folder.png" },
-  { icon: "\u{1F5BC}\uFE0F", name: "photo_classe_CM2.bmp", type: "Image Bitmap", date: "22/09/2003", size: "3.8 Mo", img: "/images/corbeille/image.png" },
+  { icon: "\u{1F5BC}\uFE0F", name: "photo_classe_CM2.bmp", type: "Image Bitmap", date: "22/09/2003", size: "3.8 Mo", img: "/images/corbeille/image.svg" },
   { icon: "\u{1F4BE}", name: "age_of_empires_2_crack.exe", type: "Application", date: "03/01/2004", size: "156 Ko", img: "/images/corbeille/exe.png" },
   { icon: "\u{1F4C4}", name: "Lettre_au_Père_Noël_2004.doc", type: "Document Word", date: "18/12/2004", size: "89 Ko", img: "/images/corbeille/doc.png" },
   { icon: "\u{1F3B5}", name: "Dragostea_Din_Tei-OZONE.wma", type: "Fichier WMA", date: "25/04/2004", size: "3.1 Mo", img: "/images/corbeille/mp3.png" },
   { icon: "\u{1F4C1}", name: "Kazaa Downloads", type: "Dossier", date: "07/08/2003", size: "0 Ko", img: "/images/corbeille/folder.png" },
-  { icon: "\u{1F5BC}\uFE0F", name: "wallpaper_dbz_1024x768.jpg", type: "Image JPEG", date: "14/02/2005", size: "512 Ko", img: "/images/corbeille/image.png" },
+  { icon: "\u{1F5BC}\uFE0F", name: "wallpaper_dbz_1024x768.jpg", type: "Image JPEG", date: "14/02/2005", size: "512 Ko", img: "/images/corbeille/image.svg" },
   { icon: "\u{1F4C4}", name: "Sms_brouillon_pour_Julie.txt", type: "Fichier texte", date: "30/05/2005", size: "1 Ko", img: "/images/corbeille/doc.png" },
 ];
 

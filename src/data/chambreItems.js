@@ -10,7 +10,7 @@ export const COUETTES = [
 
 export const BEYBLADE_TOUPIES = [
   { id: "dragoon", name: "Dragoon Storm", color: "#3B82F6", accent: "#93C5FD", stat: 7, desc: "La toupie de Tyson. Le Dragon Bleu. Celle que tout le monde voulait dans la cour.", img: "/images/chambre/beyblades/dragoon.png" },
-  { id: "dranzer", name: "Dranzer Flame", color: "#EF4444", accent: "#FCA5A5", stat: 8, desc: "Le Phoenix de Kai. Puissante, élégante, et avec cette aura de rival cool.", img: "/images/chambre/beyblades/dranzer.png" },
+  { id: "dranzer", name: "Dranzer Flame", color: "#EF4444", accent: "#FCA5A5", stat: 8, desc: "Le Phoenix de Kai. Puissante, élégante, et avec cette aura de rival cool.", img: "/images/chambre/beyblades/dranzer.svg" },
   { id: "driger", name: "Driger Fang", color: "#22C55E", accent: "#86EFAC", stat: 6, desc: "Le Tigre Blanc de Ray. Rapide comme l'éclair, fidèle comme un ami.", img: "/images/chambre/beyblades/driger.svg" },
   { id: "draciel", name: "Draciel Shield", color: "#A855F7", accent: "#D8B4FE", stat: 9, desc: "La Tortue de Max. La meilleure défense. Increvable dans l'arène.", img: "/images/chambre/beyblades/draciel.svg" },
 ];
@@ -48,7 +48,7 @@ export const SCOUBIDOUS = [
   { id: "torsade", name: "Le Torsadé", colors: ["#FF44FF", "#44FFFF"], desc: "Le twist. Littéralement. Celui qui impressionnait tout le monde au centre aéré.", img: "/images/chambre/scoubidous/torsade.svg" },
   { id: "spirale", name: "La Spirale", colors: ["#FF8844", "#8844FF"], desc: "Le niveau expert. Si tu savais faire celui-là, tu étais le maître incontesté du scoubidou.", img: "/images/chambre/scoubidous/spirale.svg" },
   { id: "plat", name: "Le Plat", colors: ["#44FF44", "#FF4488"], desc: "Le bracelet. Tu en faisais pour tes copains et ta maman. Cadeau de fête des mères officiel.", img: "/images/chambre/scoubidous/plat.svg" },
-  { id: "etoile", name: "L'Étoile", colors: ["#FFDD44", "#FF4444", "#4488FF"], desc: "Le mythique. Six fils. Personne dans la classe savait vraiment le faire. On faisait semblant.", img: "/images/chambre/scoubidous/etoile.png" },
+  { id: "etoile", name: "L'Étoile", colors: ["#FFDD44", "#FF4444", "#4488FF"], desc: "Le mythique. Six fils. Personne dans la classe savait vraiment le faire. On faisait semblant.", img: "/images/chambre/scoubidous/etoile.svg" },
 ];
 
 export const JEUX_SOCIETE = [

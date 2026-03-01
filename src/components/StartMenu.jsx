@@ -22,7 +22,7 @@ export default function StartMenu({ openWindow, onShutdown }) {
           border: "2px solid rgba(255,255,255,0.5)",
           boxShadow: "0 2px 6px rgba(0,0,0,0.3)", overflow: "hidden",
         }}>
-          <NostalImg src="/images/ui/user.png" fallback="👤" size={24} />
+          <NostalImg src="/images/ui/user.svg" fallback="👤" size={24} />
         </div>
         <div>
           <div style={{ color: "#fff", fontWeight: "bold", fontSize: 15, textShadow: "1px 1px 2px rgba(0,0,0,0.5)" }}>{getUsername()}</div>
@@ -50,7 +50,7 @@ export default function StartMenu({ openWindow, onShutdown }) {
           onMouseEnter={e => e.currentTarget.style.fontWeight = "bold"}
           onMouseLeave={e => e.currentTarget.style.fontWeight = "normal"}
         >
-          <NostalImg src="/images/ui/shutdown.png" fallback="🔴" size={12} /> Arrêter l'ordinateur...
+          <NostalImg src="/images/ui/shutdown.svg" fallback="🔴" size={12} /> Arrêter l'ordinateur...
         </span>
       </div>
     </div>

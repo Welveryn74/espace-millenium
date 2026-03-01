@@ -106,7 +106,7 @@ export default function CaramailWindow({ onClose, onMinimize, zIndex, onFocus })
           display: "flex", alignItems: "center", gap: 8,
           color: "#fff",
         }}>
-          <NostalImg src="/images/desktop/caramail.png" fallback="📧" size={20} />
+          <NostalImg src="/images/desktop/caramail.svg" fallback="📧" size={20} />
           <span style={{ fontWeight: "bold", fontSize: 13, textShadow: "1px 1px 2px rgba(0,0,0,0.3)" }}>Caramail</span>
           <span style={{ fontSize: 10, opacity: 0.8, marginLeft: "auto" }}>10 Mo utilisés sur 10 Mo</span>
         </div>

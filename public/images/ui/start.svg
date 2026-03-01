@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <!-- Bouton Démarrer Windows XP — drapeau 4 couleurs -->
+  <defs>
+    <linearGradient id="stbg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4CAF50"/>
+      <stop offset="100%" stop-color="#2E7D32"/>
+    </linearGradient>
+  </defs>
+  <circle cx="12" cy="12" r="10" fill="url(#stbg)"/>
+  <!-- Windows flag — 4 carreaux -->
+  <g transform="translate(6, 6)">
+    <!-- Perspective tilt -->
+    <rect x="0" y="0" width="5" height="5" rx="0.5" fill="#FF5722" transform="skewX(-5)"/>
+    <rect x="7" y="0" width="5" height="5" rx="0.5" fill="#2196F3" transform="skewX(-5)"/>
+    <rect x="0" y="7" width="5" height="5" rx="0.5" fill="#4CAF50" transform="skewX(-5)"/>
+    <rect x="7" y="7" width="5" height="5" rx="0.5" fill="#FFC107" transform="skewX(-5)"/>
+  </g>
+</svg>

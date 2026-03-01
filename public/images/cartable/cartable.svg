@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 180">
+  <defs>
+    <linearGradient id="cart" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2E86C1"/>
+      <stop offset="100%" stop-color="#1A5276"/>
+    </linearGradient>
+  </defs>
+  <!-- Corps du cartable -->
+  <rect x="20" y="40" width="160" height="120" rx="10" fill="url(#cart)" stroke="#154360" stroke-width="2"/>
+  <!-- Rabat -->
+  <path d="M 20 40 Q 20 15 100 10 Q 180 15 180 40 L 180 80 Q 100 90 20 80 Z" fill="#2471A3" stroke="#154360" stroke-width="2"/>
+  <!-- Boucle du rabat -->
+  <rect x="85" y="75" width="30" height="12" rx="3" fill="#D4AC0D" stroke="#B7950B" stroke-width="1"/>
+  <rect x="93" y="72" width="14" height="5" rx="2" fill="#D4AC0D" stroke="#B7950B" stroke-width="1"/>
+  <!-- Poche avant -->
+  <rect x="50" y="100" width="100" height="45" rx="5" fill="#2980B9" stroke="#1A5276" stroke-width="1"/>
+  <rect x="85" y="98" width="30" height="6" rx="2" fill="#D4AC0D"/>
+  <!-- Bretelles -->
+  <path d="M 50 40 Q 45 20 55 5" fill="none" stroke="#1A5276" stroke-width="6" stroke-linecap="round"/>
+  <path d="M 150 40 Q 155 20 145 5" fill="none" stroke="#1A5276" stroke-width="6" stroke-linecap="round"/>
+  <!-- Fermeture éclair poche -->
+  <line x1="60" y1="108" x2="140" y2="108" stroke="#D4AC0D" stroke-width="1.5" stroke-dasharray="3,2"/>
+</svg>
