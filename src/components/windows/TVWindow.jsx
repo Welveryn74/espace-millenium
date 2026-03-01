@@ -269,11 +269,6 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
     return () => destroyPlayer();
   }, [channel, power]);
 
-  // Sync volume to player (triggers iframe reload on mute/unmute transitions)
-  useEffect(() => {
-    playerRef.current?.setVolume?.(volume);
-  }, [volume]);
-
   // Power on/off
   useEffect(() => {
     if (!power) {
@@ -351,12 +346,12 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
               display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
               position: "relative", animation: "crtFlicker 4s infinite",
             }}>
-              {/* z-0: Video layer — wrapper keeps styles when YT replaces the inner div */}
+              {/* z-0: Video layer — pas de pointer-events:none pour que
+                   l'utilisateur puisse cliquer unmute sur le player DM */}
               {hasVideo && (
                 <div data-video-wrapper="" style={{
                   position: "absolute", inset: 0, zIndex: 0,
-                  pointerEvents: "none",
-                  transform: "scale(1.15)",
+                  transform: "scale(1.05)",
                   transformOrigin: "center",
                   opacity: videoReady && !videoError ? 1 : 0,
                   transition: "opacity 0.6s ease-in",
@@ -399,12 +394,12 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
               }} />
               {/* z-12: Channel indicator */}
               <div style={{
-                position: "absolute", top: 10, right: 14, zIndex: 12,
+                position: "absolute", top: 10, right: 14, zIndex: 12, pointerEvents: "none",
                 color: CHANNELS[channel].color, fontSize: 20, fontFamily: "monospace", fontWeight: "bold",
                 textShadow: `0 0 8px ${CHANNELS[channel].color}80`,
               }}>CH {channel + 1}</div>
               {/* z-12: Volume indicator */}
-              <div style={{ position: "absolute", top: 10, left: 14, display: "flex", gap: 2, alignItems: "center", zIndex: 12 }}>
+              <div style={{ position: "absolute", top: 10, left: 14, display: "flex", gap: 2, alignItems: "center", zIndex: 12, pointerEvents: "none" }}>
                 <NostalImg src="/images/ui/volume.svg" fallback="\u{1F50A}" size={10} />
                 <div style={{ width: 50, height: 4, background: "#333", borderRadius: 2, overflow: "hidden" }}>
                   <div style={{ width: `${volume}%`, height: "100%", background: CHANNELS[channel].color, transition: "width 0.2s" }} />
