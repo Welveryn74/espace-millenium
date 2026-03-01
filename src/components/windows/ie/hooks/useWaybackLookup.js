@@ -11,6 +11,27 @@ const PRECACHED_URLS = new Set([
   "neopets.com",
   "miniclip.com",
   "newgrounds.com",
+  // Vrais sites 2005 — liés depuis les pages internes
+  "tf1.fr",
+  "lequipe.fr",
+  "lemonde.fr",
+  "meteofrance.com",
+  "gamefaqs.com",
+  "ign.com",
+  "jeuxvideo.com",
+  "wikipedia.org",
+  "nasa.gov",
+  "imdb.com",
+  "amazon.fr",
+  "ebay.fr",
+  "fnac.com",
+  "allocine.fr",
+  "msn.com",
+  "download.com",
+  "caramail.com",
+  "skyblog.com",
+  "linkinpark.com",
+  "paroles.net",
 ]);
 
 export function isPrecached(url) {

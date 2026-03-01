@@ -19,10 +19,10 @@ export const IE_FAVORITES = [
 ];
 
 export const WANADOO_NEWS = [
-  { title: "Star Academy 5 : qui sera éliminé ce soir ?", desc: "Les votes sont serrés entre Magalie et Grégory. SMS au 71600 (0,35€ + prix d'un SMS).", url: "google.fr", searchQuery: "star academy" },
-  { title: "Zinédine Zidane annonce son retour en Bleus", desc: "Le maestro revient ! Raymond Domenech confirme la nouvelle tant attendue par les supporters.", url: "encarta.msn.com" },
-  { title: "Le prix de l'essence dépasse 1€ le litre", desc: "Les automobilistes sont en colère. Le gouvernement promet des mesures. Les gilets jaunes n'existent pas encore.", url: "google.fr", searchQuery: "prix essence" },
-  { title: "Canicule : 30°C attendus ce week-end", desc: "Pensez à boire de l'eau et à éteindre votre PC de temps en temps.", url: "google.fr", searchQuery: "canicule" },
+  { title: "Star Academy 5 : qui sera éliminé ce soir ?", desc: "Les votes sont serrés entre Magalie et Grégory. SMS au 71600 (0,35€ + prix d'un SMS).", url: "tf1.fr" },
+  { title: "Zinédine Zidane annonce son retour en Bleus", desc: "Le maestro revient ! Raymond Domenech confirme la nouvelle tant attendue par les supporters.", url: "lequipe.fr" },
+  { title: "Le prix de l'essence dépasse 1€ le litre", desc: "Les automobilistes sont en colère. Le gouvernement promet des mesures. Les gilets jaunes n'existent pas encore.", url: "lemonde.fr" },
+  { title: "Canicule : 30°C attendus ce week-end", desc: "Pensez à boire de l'eau et à éteindre votre PC de temps en temps.", url: "meteofrance.com" },
 ];
 
 export const WANADOO_HOROSCOPE = [
@@ -125,27 +125,27 @@ export const GOOGLE_SEARCH_RESULTS = {
     { title: "Kazaa — Téléchargez ce que vous cherchez", url: "kazaa.com", desc: "Si Google ne trouve pas, Kazaa trouvera." },
   ],
   "linkin park": [
-    { title: "Linkin Park — Site Officiel (fan page)", url: "perso.wanadoo.fr/~darkangel", desc: "Bienvenue sur la plus grande fan page francophone de Linkin Park ! Paroles, photos, concerts." },
+    { title: "Linkin Park — Site Officiel (fan page)", url: "linkinpark.com", desc: "Bienvenue sur la plus grande fan page francophone de Linkin Park ! Paroles, photos, concerts." },
     { title: "Télécharger Linkin Park Discographie Complète", url: "kazaa.com", desc: "Numb, In The End, Crawling... Tous les MP3 disponibles en téléchargement." },
     { title: "Forum LP — Pair Chester à Bercy ?", url: "forum.jeuxvideo.com", desc: "Discussion : qui va voir Linkin Park en concert cette année ?" },
   ],
   "jeux video": [
     { title: "Forum JeuxVideo.com — Le forum des gamers", url: "forum.jeuxvideo.com", desc: "PS2, Xbox, GameCube : les dernières news et discussions." },
-    { title: "Soluce Zelda Wind Waker — Guide complet", url: "forum.jeuxvideo.com", desc: "Toutes les astuces, cartes et soluces pour Zelda Wind Waker sur GameCube." },
+    { title: "Soluce Zelda Wind Waker — Guide complet", url: "gamefaqs.com", desc: "Toutes les astuces, cartes et soluces pour Zelda Wind Waker sur GameCube." },
     { title: "Age of Empires 2 — Téléchargement", url: "kazaa.com", desc: "Wololo ! Téléchargez Age of Empires 2 gratuitement*." },
   ],
   "star academy": [
-    { title: "Star Academy 5 — Résultats et direct", url: "wanadoo.fr", desc: "Suivez la Star Academy en direct. Votez pour votre candidat préféré !" },
-    { title: "Paroles Star Academy — La Musique", url: "wanadoo.fr", desc: "Retrouvez toutes les paroles des chansons de la Star Academy." },
+    { title: "Star Academy 5 — Résultats et direct", url: "tf1.fr", desc: "Suivez la Star Academy en direct. Votez pour votre candidat préféré !" },
+    { title: "Paroles Star Academy — La Musique", url: "paroles.net", desc: "Retrouvez toutes les paroles des chansons de la Star Academy." },
     { title: "Forum Star Ac' — Qui doit partir ?", url: "forum.jeuxvideo.com", desc: "Donnez votre avis sur les candidats de cette saison !" },
   ],
   "msn": [
-    { title: "Télécharger MSN Messenger 7.5", url: "kazaa.com", desc: "La dernière version de MSN Messenger avec wizz, clins d'oeil et nouveaux émoticônes !" },
+    { title: "Télécharger MSN Messenger 7.5", url: "download.com", desc: "La dernière version de MSN Messenger avec wizz, clins d'oeil et nouveaux émoticônes !" },
     { title: "Les plus belles phrases MSN", url: "perso.wanadoo.fr/~darkangel", desc: "~*~ La ViE c PaS 1 LoNg FlEuVe TrAnKiL ~*~ Top 100 des phrases de perso." },
     { title: "Encarta — Article : Internet", url: "encarta.msn.com", desc: "Internet sert principalement à chatter sur MSN et télécharger des MP3." },
   ],
   "pokemon": [
-    { title: "Pokémon Émeraude — Soluce Complète", url: "forum.jeuxvideo.com", desc: "Guide pour capturer tous les Pokémon. Codes Action Replay inclus !" },
+    { title: "Pokémon Émeraude — Soluce Complète", url: "gamefaqs.com", desc: "Guide pour capturer tous les Pokémon. Codes Action Replay inclus !" },
     { title: "Forum Pokémon — Échanges et combats", url: "forum.jeuxvideo.com", desc: "Cherche Mew niveau 100 contre Mewtwo shiny. Câble link obligatoire." },
     { title: "Ma page perso — Fan de Pikachu", url: "perso.wanadoo.fr/~darkangel", desc: "Bienvenue sur ma page avec plein d'images de Pokémon !" },
   ],
