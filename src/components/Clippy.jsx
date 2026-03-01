@@ -118,8 +118,8 @@ export default function Clippy({ message, onClose }) {
 
   return (
     <div style={{
-      position: "fixed", bottom: 50, right: 20, zIndex: 100,
-      display: "flex", flexDirection: "column", alignItems: "flex-end",
+      position: "fixed", bottom: 50, left: 20, zIndex: 100,
+      display: "flex", flexDirection: "column", alignItems: "flex-start",
       animation: "clippyPopIn 0.3s ease-out",
       pointerEvents: "auto",
     }}>
@@ -157,14 +157,14 @@ export default function Clippy({ message, onClose }) {
         <div style={{ paddingRight: 14 }}>{message}</div>
         {/* Bubble tail */}
         <div style={{
-          position: "absolute", bottom: -8, right: 24,
+          position: "absolute", bottom: -8, left: 24,
           width: 0, height: 0,
           borderLeft: "8px solid transparent",
           borderRight: "8px solid transparent",
           borderTop: "8px solid #333",
         }} />
         <div style={{
-          position: "absolute", bottom: -5, right: 26,
+          position: "absolute", bottom: -5, left: 26,
           width: 0, height: 0,
           borderLeft: "6px solid transparent",
           borderRight: "6px solid transparent",

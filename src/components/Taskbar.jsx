@@ -2,6 +2,42 @@ import { DESKTOP_ICONS } from "../data/desktopIcons";
 import NostalImg from "./NostalImg";
 import { playClick } from "../utils/uiSounds";
 
+/* ── Icônes system tray en SVG inline (style XP) ── */
+const TrayVolume = ({ size = 15, muted }) => (
+  <svg width={size} height={size} viewBox="0 0 16 16" fill="none">
+    <path d="M2 6h2.5l3-2.5v9L4.5 10H2a1 1 0 01-1-1V7a1 1 0 011-1z" fill="#fff"/>
+    {muted ? (
+      <>
+        <line x1="10" y1="5" x2="15" y2="11" stroke="#F44" strokeWidth="1.8" strokeLinecap="round"/>
+        <line x1="15" y1="5" x2="10" y2="11" stroke="#F44" strokeWidth="1.8" strokeLinecap="round"/>
+      </>
+    ) : (
+      <>
+        <path d="M10 5.5a3.5 3.5 0 010 5" stroke="#fff" strokeWidth="1.2" fill="none" strokeLinecap="round"/>
+        <path d="M12 3.5a6 6 0 010 9" stroke="rgba(255,255,255,0.6)" strokeWidth="1.2" fill="none" strokeLinecap="round"/>
+      </>
+    )}
+  </svg>
+);
+
+const TrayNetwork = ({ size = 15 }) => (
+  <svg width={size} height={size} viewBox="0 0 16 16" fill="none">
+    <rect x="1" y="10" width="3" height="5" rx="0.5" fill="rgba(255,255,255,0.4)"/>
+    <rect x="5" y="7" width="3" height="8" rx="0.5" fill="rgba(255,255,255,0.6)"/>
+    <rect x="9" y="4" width="3" height="11" rx="0.5" fill="rgba(255,255,255,0.8)"/>
+    <rect x="13" y="1" width="3" height="14" rx="0.5" fill="#fff"/>
+  </svg>
+);
+
+const TrayMSN = ({ size = 15 }) => (
+  <svg width={size} height={size} viewBox="0 0 16 16" fill="none">
+    {/* Papillon MSN stylisé */}
+    <path d="M8 4C6 1 2 2 3 5c1 3 4 3 5 7" stroke="#fff" strokeWidth="1.3" fill="rgba(255,255,255,0.3)" strokeLinecap="round"/>
+    <path d="M8 4c2-3 6-2 5 1-1 3-4 3-5 7" stroke="#fff" strokeWidth="1.3" fill="rgba(255,255,255,0.3)" strokeLinecap="round"/>
+    <circle cx="8" cy="13" r="1" fill="#4CFF4C"/>
+  </svg>
+);
+
 export default function Taskbar({ startMenu, setStartMenu, openWindowIds, isTopWindow, isMinimized, toggleMinimize, bringToFront, time, muted, toggleMute }) {
   return (
     <div style={{
@@ -71,13 +107,13 @@ export default function Taskbar({ startMenu, setStartMenu, openWindowIds, isTopW
         borderLeft: "1px solid rgba(255,255,255,0.12)", borderRadius: 2,
       }}>
         <span style={{ cursor: "pointer", display: "flex", alignItems: "center" }} title={muted ? "Son coupé" : "Volume"} onClick={toggleMute}>
-          <NostalImg src={muted ? "/images/ui/volume-mute.png" : "/images/ui/volume.png"} fallback={muted ? "🔇" : "🔊"} size={15} />
+          <TrayVolume size={15} muted={muted} />
         </span>
         <span style={{ cursor: "pointer", display: "flex", alignItems: "center" }} title="Réseau">
-          <NostalImg src="/images/ui/network.png" fallback="🌐" size={15} />
+          <TrayNetwork size={15} />
         </span>
-        <span style={{ cursor: "pointer", display: "flex", alignItems: "center" }} title="MSN">
-          <NostalImg src="/images/ui/chat.png" fallback="💬" size={15} />
+        <span style={{ cursor: "pointer", display: "flex", alignItems: "center" }} title="MSN Messenger">
+          <TrayMSN size={15} />
         </span>
         <div style={{ width: 1, height: 16, background: "rgba(255,255,255,0.1)" }} />
         <span

@@ -125,21 +125,26 @@ export default function EspaceMillenium() {
     return () => window.removeEventListener('keydown', handler);
   }, [booted]);
 
-  // Clippy timer: first at 15s, then every 40-80s
+  // Clippy timer: first at 30s, then every 2-4 min, auto-dismiss after 8s
   useEffect(() => {
     if (!booted) return;
     const mounted = { current: true };
     let timeout;
+    let dismissTimeout;
     const scheduleClippy = (delay) => {
       timeout = setTimeout(() => {
         if (!mounted.current) return;
         setClippyMsg(pickClippyMsg());
         setShowClippy(true);
-        scheduleClippy(40000 + Math.random() * 40000);
+        // Auto-dismiss après 8 secondes
+        dismissTimeout = setTimeout(() => {
+          if (mounted.current) setShowClippy(false);
+        }, 8000);
+        scheduleClippy(120000 + Math.random() * 120000); // 2-4 min
       }, delay);
     };
-    scheduleClippy(15000);
-    return () => { mounted.current = false; clearTimeout(timeout); };
+    scheduleClippy(30000); // première apparition à 30s
+    return () => { mounted.current = false; clearTimeout(timeout); clearTimeout(dismissTimeout); };
   }, [booted, pickClippyMsg]);
 
   if (!booted) return <BootScreen onComplete={() => setBooted(true)} />;
