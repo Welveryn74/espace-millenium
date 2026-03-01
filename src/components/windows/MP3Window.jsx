@@ -158,7 +158,7 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
 
   // ── Rendu menu (panneau gauche) ────────────────
   const menuItemStyle = (isActive) => ({
-    padding: '4px 6px', cursor: 'pointer', borderRadius: 2, fontSize: 10,
+    padding: '6px 8px', cursor: 'pointer', borderRadius: 2, fontSize: 10,
     color: isActive ? '#0FF' : '#ccc', fontFamily: 'monospace',
     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
     transition: 'background 0.1s',
@@ -264,12 +264,12 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
 
         {/* ── iPod Screen (split) ─────────────── */}
         <div style={{
-          width: '100%', maxWidth: 400, height: 210, background: "#1a1a2e", borderRadius: 6,
+          width: '100%', flex: 1, minHeight: 160, background: "#1a1a2e", borderRadius: 6,
           border: "2px solid #888", display: "flex", overflow: 'hidden',
           boxShadow: "inset 0 2px 10px rgba(0,0,0,0.5), 0 1px 2px rgba(255,255,255,0.5)",
         }}>
           {/* Panneau gauche — Menu */}
-          <div style={{ width: 155, display: 'flex', flexDirection: 'column', borderRight: '1px solid rgba(0,255,255,0.1)', padding: '6px 4px' }}>
+          <div style={{ flex: '0 0 40%', minWidth: 130, maxWidth: 200, display: 'flex', flexDirection: 'column', borderRight: '1px solid rgba(0,255,255,0.1)', padding: '6px 4px' }}>
             {/* Barre navigation */}
             <div style={{
               display: 'flex', alignItems: 'center', marginBottom: 3,
@@ -299,8 +299,8 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
               </span>
               <span style={{ color: '#555', fontSize: 8, fontFamily: 'monospace' }}>🔋</span>
             </div>
-            <div style={{ textAlign: "center", marginBottom: 2 }}>
-              <NostalImg src={TRACKS[track].cover} fallback="🎵" size={68} style={{ borderRadius: 4 }} />
+            <div style={{ textAlign: "center", marginBottom: 2, flex: '1 1 0', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 0, overflow: 'hidden' }}>
+              <NostalImg src={TRACKS[track].cover} fallback="🎵" size={68} style={{ borderRadius: 4, maxHeight: '100%' }} />
             </div>
             <div style={{ color: "#fff", fontSize: 11, fontWeight: "bold", textAlign: "center", marginBottom: 1, fontFamily: "monospace", overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', padding: '0 2px' }}>
               {TRACKS[track].title}
