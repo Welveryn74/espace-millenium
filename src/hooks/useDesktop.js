@@ -10,6 +10,7 @@ export function useDesktop() {
   const [closing, setClosing] = useState({}); // {id: 'close'|'minimize'}
   const [restoring, setRestoring] = useState({}); // {id: true}
   const [shaking, setShaking] = useState(false);
+  const [ieInitialUrl, setIeInitialUrl] = useState(null);
   const [startMenu, setStartMenu] = useState(false);
   const [selectedIcon, setSelectedIcon] = useState(null);
   const [muted, setMuted] = useState(() => {
@@ -103,6 +104,11 @@ export function useDesktop() {
     setTimeout(() => setShaking(false), 500);
   }, []);
 
+  const openIEWithUrl = useCallback((url) => {
+    setIeInitialUrl(url);
+    openWindow('ie');
+  }, [openWindow]);
+
   const isTopWindow = useCallback((id) => {
     return zStack[zStack.length - 1] === id;
   }, [zStack]);
@@ -145,5 +151,7 @@ export function useDesktop() {
     toggleMute,
     volume,
     setVolume,
+    ieInitialUrl,
+    openIEWithUrl,
   };
 }

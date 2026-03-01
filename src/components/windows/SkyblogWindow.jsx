@@ -8,7 +8,26 @@ import { playClick } from "../../utils/uiSounds";
 
 const POSTS_PER_PAGE = 3;
 
-export default function SkyblogWindow({ onClose, onMinimize, zIndex, onFocus }) {
+function parseSkyblogLinks(text, onOpenUrl) {
+  if (!onOpenUrl || !text) return text;
+  const parts = text.split(/([\w-]+\.skyblog\.com)/g);
+  return parts.map((part, i) => {
+    if (/^[\w-]+\.skyblog\.com$/.test(part)) {
+      return (
+        <span
+          key={i}
+          onClick={(e) => { e.stopPropagation(); onOpenUrl(part); }}
+          style={{ color: "#0CF", textDecoration: "underline", cursor: "pointer" }}
+        >
+          {part}
+        </span>
+      );
+    }
+    return part;
+  });
+}
+
+export default function SkyblogWindow({ onClose, onMinimize, zIndex, onFocus, onOpenUrl }) {
   const [likedPosts, setLikedPosts] = useState(() => loadState('skyblog_likes', {}));
   const [comments, setComments] = useState(() => loadState('skyblog_comments', {}));
   const [commentText, setCommentText] = useState("");
@@ -154,7 +173,7 @@ export default function SkyblogWindow({ onClose, onMinimize, zIndex, onFocus }) 
                       <div style={{
                         color: "#ddd", fontSize: 12, lineHeight: 1.7,
                         fontFamily: "'Comic Sans MS', cursive", marginBottom: 10, whiteSpace: "pre-line",
-                      }}>{post.content}</div>
+                      }}>{parseSkyblogLinks(post.content, onOpenUrl)}</div>
 
                       {/* Like & comment bar */}
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid rgba(150,0,255,0.2)", paddingTop: 8 }}>

@@ -8,6 +8,14 @@ export const IE_FAVORITES = [
   { label: "Kazaa", url: "kazaa.com" },
   { label: "Ma page perso", url: "perso.wanadoo.fr/~darkangel" },
   { label: "Dollz.fr", url: "dollz.fr" },
+  { separator: true },
+  { label: "Yahoo!", url: "yahoo.com" },
+  { label: "Lycos", url: "lycos.com" },
+  { label: "AltaVista", url: "altavista.com" },
+  { label: "Multimania", url: "multimania.lycos.fr" },
+  { label: "Neopets", url: "neopets.com" },
+  { label: "Miniclip", url: "miniclip.com" },
+  { label: "Newgrounds", url: "newgrounds.com" },
 ];
 
 export const WANADOO_NEWS = [

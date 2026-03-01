@@ -68,6 +68,7 @@ export default function EspaceMillenium() {
     closing, restoring,
     muted, toggleMute,
     volume, setVolume,
+    ieInitialUrl, openIEWithUrl,
   } = useDesktop();
 
   const pickClippyMsg = useCallback(() => {
@@ -197,7 +198,8 @@ export default function EspaceMillenium() {
               onFocus={() => bringToFront(id)}
               {...(entry.needsDesktopActions ? { onWizz: doWizz, openWindowIds } : {})}
               {...(id === 'msn' ? { isMinimized: isMinimized('msn'), onNotification: () => setMsnNotification(true) } : {})}
-              {...(id === 'ie' ? { onBSOD: () => { setShowBSOD(true); setTimeout(() => setShowBSOD(false), 3000); } } : {})}
+              {...(id === 'ie' ? { onBSOD: () => { setShowBSOD(true); setTimeout(() => setShowBSOD(false), 3000); }, initialUrl: ieInitialUrl } : {})}
+              {...(id === 'skyblog' ? { onOpenUrl: openIEWithUrl } : {})}
             />
           </div>
         );
