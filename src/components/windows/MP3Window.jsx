@@ -3,9 +3,10 @@ import Win from "../Win";
 import NostalImg from "../NostalImg";
 import { TRACKS } from "../../data/tracks";
 import * as chiptune from "../../utils/chiptunePlayer";
+import { loadState, saveState } from "../../utils/storage";
 
 export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
-  const [track, setTrack] = useState(0);
+  const [track, setTrack] = useState(() => loadState('mp3_track', 0));
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [elapsed, setElapsed] = useState("0:00");
@@ -48,6 +49,11 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
     }
     return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
   }, [playing, animate]);
+
+  // Persist current track
+  useEffect(() => {
+    saveState('mp3_track', track);
+  }, [track]);
 
   // Play track when track changes while playing
   useEffect(() => {

@@ -4,6 +4,7 @@ import NostalImg from "../NostalImg";
 import { SKYBLOG_POSTS } from "../../data/skyblogPosts";
 import { ieBtnStyle } from "../../styles/windowStyles";
 import { loadState, saveState, getUsername } from "../../utils/storage";
+import { playClick } from "../../utils/uiSounds";
 
 const POSTS_PER_PAGE = 3;
 
@@ -47,6 +48,7 @@ export default function SkyblogWindow({ onClose, onMinimize, zIndex, onFocus }) 
   };
 
   const handleLike = (idx) => {
+    playClick();
     setLikedPosts(prev => {
       const current = prev[idx] || 0;
       return { ...prev, [idx]: current + 1 };
@@ -55,6 +57,7 @@ export default function SkyblogWindow({ onClose, onMinimize, zIndex, onFocus }) 
 
   const handleComment = (idx) => {
     if (!commentText.trim()) return;
+    playClick();
     const newComment = {
       pseudo: username,
       text: commentText.trim(),

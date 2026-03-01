@@ -3,6 +3,7 @@ import Win from "../Win";
 import NostalImg from "../NostalImg";
 import { CARAMAIL_EMAILS, CARAMAIL_SENT, CARAMAIL_DRAFTS, CARAMAIL_TRASH } from "../../data/caramailEmails";
 import { loadState, saveState } from "../../utils/storage";
+import { playClick } from "../../utils/uiSounds";
 
 const FOLDERS = [
   { id: "inbox", label: "Boîte de réception", emoji: "📥" },
@@ -35,6 +36,7 @@ export default function CaramailWindow({ onClose, onMinimize, zIndex, onFocus })
   const inboxUnread = CARAMAIL_EMAILS.filter(e => !readEmails.has(e.id)).length;
 
   const handleSelectEmail = (email) => {
+    playClick();
     setSelectedEmail(email);
     setReadEmails(prev => new Set([...prev, email.id]));
   };
@@ -79,7 +81,7 @@ export default function CaramailWindow({ onClose, onMinimize, zIndex, onFocus })
               return (
                 <div
                   key={f.id}
-                  onClick={() => { setActiveFolder(f.id); setSelectedEmail(null); }}
+                  onClick={() => { playClick(); setActiveFolder(f.id); setSelectedEmail(null); }}
                   style={{
                     padding: "5px 10px", fontSize: 11, cursor: "pointer",
                     display: "flex", alignItems: "center", gap: 6,

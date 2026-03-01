@@ -64,6 +64,7 @@ export default function Screensaver({ onDismiss }) {
     <div style={{
       position: "fixed", inset: 0, zIndex: 99998,
       background: "#000", cursor: "none",
+      animation: "fadeIn 0.5s ease-in",
     }}>
       <div style={{
         position: "absolute",

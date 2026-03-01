@@ -5,12 +5,12 @@ import { MSN_RESPONSES } from "../../data/msnResponses";
 import { STATUS_OPTIONS } from "../../data/statusOptions";
 import { getContextResponse } from "../../data/msnContextResponses";
 import { playMSNMessage, playMSNNudge } from "../../utils/uiSounds";
-import { getUsername, logActivity } from "../../utils/storage";
+import { getUsername, logActivity, loadState, saveState } from "../../utils/storage";
 
 export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz, openWindowIds = [], isMinimized = false, onNotification }) {
-  const [messages, setMessages] = useState([
-    { from: "bot", msg: "cOuCou !! 😊 bienvenu sur msn !! sa fé plézir !!" }
-  ]);
+  const [messages, setMessages] = useState(() =>
+    loadState('msn_messages', [{ from: "bot", msg: "cOuCou !! 😊 bienvenu sur msn !! sa fé plézir !!" }])
+  );
   const [input, setInput] = useState("");
   const [status, setStatus] = useState(0);
   const [showStatus, setShowStatus] = useState(false);
@@ -59,6 +59,11 @@ export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz
       }, 1500);
     }
   };
+
+  // Persist messages (limit 50)
+  useEffect(() => {
+    saveState('msn_messages', messages.slice(-50));
+  }, [messages]);
 
   useEffect(() => {
     if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;

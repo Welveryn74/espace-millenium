@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import Win from "../Win";
 import { ieBtnStyle } from "../../styles/windowStyles";
+import { playClick } from "../../utils/uiSounds";
 import {
   IE_FAVORITES, WANADOO_NEWS, WANADOO_HOROSCOPE,
   ENCARTA_ARTICLES, JVC_POSTS, KAZAA_DOWNLOADS,
@@ -598,6 +599,7 @@ export default function IEWindow({ onClose, onMinimize, zIndex, onFocus }) {
 
   const navigateTo = (url) => {
     const clean = url.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/\/+$/, "");
+    playClick();
     setLoading(true);
     setAddressInput(clean);
     setStatusText(`Ouverture de la page http://${clean}...`);

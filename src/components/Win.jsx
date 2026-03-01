@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { playWindowClose, playMinimize, playClick } from "../utils/uiSounds";
 
 const TASKBAR_H = 44;
 const MIN_W = 320;
@@ -89,7 +90,11 @@ export default function Win({ title, onClose, onMinimize, children, width = 480,
     return () => { window.removeEventListener("mousemove", onMove); window.removeEventListener("mouseup", onUp); };
   }, [resizeDir]);
 
-  const btnHandlers = [onMinimize, handleMaximize, onClose];
+  const btnHandlers = [
+    () => { playMinimize(); onMinimize(); },
+    () => { playClick(); handleMaximize(); },
+    () => { playWindowClose(); onClose(); },
+  ];
   const isInteracting = dragging || resizeDir;
 
   // Resize handle positions

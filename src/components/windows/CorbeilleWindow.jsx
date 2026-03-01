@@ -2,6 +2,7 @@ import { useState } from "react";
 import Win from "../Win";
 import NostalImg from "../NostalImg";
 import { playPaperSound } from "../../utils/uiSounds";
+import { loadState, saveState } from "../../utils/storage";
 
 const DELETED_ITEMS = [
   { icon: "\u{1F4C4}", name: "Exposé_volcans_FINAL_v3.doc", type: "Document Word", date: "12/03/2004", size: "245 Ko", img: "/images/corbeille/doc.png" },
@@ -27,7 +28,7 @@ const COL_WIDTHS = { name: "40%", type: "22%", date: "22%", size: "14%" };
 
 export default function CorbeilleWindow({ onClose, onMinimize, zIndex, onFocus }) {
   const [hoveredRow, setHoveredRow] = useState(null);
-  const [locked, setLocked] = useState(false);
+  const [locked, setLocked] = useState(() => loadState('corbeille_locked', false));
   const [previewMsg, setPreviewMsg] = useState(null);
 
   return (
@@ -43,7 +44,7 @@ export default function CorbeilleWindow({ onClose, onMinimize, zIndex, onFocus }
         }}>
           <NostalImg src="/images/corbeille/folder.png" fallback={"\u{1F4C2}"} size={16} />
           <button
-            onClick={() => setLocked(true)}
+            onClick={() => { saveState('corbeille_locked', true); setLocked(true); }}
             disabled={locked}
             style={{
               padding: "2px 10px",

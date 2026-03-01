@@ -19,6 +19,11 @@ function getCtx() {
 
 /** Bruit du ventilateur PC — bruit blanc filtré 80-120Hz */
 function startFan() {
+  // Sécuriser contre double-start : déconnecter l'ancien fanNode s'il existe
+  if (fanNode) {
+    try { fanNode.stop(); } catch {}
+    fanNode = null;
+  }
   const ctx = getCtx();
   const bufferSize = 2 * ctx.sampleRate;
   const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
