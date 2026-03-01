@@ -15,6 +15,30 @@ export default function BootScreen({ onComplete }) {
   // Check if username already exists (skip login phase)
   const hasUsername = !!loadState('username', null);
 
+  // Skip boot sequence (Escape key or button)
+  const skipBoot = () => {
+    if (phase >= 2.5) return; // already past the boring parts
+    // Stop modem audio
+    if (audioCtxRef.current) {
+      audioCtxRef.current.close().catch(() => {});
+      audioCtxRef.current = null;
+    }
+    if (hasUsername) {
+      onComplete();
+    } else {
+      setPhase(2.5);
+    }
+  };
+
+  // Escape key listener
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === "Escape") skipBoot();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [phase, hasUsername]);
+
   // Phase 0: cursor, 1: BIOS, 2: modem, 2.5: login (if no username), 3: XP logo, 4: loading
   useEffect(() => {
     const timers = [
@@ -148,6 +172,22 @@ export default function BootScreen({ onComplete }) {
       background: "#000", display: "flex", alignItems: "center", justifyContent: "center",
       fontFamily: "monospace",
     }}>
+      {phase < 2.5 && (
+        <button
+          onClick={skipBoot}
+          title="Passer (Échap)"
+          style={{
+            position: "absolute", top: 16, right: 16, zIndex: 1,
+            background: "transparent", border: "1px solid rgba(255,255,255,0.2)",
+            borderRadius: 4, color: "rgba(255,255,255,0.4)", fontSize: 12,
+            fontFamily: "monospace", padding: "4px 10px", cursor: "pointer",
+            transition: "all 0.2s",
+          }}
+          onMouseEnter={e => { e.target.style.color = "#fff"; e.target.style.borderColor = "rgba(255,255,255,0.6)"; }}
+          onMouseLeave={e => { e.target.style.color = "rgba(255,255,255,0.4)"; e.target.style.borderColor = "rgba(255,255,255,0.2)"; }}
+        >Passer ⏭</button>
+      )}
+
       {phase === 0 && <div style={{ color: "#333", animation: "blink 1s infinite" }}>_</div>}
 
       {phase === 1 && (
