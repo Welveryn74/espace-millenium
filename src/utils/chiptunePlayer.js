@@ -1,6 +1,6 @@
 /**
- * chiptunePlayer.js — Moteur audio chiptune 8-bit via Web Audio API
- * Joue des mélodies en boucle avec visualiseur fréquentiel
+ * chiptunePlayer.js — Moteur audio dual-mode : preview Spotify (~30s) + chiptune 8-bit
+ * Le visualiseur fréquentiel fonctionne identiquement dans les deux modes.
  */
 
 let audioCtx = null;
@@ -14,6 +14,12 @@ let currentMelody = null;
 let isPlaying = false;
 let isPaused = false;
 let pauseTime = 0;
+
+// Preview mode
+let audioElement = null;
+let mediaSource = null;
+let playbackMode = 'chiptune'; // 'chiptune' | 'preview'
+let onEndedCallback = null;
 
 function getCtx() {
   if (!audioCtx) {
@@ -30,6 +36,23 @@ function getCtx() {
   return audioCtx;
 }
 
+function getAudioElement() {
+  if (!audioElement) {
+    audioElement = new Audio();
+    audioElement.crossOrigin = 'anonymous';
+    audioElement.preload = 'auto';
+  }
+  return audioElement;
+}
+
+function connectMediaSource() {
+  if (mediaSource) return; // createMediaElementSource ne peut être appelé qu'une fois
+  const ctx = getCtx();
+  const el = getAudioElement();
+  mediaSource = ctx.createMediaElementSource(el);
+  mediaSource.connect(masterGain);
+}
+
 function stopScheduled() {
   scheduledNodes.forEach(n => {
     try { n.stop(); } catch {}
@@ -39,6 +62,13 @@ function stopScheduled() {
     clearTimeout(loopTimeout);
     loopTimeout = null;
   }
+}
+
+function stopPreview() {
+  const el = getAudioElement();
+  el.pause();
+  el.removeAttribute('src');
+  el.load();
 }
 
 function scheduleMelody(melody) {
@@ -104,38 +134,109 @@ function scheduleMelody(melody) {
   }, totalDuration * 1000);
 }
 
-export function play(melody) {
+function playPreview(url, melody) {
+  const ctx = getCtx();
+  const el = getAudioElement();
+  connectMediaSource();
+
+  playbackMode = 'preview';
+  el.src = url;
+
+  const handleError = () => {
+    el.removeEventListener('error', handleError);
+    // Fallback chiptune
+    if (melody) {
+      playbackMode = 'chiptune';
+      scheduleMelody(melody);
+    }
+  };
+
+  el.addEventListener('error', handleError, { once: true });
+
+  el.addEventListener('loadedmetadata', () => {
+    totalDuration = el.duration || 30;
+    startTime = ctx.currentTime;
+  }, { once: true });
+
+  el.addEventListener('ended', () => {
+    if (isPlaying && onEndedCallback) onEndedCallback();
+  }, { once: true });
+
+  const playPromise = el.play();
+  if (playPromise) {
+    playPromise.catch(() => {
+      // play() rejeté (autoplay policy, etc.) → fallback chiptune
+      el.removeEventListener('error', handleError);
+      if (melody) {
+        playbackMode = 'chiptune';
+        scheduleMelody(melody);
+      }
+    });
+  }
+}
+
+/**
+ * play() — accepte un objet track complet OU une melody brute (rétrocompatibilité)
+ */
+export function play(trackOrMelody, endedCb) {
   stop();
-  currentMelody = melody;
+  onEndedCallback = endedCb || null;
   isPlaying = true;
   isPaused = false;
   getCtx();
-  scheduleMelody(melody);
+
+  // Objet track complet (avec previewUrl et/ou melody)
+  if (trackOrMelody && trackOrMelody.previewUrl) {
+    currentMelody = trackOrMelody.melody || null;
+    playPreview(trackOrMelody.previewUrl, currentMelody);
+  } else {
+    // Melody brute ou objet track sans previewUrl
+    const melody = trackOrMelody?.melody || trackOrMelody;
+    currentMelody = melody;
+    playbackMode = 'chiptune';
+    if (melody) scheduleMelody(melody);
+  }
 }
 
 export function pause() {
   if (!isPlaying || isPaused) return;
   isPaused = true;
-  pauseTime = audioCtx ? audioCtx.currentTime : 0;
-  stopScheduled();
+  if (playbackMode === 'preview') {
+    getAudioElement().pause();
+  } else {
+    pauseTime = audioCtx ? audioCtx.currentTime : 0;
+    stopScheduled();
+  }
 }
 
 export function resume() {
-  if (!isPaused || !currentMelody) return;
+  if (!isPaused) return;
   isPaused = false;
   isPlaying = true;
-  scheduleMelody(currentMelody);
+  if (playbackMode === 'preview') {
+    getAudioElement().play().catch(() => {});
+  } else if (currentMelody) {
+    scheduleMelody(currentMelody);
+  }
 }
 
 export function stop() {
   isPlaying = false;
   isPaused = false;
   currentMelody = null;
+  onEndedCallback = null;
   stopScheduled();
+  if (audioElement) stopPreview();
 }
 
 export function destroy() {
   stop();
+  if (audioElement) {
+    audioElement.removeAttribute('src');
+    audioElement.load();
+    audioElement = null;
+    mediaSource = null;
+  }
   if (audioCtx) {
     audioCtx.close().catch(() => {});
     audioCtx = null;
@@ -152,13 +253,32 @@ export function getFrequencyData() {
 }
 
 export function getElapsedTime() {
-  if (!isPlaying || !audioCtx) return 0;
+  if (!isPlaying) return 0;
+  if (playbackMode === 'preview' && audioElement) {
+    return audioElement.currentTime || 0;
+  }
+  if (!audioCtx) return 0;
   return (audioCtx.currentTime - startTime) % totalDuration;
 }
 
 export function getProgress() {
   if (!totalDuration) return 0;
+  if (playbackMode === 'preview' && audioElement) {
+    const dur = audioElement.duration || totalDuration;
+    return dur > 0 ? (audioElement.currentTime / dur) * 100 : 0;
+  }
   return (getElapsedTime() / totalDuration) * 100;
+}
+
+export function getTotalDuration() {
+  if (playbackMode === 'preview' && audioElement && audioElement.duration) {
+    return audioElement.duration;
+  }
+  return totalDuration;
+}
+
+export function getPlaybackMode() {
+  return playbackMode;
 }
 
 export function getIsPlaying() {

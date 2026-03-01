@@ -14,8 +14,31 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
   const [shuffle, setShuffle] = useState(false);
   const [repeat, setRepeat] = useState(false);
   const [bars, setBars] = useState(() => new Array(16).fill(15));
+  const [displayDuration, setDisplayDuration] = useState(TRACKS[0]?.duration || "0:00");
   const rafRef = useRef(null);
   const frameCount = useRef(0);
+
+  // Callback quand un preview audio se termine
+  const handleTrackEnded = useCallback(() => {
+    if (repeat) {
+      setProgress(0);
+      setElapsed("0:00");
+      chiptune.play(TRACKS[track], handleTrackEnded);
+    } else {
+      const next = shuffle
+        ? Math.floor(Math.random() * TRACKS.length)
+        : (track + 1) % TRACKS.length;
+      setTrack(next);
+      setProgress(0);
+      setElapsed("0:00");
+    }
+  }, [track, repeat, shuffle]);
+
+  const formatSecs = (s) => {
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return `${m}:${String(sec).padStart(2, "0")}`;
+  };
 
   // Animation loop: read frequency data + update progress
   const animate = useCallback(() => {
@@ -33,9 +56,13 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
       const p = chiptune.getProgress();
       setProgress(p);
       const el = chiptune.getElapsedTime();
-      const mins = Math.floor(el / 60);
-      const secs = Math.floor(el % 60);
-      setElapsed(`${mins}:${String(secs).padStart(2, "0")}`);
+      setElapsed(formatSecs(el));
+
+      // En mode preview, afficher la durée réelle (~30s)
+      const dur = chiptune.getTotalDuration();
+      if (chiptune.getPlaybackMode() === 'preview' && dur > 0) {
+        setDisplayDuration(formatSecs(dur));
+      }
     }
     rafRef.current = requestAnimationFrame(animate);
   }, []);
@@ -52,27 +79,28 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
     return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
   }, [playing, animate]);
 
-  // Persist current track
+  // Persist current track + reset display duration
   useEffect(() => {
     saveState('mp3_track', track);
+    setDisplayDuration(TRACKS[track].duration);
   }, [track]);
 
   // Play track when track changes while playing
   useEffect(() => {
-    if (playing && TRACKS[track].melody) {
-      chiptune.play(TRACKS[track].melody);
+    if (playing && (TRACKS[track].previewUrl || TRACKS[track].melody)) {
+      chiptune.play(TRACKS[track], handleTrackEnded);
     }
   }, [track, playing]);
 
-  // Auto-next or repeat when track ends
+  // Auto-next or repeat when track ends (chiptune loop detection)
   const endedRef = useRef(false);
   useEffect(() => {
-    if (playing && progress >= 99 && !endedRef.current) {
+    if (chiptune.getPlaybackMode() === 'chiptune' && playing && progress >= 99 && !endedRef.current) {
       endedRef.current = true;
       if (repeat) {
         setProgress(0);
         setElapsed("0:00");
-        if (TRACKS[track].melody) chiptune.play(TRACKS[track].melody);
+        chiptune.play(TRACKS[track], handleTrackEnded);
       } else {
         nextTrack();
       }
@@ -85,7 +113,7 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
 
   const togglePlay = () => {
     if (!playing) {
-      if (TRACKS[track].melody) chiptune.play(TRACKS[track].melody);
+      chiptune.play(TRACKS[track], handleTrackEnded);
       setPlaying(true);
     } else {
       chiptune.stop();
@@ -115,7 +143,7 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
     setTrack(i);
     setProgress(0);
     setElapsed("0:00");
-    if (TRACKS[i].melody) chiptune.play(TRACKS[i].melody);
+    chiptune.play(TRACKS[i], handleTrackEnded);
     setPlaying(true);
     setShowPlaylist(false);
   };
@@ -179,7 +207,7 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", marginTop: 3 }}>
                 <span style={{ color: "#666", fontSize: 8, fontFamily: "monospace" }}>{elapsed}</span>
-                <span style={{ color: "#666", fontSize: 8, fontFamily: "monospace" }}>{TRACKS[track].duration}</span>
+                <span style={{ color: "#666", fontSize: 8, fontFamily: "monospace" }}>{displayDuration}</span>
               </div>
             </>
           )}
