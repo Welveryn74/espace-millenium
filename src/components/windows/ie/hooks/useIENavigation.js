@@ -12,7 +12,7 @@ export function resolveUrl(raw) {
   return KNOWN_URLS.includes(u) ? u : null;
 }
 
-function cleanUrl(raw) {
+export function cleanUrl(raw) {
   return raw.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/\/+$/, "");
 }
 

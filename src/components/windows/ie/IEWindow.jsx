@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Win from "../../Win";
 import IEToolbar from "./IEToolbar";
 import IEStatusBar from "./IEStatusBar";
 import IEPageRouter from "./IEPageRouter";
-import { useIENavigation, resolveUrl } from "./hooks/useIENavigation";
+import { useIENavigation, resolveUrl, cleanUrl } from "./hooks/useIENavigation";
 import { useWaybackLookup } from "./hooks/useWaybackLookup";
 import { playModemSound } from "../../../utils/playModemSound";
 
@@ -15,37 +15,71 @@ export default function IEWindow({ onClose, onMinimize, zIndex, onFocus, onBSOD,
   const audioCtxRef = useRef(null);
   const lastInitialUrlRef = useRef(initialUrl);
 
+  const playModem = useCallback(() => {
+    try {
+      if (!audioCtxRef.current) {
+        audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      playModemSound(audioCtxRef.current);
+    } catch {}
+  }, []);
+
+  // Wrap navigateTo to start wayback lookup IMMEDIATELY (parallel to simulated delay)
+  const navigateTo = useCallback((url) => {
+    const clean = url.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/\/+$/, "");
+    if (!resolveUrl(clean)) {
+      // Unknown URL — start wayback check NOW, don't wait for loading to finish
+      wayback.checkWayback(clean);
+      playModem();
+    } else {
+      wayback.reset();
+    }
+    nav.navigateTo(url);
+  }, [nav.navigateTo, wayback.checkWayback, wayback.reset, playModem]);
+
+  // Address bar submit — uses the wrapper navigateTo
+  const handleAddressSubmit = useCallback(() => {
+    const clean = cleanUrl(nav.addressInput);
+    if (clean && clean !== nav.currentUrl) {
+      navigateTo(clean);
+    }
+  }, [nav.addressInput, nav.currentUrl, navigateTo]);
+
   // Navigate to initialUrl when it changes (e.g. from Skyblog link)
   useEffect(() => {
     if (initialUrl && initialUrl !== lastInitialUrlRef.current) {
       lastInitialUrlRef.current = initialUrl;
-      nav.navigateTo(initialUrl);
+      navigateTo(initialUrl);
     }
   }, [initialUrl]);
 
-  // Trigger wayback lookup for unknown URLs
+  // Handle back/forward to unknown URLs (these bypass navigateTo wrapper)
   useEffect(() => {
-    if (!nav.loading && nav.currentUrl && !resolveUrl(nav.currentUrl)) {
-      wayback.checkWayback(nav.currentUrl);
-      nav.setStatusText("Recherche dans les archives du Web...");
-      // Play modem sound
-      try {
-        if (!audioCtxRef.current) {
-          audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
+    if (!nav.loading && nav.currentUrl) {
+      if (!resolveUrl(nav.currentUrl)) {
+        // Only trigger if wayback isn't already checking/found for this URL
+        if (wayback.state === "idle") {
+          wayback.checkWayback(nav.currentUrl);
+          playModem();
         }
-        playModemSound(audioCtxRef.current);
-      } catch {}
-    } else if (!nav.loading && nav.currentUrl && resolveUrl(nav.currentUrl)) {
-      wayback.reset();
+      } else {
+        wayback.reset();
+      }
     }
   }, [nav.currentUrl, nav.loading]);
 
   // Update status based on wayback state
   useEffect(() => {
-    if (wayback.state === "found") {
-      nav.setStatusText("Chargement de l'archive...");
-    } else if (wayback.state === "not_found") {
-      nav.setStatusText("Page introuvable. Aucune archive disponible.");
+    switch (wayback.state) {
+      case "checking":
+        nav.setStatusText("Recherche dans les archives du Web...");
+        break;
+      case "found":
+        nav.setStatusText("Chargement de l'archive...");
+        break;
+      case "not_found":
+        nav.setStatusText("Page introuvable. Aucune archive disponible.");
+        break;
     }
   }, [wayback.state]);
 
@@ -66,11 +100,11 @@ export default function IEWindow({ onClose, onMinimize, zIndex, onFocus, onBSOD,
           historyLength={nav.history.length}
           goBack={nav.goBack}
           goForward={nav.goForward}
-          navigateTo={nav.navigateTo}
+          navigateTo={navigateTo}
           currentUrl={nav.currentUrl}
           addressInput={nav.addressInput}
           setAddressInput={nav.setAddressInput}
-          handleAddressSubmit={nav.handleAddressSubmit}
+          handleAddressSubmit={handleAddressSubmit}
           showFavorites={nav.showFavorites}
           setShowFavorites={nav.setShowFavorites}
           loading={nav.loading}
@@ -80,7 +114,7 @@ export default function IEWindow({ onClose, onMinimize, zIndex, onFocus, onBSOD,
           <IEPageRouter
             loading={nav.loading}
             currentUrl={nav.currentUrl}
-            navigateTo={nav.navigateTo}
+            navigateTo={navigateTo}
             onBSOD={onBSOD}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
