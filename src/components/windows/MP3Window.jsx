@@ -14,7 +14,8 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
   const [repeat, setRepeat] = useState(false);
   const [bars, setBars] = useState(() => new Array(16).fill(15));
   const [displayDuration, setDisplayDuration] = useState(TRACKS[0]?.duration || "0:00");
-  const [menuStack, setMenuStack] = useState([{ type: 'now_playing' }]);
+  const [menuStack, setMenuStack] = useState([{ type: 'main' }]);
+  const [volume, setVolumeState] = useState(0.1);
   const rafRef = useRef(null);
   const frameCount = useRef(0);
 
@@ -149,218 +150,198 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
     setPlaying(true);
   };
 
-  const playRandom = () => {
-    const i = Math.floor(Math.random() * TRACKS.length);
-    selectTrack(i);
-    setShuffle(true);
-    pushView({ type: 'now_playing' });
+  const handleVolume = (e) => {
+    const v = parseFloat(e.target.value);
+    setVolumeState(v);
+    chiptune.setVolume(v);
   };
 
-  // ── Rendu écran iPod ─────────────────────────────
-  const headerStyle = {
-    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-    padding: '3px 6px', background: 'linear-gradient(180deg, rgba(0,255,255,0.15) 0%, rgba(0,255,255,0.05) 100%)',
-    borderRadius: 3, marginBottom: 4, borderBottom: '1px solid rgba(0,255,255,0.15)',
-  };
-
+  // ── Rendu menu (panneau gauche) ────────────────
   const menuItemStyle = (isActive) => ({
-    padding: '5px 8px', cursor: 'pointer', borderRadius: 2, fontSize: 11,
-    color: isActive ? '#0FF' : '#ddd', fontFamily: 'monospace',
+    padding: '4px 6px', cursor: 'pointer', borderRadius: 2, fontSize: 10,
+    color: isActive ? '#0FF' : '#ccc', fontFamily: 'monospace',
     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
     transition: 'background 0.1s',
   });
 
-  const renderHeader = (title) => (
-    <div style={headerStyle}>
-      <span style={{ color: '#0FF', fontSize: 10, fontFamily: 'monospace', fontWeight: 'bold', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-        {title}
-      </span>
-      <span style={{ color: '#555', fontSize: 9, fontFamily: 'monospace', flexShrink: 0, marginLeft: 6 }}>
-        {playing ? '♪' : ''} 🔋
-      </span>
-    </div>
-  );
+  const hoverOn = (e) => { e.currentTarget.style.background = 'rgba(0,255,255,0.12)'; };
+  const hoverOff = (e, active) => { e.currentTarget.style.background = active ? 'rgba(0,255,255,0.06)' : 'transparent'; };
 
   const renderMenuItem = (label, onClick, { arrow, active, icon } = {}) => (
-    <div
-      key={label}
-      onClick={onClick}
-      style={menuItemStyle(active)}
-      onMouseEnter={e => { e.currentTarget.style.background = 'rgba(0,255,255,0.12)'; }}
-      onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
-    >
+    <div key={label} onClick={onClick} style={menuItemStyle(active)}
+      onMouseEnter={hoverOn} onMouseLeave={e => hoverOff(e, active)}>
       <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
         {icon || ''}{label}
       </span>
-      {arrow && <span style={{ color: '#555', marginLeft: 4, fontSize: 13 }}>›</span>}
+      {arrow && <span style={{ color: '#555', marginLeft: 4, fontSize: 12 }}>›</span>}
     </div>
   );
 
-  const renderTrackItem = (t, idx) => {
-    const isPlaying = idx === track && playing;
-    const isCurrent = idx === track;
+  const renderTrackRow = (label, idx, duration) => {
+    const active = idx === track;
+    const icon = active && playing ? '♪ ' : '';
     return (
-      <div
-        key={idx}
-        onClick={() => { selectTrack(idx); pushView({ type: 'now_playing' }); }}
-        style={menuItemStyle(isCurrent)}
-        onMouseEnter={e => { e.currentTarget.style.background = 'rgba(0,255,255,0.12)'; }}
-        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
-      >
+      <div key={idx} onClick={() => selectTrack(idx)} style={menuItemStyle(active)}
+        onMouseEnter={hoverOn} onMouseLeave={e => hoverOff(e, active)}>
         <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
-          {isPlaying ? '♪ ' : ''}{t.title}
+          {icon}{label}
         </span>
-        <span style={{ color: '#555', fontSize: 9, marginLeft: 6, flexShrink: 0 }}>{t.duration}</span>
+        <span style={{ color: '#555', fontSize: 8, marginLeft: 4, flexShrink: 0 }}>{duration}</span>
       </div>
     );
   };
 
-  const listWrapStyle = { flex: 1, overflowY: 'auto', overflowX: 'hidden' };
+  const listWrap = { flex: 1, overflowY: 'auto', overflowX: 'hidden' };
 
-  const renderScreen = () => {
+  const renderMenu = () => {
     const v = currentView;
     switch (v.type) {
       case 'main':
         return (<>
-          {renderHeader('iPod')}
-          <div style={listWrapStyle}>
-            {renderMenuItem('Musiques', () => pushView({ type: 'music' }), { arrow: true })}
-            {playing && renderMenuItem('En lecture', () => pushView({ type: 'now_playing' }), { arrow: true, icon: '♪ ' })}
-            {renderMenuItem('Lecture aléatoire', playRandom)}
-          </div>
-        </>);
-
-      case 'music':
-        return (<>
-          {renderHeader('Musiques')}
-          <div style={listWrapStyle}>
+          <div style={listWrap}>
             {renderMenuItem('Artistes', () => pushView({ type: 'artists' }), { arrow: true })}
             {renderMenuItem('Genres', () => pushView({ type: 'genres' }), { arrow: true })}
-            {renderMenuItem(`Toutes les pistes (${TRACKS.length})`, () => pushView({ type: 'songs' }), { arrow: true })}
+            {renderMenuItem(`Pistes (${TRACKS.length})`, () => pushView({ type: 'songs' }), { arrow: true })}
+            {renderMenuItem('Aléatoire', () => { const i = Math.floor(Math.random() * TRACKS.length); selectTrack(i); setShuffle(true); })}
           </div>
         </>);
 
       case 'artists':
-        return (<>
-          {renderHeader('Artistes')}
-          <div style={listWrapStyle}>
-            {artists.map(a => renderMenuItem(a, () => pushView({ type: 'artist', artist: a }), {
-              arrow: true,
-              active: TRACKS[track]?.title.startsWith(a + ' — '),
-            }))}
-          </div>
-        </>);
+        return (<div style={listWrap}>
+          {artists.map(a => renderMenuItem(a, () => pushView({ type: 'artist', artist: a }), {
+            arrow: true, active: TRACKS[track]?.title.startsWith(a + ' — '),
+          }))}
+        </div>);
 
-      case 'artist': {
-        const list = tracksByArtist(v.artist);
-        return (<>
-          {renderHeader(v.artist)}
-          <div style={listWrapStyle}>
-            {list.map(t => {
-              const songName = t.title.split(' — ')[1] || t.title;
-              const isPlaying = t.idx === track && playing;
-              const isCurrent = t.idx === track;
-              return (
-                <div key={t.idx}
-                  onClick={() => { selectTrack(t.idx); pushView({ type: 'now_playing' }); }}
-                  style={menuItemStyle(isCurrent)}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(0,255,255,0.12)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
-                >
-                  <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
-                    {isPlaying ? '♪ ' : ''}{songName}
-                  </span>
-                  <span style={{ color: '#555', fontSize: 9, marginLeft: 6, flexShrink: 0 }}>{t.duration}</span>
-                </div>
-              );
-            })}
-          </div>
-        </>);
-      }
+      case 'artist':
+        return (<div style={listWrap}>
+          {tracksByArtist(v.artist).map(t =>
+            renderTrackRow(t.title.split(' — ')[1] || t.title, t.idx, t.duration)
+          )}
+        </div>);
 
       case 'genres':
-        return (<>
-          {renderHeader('Genres')}
-          <div style={listWrapStyle}>
-            {genres.map(g => {
-              const count = tracksByGenre(g).length;
-              return renderMenuItem(`${g} (${count})`, () => pushView({ type: 'genre', genre: g }), {
-                arrow: true,
-                active: TRACKS[track]?.genre === g,
-              });
-            })}
-          </div>
-        </>);
+        return (<div style={listWrap}>
+          {genres.map(g => renderMenuItem(`${g} (${tracksByGenre(g).length})`, () => pushView({ type: 'genre', genre: g }), {
+            arrow: true, active: TRACKS[track]?.genre === g,
+          }))}
+        </div>);
 
-      case 'genre': {
-        const list = tracksByGenre(v.genre);
-        return (<>
-          {renderHeader(v.genre)}
-          <div style={listWrapStyle}>
-            {list.map(t => renderTrackItem(t, t.idx))}
-          </div>
-        </>);
-      }
+      case 'genre':
+        return (<div style={listWrap}>
+          {tracksByGenre(v.genre).map(t => renderTrackRow(t.title, t.idx, t.duration))}
+        </div>);
 
       case 'songs':
-        return (<>
-          {renderHeader(`Pistes (${TRACKS.length})`)}
-          <div style={listWrapStyle}>
-            {TRACKS.map((t, i) => renderTrackItem(t, i))}
-          </div>
-        </>);
+        return (<div style={listWrap}>
+          {TRACKS.map((t, i) => renderTrackRow(t.title, i, t.duration))}
+        </div>);
 
-      case 'now_playing':
       default:
-        return (<>
-          {renderHeader('En lecture')}
-          <div style={{ textAlign: "center", marginBottom: 2 }}>
-            <NostalImg src={TRACKS[track].cover} fallback="🎵" size={72} style={{ borderRadius: 4 }} />
-          </div>
-          <div style={{ color: "#fff", fontSize: 12, fontWeight: "bold", textAlign: "center", marginBottom: 2, fontFamily: "monospace", overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', padding: '0 4px' }}>
-            {TRACKS[track].title}
-          </div>
-          <div style={{ color: "#888", fontSize: 9, textAlign: "center", marginBottom: 6, fontFamily: "monospace" }}>
-            {TRACKS[track].genre} — {TRACKS[track].duration}
-          </div>
-          <div style={{ display: "flex", gap: 2, justifyContent: "center", marginBottom: 6, height: 22, alignItems: "flex-end" }}>
-            {bars.map((h, i) => (
-              <div key={i} style={{
-                width: 8, background: `hsl(${180 + i * 8}, 100%, 50%)`,
-                height: `${h}%`, borderRadius: 1, transition: "height 0.08s",
-                opacity: playing ? 0.9 : 0.3,
-              }} />
-            ))}
-          </div>
-          <div style={{ width: "100%", height: 3, background: "#333", borderRadius: 2, overflow: "hidden" }}>
-            <div style={{ width: `${progress}%`, height: "100%", background: "linear-gradient(90deg, #0FF, #0AF)", transition: "width 0.1s" }} />
-          </div>
-          <div style={{ display: "flex", justifyContent: "space-between", marginTop: 3 }}>
-            <span style={{ color: "#666", fontSize: 8, fontFamily: "monospace" }}>{elapsed}</span>
-            <span style={{ color: "#666", fontSize: 8, fontFamily: "monospace" }}>{displayDuration}</span>
-          </div>
-        </>);
+        return null;
     }
   };
+
+  // Titre du menu courant pour la barre de navigation
+  const menuTitle = (() => {
+    switch (currentView.type) {
+      case 'main': return 'Musiques';
+      case 'artists': return 'Artistes';
+      case 'artist': return currentView.artist;
+      case 'genres': return 'Genres';
+      case 'genre': return currentView.genre;
+      case 'songs': return 'Pistes';
+      default: return 'iPod';
+    }
+  })();
 
   // ── Rendu ────────────────────────────────────────
   const ipodColor = "#F0F0F0";
 
   return (
-    <Win title="iPod — Lecteur Musical" onClose={() => { chiptune.destroy(); onClose(); }} onMinimize={onMinimize} width={360} height={520} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 320, y: 50 }} color="#555">
-      <div style={{ background: `linear-gradient(180deg, ${ipodColor} 0%, #D8D8D8 100%)`, height: "100%", display: "flex", flexDirection: "column", alignItems: "center", padding: "14px 12px" }}>
-        {/* iPod Screen */}
+    <Win title="iPod — Lecteur Musical" onClose={() => { chiptune.destroy(); onClose(); }} onMinimize={onMinimize} width={460} height={530} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 280, y: 40 }} color="#555">
+      <div style={{ background: `linear-gradient(180deg, ${ipodColor} 0%, #D8D8D8 100%)`, height: "100%", display: "flex", flexDirection: "column", alignItems: "center", padding: "12px 14px" }}>
+
+        {/* ── iPod Screen (split) ─────────────── */}
         <div style={{
-          width: 230, height: 210, background: "#1a1a2e", borderRadius: 6,
-          border: "2px solid #888", padding: 10, display: "flex", flexDirection: "column",
+          width: '100%', maxWidth: 400, height: 210, background: "#1a1a2e", borderRadius: 6,
+          border: "2px solid #888", display: "flex", overflow: 'hidden',
           boxShadow: "inset 0 2px 10px rgba(0,0,0,0.5), 0 1px 2px rgba(255,255,255,0.5)",
         }}>
-          {renderScreen()}
+          {/* Panneau gauche — Menu */}
+          <div style={{ width: 155, display: 'flex', flexDirection: 'column', borderRight: '1px solid rgba(0,255,255,0.1)', padding: '6px 4px' }}>
+            {/* Barre navigation */}
+            <div style={{
+              display: 'flex', alignItems: 'center', marginBottom: 3,
+              padding: '2px 4px', background: 'linear-gradient(180deg, rgba(0,255,255,0.12) 0%, rgba(0,255,255,0.04) 100%)',
+              borderRadius: 2, borderBottom: '1px solid rgba(0,255,255,0.1)',
+            }}>
+              {menuStack.length > 1 && (
+                <span onClick={popView} style={{ color: '#0FF', fontSize: 10, cursor: 'pointer', marginRight: 4, fontFamily: 'monospace' }}>‹</span>
+              )}
+              <span style={{ color: '#0FF', fontSize: 9, fontFamily: 'monospace', fontWeight: 'bold', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
+                {menuTitle}
+              </span>
+            </div>
+            {renderMenu()}
+          </div>
+
+          {/* Panneau droit — En lecture */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '6px 8px' }}>
+            <div style={{
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+              marginBottom: 3, padding: '2px 4px',
+              background: 'linear-gradient(180deg, rgba(0,255,255,0.12) 0%, rgba(0,255,255,0.04) 100%)',
+              borderRadius: 2, borderBottom: '1px solid rgba(0,255,255,0.1)',
+            }}>
+              <span style={{ color: '#0FF', fontSize: 9, fontFamily: 'monospace', fontWeight: 'bold' }}>
+                {playing ? '♪ ' : ''}En lecture
+              </span>
+              <span style={{ color: '#555', fontSize: 8, fontFamily: 'monospace' }}>🔋</span>
+            </div>
+            <div style={{ textAlign: "center", marginBottom: 2 }}>
+              <NostalImg src={TRACKS[track].cover} fallback="🎵" size={68} style={{ borderRadius: 4 }} />
+            </div>
+            <div style={{ color: "#fff", fontSize: 11, fontWeight: "bold", textAlign: "center", marginBottom: 1, fontFamily: "monospace", overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', padding: '0 2px' }}>
+              {TRACKS[track].title}
+            </div>
+            <div style={{ color: "#777", fontSize: 8, textAlign: "center", marginBottom: 4, fontFamily: "monospace" }}>
+              {TRACKS[track].genre} — {TRACKS[track].duration}
+            </div>
+            {/* Visualizer */}
+            <div style={{ display: "flex", gap: 1, justifyContent: "center", marginBottom: 4, height: 18, alignItems: "flex-end" }}>
+              {bars.map((h, i) => (
+                <div key={i} style={{
+                  width: 6, background: `hsl(${180 + i * 8}, 100%, 50%)`,
+                  height: `${h}%`, borderRadius: 1, transition: "height 0.08s",
+                  opacity: playing ? 0.9 : 0.3,
+                }} />
+              ))}
+            </div>
+            {/* Progress */}
+            <div style={{ width: "100%", height: 3, background: "#333", borderRadius: 2, overflow: "hidden" }}>
+              <div style={{ width: `${progress}%`, height: "100%", background: "linear-gradient(90deg, #0FF, #0AF)", transition: "width 0.1s" }} />
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 2 }}>
+              <span style={{ color: "#555", fontSize: 7, fontFamily: "monospace" }}>{elapsed}</span>
+              <span style={{ color: "#555", fontSize: 7, fontFamily: "monospace" }}>{displayDuration}</span>
+            </div>
+          </div>
         </div>
 
-        {/* Click Wheel */}
+        {/* ── Volume ─────────────────────────── */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8, width: 200 }}>
+          <span style={{ fontSize: 10, color: '#888' }}>🔈</span>
+          <input type="range" min="0" max="0.3" step="0.005" value={volume}
+            onChange={handleVolume}
+            style={{ flex: 1, height: 4, accentColor: '#888', cursor: 'pointer' }}
+          />
+          <span style={{ fontSize: 10, color: '#888' }}>🔊</span>
+        </div>
+
+        {/* ── Click Wheel ────────────────────── */}
         <div style={{
-          width: 170, height: 170, borderRadius: "50%", marginTop: 14,
+          width: 170, height: 170, borderRadius: "50%", marginTop: 8,
           background: "linear-gradient(145deg, #eee, #ccc)",
           boxShadow: "0 4px 14px rgba(0,0,0,0.3), inset 0 1px 3px rgba(255,255,255,0.8), inset 0 -1px 3px rgba(0,0,0,0.1)",
           display: "flex", alignItems: "center", justifyContent: "center", position: "relative",
