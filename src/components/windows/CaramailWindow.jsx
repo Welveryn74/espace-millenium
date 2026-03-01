@@ -27,6 +27,10 @@ export default function CaramailWindow({ onClose, onMinimize, zIndex, onFocus })
     return new Set(CARAMAIL_EMAILS.filter(e => e.read).map(e => e.id));
   });
   const [activeFolder, setActiveFolder] = useState("inbox");
+  const [sentEmails, setSentEmails] = useState([]);
+  const [replyMode, setReplyMode] = useState(false); // 'reply' | 'compose' | false
+  const [composeData, setComposeData] = useState({ to: "", subject: "", body: "" });
+  const [toast, setToast] = useState(null);
 
   // Persist read state
   useEffect(() => {
@@ -41,9 +45,46 @@ export default function CaramailWindow({ onClose, onMinimize, zIndex, onFocus })
     setReadEmails(prev => new Set([...prev, email.id]));
   };
 
-  const currentEmails = FOLDER_DATA[activeFolder] || [];
+  const allSent = [...CARAMAIL_SENT, ...sentEmails];
+  const currentEmails = activeFolder === "sent" ? allSent : (FOLDER_DATA[activeFolder] || []);
   const isSentOrDraft = activeFolder === "sent" || activeFolder === "drafts";
-  const totalMessages = Object.values(FOLDER_DATA).reduce((sum, arr) => sum + arr.length, 0);
+  const totalMessages = Object.values(FOLDER_DATA).reduce((sum, arr) => sum + arr.length, 0) + sentEmails.length;
+
+  const showToast = (msg) => {
+    setToast(msg);
+    setTimeout(() => setToast(null), 2000);
+  };
+
+  const handleSend = () => {
+    if (!composeData.subject.trim() && !composeData.body.trim()) return;
+    const newMail = {
+      id: `sent_${Date.now()}`,
+      to: composeData.to || "inconnu@caramail.fr",
+      from: "moi@caramail.fr",
+      subject: composeData.subject || "(sans objet)",
+      body: composeData.body,
+      date: new Date().toLocaleDateString("fr-FR"),
+    };
+    setSentEmails(prev => [newMail, ...prev]);
+    setReplyMode(false);
+    setComposeData({ to: "", subject: "", body: "" });
+    showToast("Message envoyé !");
+  };
+
+  const openReply = () => {
+    if (!selectedEmail) return;
+    setComposeData({
+      to: selectedEmail.from || "",
+      subject: `Re: ${selectedEmail.subject}`,
+      body: "",
+    });
+    setReplyMode("reply");
+  };
+
+  const openCompose = () => {
+    setComposeData({ to: "", subject: "", body: "" });
+    setReplyMode("compose");
+  };
 
   return (
     <Win
@@ -68,6 +109,25 @@ export default function CaramailWindow({ onClose, onMinimize, zIndex, onFocus })
           <NostalImg src="/images/desktop/caramail.png" fallback="📧" size={20} />
           <span style={{ fontWeight: "bold", fontSize: 13, textShadow: "1px 1px 2px rgba(0,0,0,0.3)" }}>Caramail</span>
           <span style={{ fontSize: 10, opacity: 0.8, marginLeft: "auto" }}>10 Mo utilisés sur 10 Mo</span>
+        </div>
+
+        {/* Toolbar */}
+        <div style={{
+          padding: "3px 8px", background: "#ECE9D8", borderBottom: "1px solid #ACA899",
+          display: "flex", gap: 6, alignItems: "center",
+        }}>
+          <button onClick={openCompose} style={{
+            padding: "3px 10px", fontSize: 10, fontFamily: "'Tahoma', sans-serif",
+            background: "linear-gradient(180deg, #E8E8E8 0%, #C8C8C8 100%)",
+            border: "1px solid #888", borderRadius: 2, cursor: "pointer",
+          }}>✉️ Nouveau message</button>
+          {selectedEmail && activeFolder === "inbox" && (
+            <button onClick={openReply} style={{
+              padding: "3px 10px", fontSize: 10, fontFamily: "'Tahoma', sans-serif",
+              background: "linear-gradient(180deg, #E8E8E8 0%, #C8C8C8 100%)",
+              border: "1px solid #888", borderRadius: 2, cursor: "pointer",
+            }}>↩️ Répondre</button>
+          )}
         </div>
 
         <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
@@ -165,7 +225,7 @@ export default function CaramailWindow({ onClose, onMinimize, zIndex, onFocus })
             </div>
 
             {/* Email preview */}
-            {selectedEmail && (
+            {selectedEmail && !replyMode && (
               <div style={{ flex: 1, overflow: "auto", padding: 12 }}>
                 <div style={{ borderBottom: "1px solid #ddd", paddingBottom: 8, marginBottom: 8 }}>
                   <div style={{ fontSize: 13, fontWeight: "bold", color: "#333", marginBottom: 4 }}>
@@ -183,6 +243,59 @@ export default function CaramailWindow({ onClose, onMinimize, zIndex, onFocus })
                 </div>
               </div>
             )}
+
+            {/* Reply / Compose form */}
+            {replyMode && (
+              <div style={{ flex: 1, overflow: "auto", padding: 12, background: "#ECE9D8" }}>
+                <div style={{ fontWeight: "bold", fontSize: 12, color: "#333", marginBottom: 8 }}>
+                  {replyMode === "reply" ? "Répondre" : "Nouveau message"}
+                </div>
+                <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 6 }}>
+                  <span style={{ fontSize: 10, color: "#555", width: 30 }}>À :</span>
+                  <input
+                    value={composeData.to}
+                    onChange={e => setComposeData(d => ({ ...d, to: e.target.value }))}
+                    style={{
+                      flex: 1, padding: "3px 6px", border: "1px inset #aaa",
+                      fontSize: 11, fontFamily: "'Tahoma', sans-serif",
+                    }}
+                  />
+                </div>
+                <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 6 }}>
+                  <span style={{ fontSize: 10, color: "#555", width: 30 }}>Objet :</span>
+                  <input
+                    value={composeData.subject}
+                    onChange={e => setComposeData(d => ({ ...d, subject: e.target.value }))}
+                    style={{
+                      flex: 1, padding: "3px 6px", border: "1px inset #aaa",
+                      fontSize: 11, fontFamily: "'Tahoma', sans-serif",
+                    }}
+                  />
+                </div>
+                <textarea
+                  value={composeData.body}
+                  onChange={e => setComposeData(d => ({ ...d, body: e.target.value }))}
+                  placeholder="Votre message..."
+                  style={{
+                    width: "100%", height: 100, padding: 6, border: "1px inset #aaa",
+                    fontSize: 11, fontFamily: "'Tahoma', sans-serif", resize: "vertical",
+                    boxSizing: "border-box",
+                  }}
+                />
+                <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+                  <button onClick={handleSend} style={{
+                    padding: "4px 16px", fontSize: 10, fontFamily: "'Tahoma', sans-serif",
+                    background: "linear-gradient(180deg, #E8E8E8 0%, #C8C8C8 100%)",
+                    border: "1px solid #888", borderRadius: 2, cursor: "pointer",
+                  }}>Envoyer</button>
+                  <button onClick={() => setReplyMode(false)} style={{
+                    padding: "4px 16px", fontSize: 10, fontFamily: "'Tahoma', sans-serif",
+                    background: "linear-gradient(180deg, #E8E8E8 0%, #C8C8C8 100%)",
+                    border: "1px solid #888", borderRadius: 2, cursor: "pointer",
+                  }}>Annuler</button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -194,6 +307,18 @@ export default function CaramailWindow({ onClose, onMinimize, zIndex, onFocus })
           <span>{totalMessages} messages — {inboxUnread} non lu{inboxUnread > 1 ? "s" : ""}</span>
           <span>Connexion : 56K — Wanadoo</span>
         </div>
+
+        {/* Toast notification */}
+        {toast && (
+          <div style={{
+            position: "absolute", bottom: 30, left: "50%", transform: "translateX(-50%)",
+            background: "#228B22", color: "#fff", padding: "6px 16px", borderRadius: 4,
+            fontSize: 11, fontFamily: "'Tahoma', sans-serif", boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+            animation: "fadeIn 0.2s ease-out", zIndex: 10,
+          }}>
+            {toast}
+          </div>
+        )}
       </div>
     </Win>
   );

@@ -91,11 +91,11 @@ export const JVC_POSTS = [
 ];
 
 export const KAZAA_DOWNLOADS = [
-  { name: "Linkin_Park-Numb.mp3", size: "4.2 Mo", progress: 97, status: "ok", eta: "" },
-  { name: "spiderman_2_dvdrip_FR.avi", size: "700 Mo", progress: 2, status: "slow", eta: "14h 37min restantes" },
-  { name: "age_of_empires_2_complet.iso", size: "650 Mo", progress: 12, status: "slow", eta: "9h 12min restantes" },
-  { name: "photo_vacances_2004.jpg.exe", size: "284 Ko", progress: 100, status: "danger", eta: "" },
-  { name: "Crazy_Frog-Axel_F.mp3", size: "3.1 Mo", progress: 64, status: "ok", eta: "2min 48s restantes" },
+  { name: "Linkin_Park-Numb.mp3", size: "4.2 Mo", progress: 97, status: "ok", eta: "", speed: 4.2 },
+  { name: "spiderman_2_dvdrip_FR.avi", size: "700 Mo", progress: 2, status: "slow", eta: "14h 37min restantes", speed: 0.8 },
+  { name: "age_of_empires_2_complet.iso", size: "650 Mo", progress: 12, status: "slow", eta: "9h 12min restantes", speed: 1.2 },
+  { name: "photo_vacances_2004.jpg.exe", size: "284 Ko", progress: 100, status: "danger", eta: "", speed: 0 },
+  { name: "Crazy_Frog-Axel_F.mp3", size: "3.1 Mo", progress: 64, status: "ok", eta: "2min 48s restantes", speed: 3.5 },
 ];
 
 export const PERSO_GUESTBOOK = [

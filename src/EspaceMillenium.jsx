@@ -5,7 +5,7 @@ import BootScreen from "./components/BootScreen";
 import ShutdownScreen from "./components/ShutdownScreen";
 import Y2KPopup from "./components/Y2KPopup";
 import Clippy, { pickClippyMessage } from "./components/Clippy";
-import DesktopIcons from "./components/DesktopIcons";
+import DesktopIcons, { resetIconPositions } from "./components/DesktopIcons";
 import Taskbar from "./components/Taskbar";
 import StartMenu from "./components/StartMenu";
 import Screensaver from "./components/Screensaver";
@@ -54,12 +54,14 @@ export default function EspaceMillenium() {
   const [msnNotification, setMsnNotification] = useState(false);
   const [konamiActive, setKonamiActive] = useState(false);
   const [showBSOD, setShowBSOD] = useState(false);
+  const [iconKey, setIconKey] = useState(0);
   const idleTimerRef = useRef(null);
   const konamiRef = useRef([]);
+  const bootTimeRef = useRef(Date.now());
 
   const pickClippyMsg = useCallback(() => {
-    return pickClippyMessage();
-  }, []);
+    return pickClippyMessage(openWindowIds.length, bootTimeRef.current);
+  }, [openWindowIds.length]);
 
   const {
     windows, shaking, startMenu, setStartMenu,
@@ -161,7 +163,7 @@ export default function EspaceMillenium() {
       }}
     >
       <div style={{ opacity: refreshAnim ? 0 : 1, transition: "opacity 0.15s" }}>
-        <DesktopIcons selectedIcon={selectedIcon} setSelectedIcon={setSelectedIcon} openWindow={openWindow} konamiActive={konamiActive} />
+        <DesktopIcons key={iconKey} selectedIcon={selectedIcon} setSelectedIcon={setSelectedIcon} openWindow={openWindow} konamiActive={konamiActive} />
       </div>
 
       {/* Y2K Bug button */}
@@ -195,6 +197,7 @@ export default function EspaceMillenium() {
               onFocus={() => bringToFront(id)}
               {...(entry.needsDesktopActions ? { onWizz: doWizz, openWindowIds } : {})}
               {...(id === 'msn' ? { isMinimized: isMinimized('msn'), onNotification: () => setMsnNotification(true) } : {})}
+              {...(id === 'ie' ? { onBSOD: () => { setShowBSOD(true); setTimeout(() => setShowBSOD(false), 3000); } } : {})}
             />
           </div>
         );
@@ -289,7 +292,7 @@ export default function EspaceMillenium() {
         >
           {[
             { label: "Actualiser", action: () => { setRefreshAnim(true); setTimeout(() => setRefreshAnim(false), 400); setCtxMenu(null); } },
-            { label: "Réorganiser les icônes", action: () => setCtxMenu(null) },
+            { label: "Réorganiser les icônes", action: () => { resetIconPositions(); setIconKey(k => k + 1); setCtxMenu(null); } },
             { sep: true },
             { label: "Fond d'écran ▸", action: () => setCtxMenu(prev => ({ ...prev, showWp: !prev?.showWp })) },
             ...(ctxMenu?.showWp ? [

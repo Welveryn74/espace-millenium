@@ -16,8 +16,22 @@ const ACTIVITY_MESSAGES = {
   open_corbeille: "Vous fouinez dans la corbeille ? Fascinant...",
 };
 
-export function pickClippyMessage() {
+export function pickClippyMessage(openWindowCount, bootTime) {
   const name = getUsername();
+
+  // Messages méta dynamiques (15% chance si des données sont disponibles)
+  if (openWindowCount !== undefined && Math.random() < 0.15) {
+    const minutesElapsed = bootTime ? Math.floor((Date.now() - bootTime) / 60000) : 0;
+    const metaMessages = [
+      `Vous avez ouvert ${openWindowCount} fenêtre${openWindowCount > 1 ? "s" : ""}. Votre Pentium III pleure.`,
+      "Je remarque que vous ne suivez jamais mes conseils. C'est vexant.",
+      "Envie d'en savoir plus ? Encyclopédie Encarta 2005, seulement 49,99\u20AC ! (pub)",
+      `Vous utilisez cet ordinateur depuis ${minutesElapsed} minute${minutesElapsed > 1 ? "s" : ""}. C'est ${minutesElapsed} minute${minutesElapsed > 1 ? "s" : ""} de devoirs en moins.`,
+      "Je suis obligé d'être là. Vous aussi, apparemment.",
+    ];
+    return metaMessages[Math.floor(Math.random() * metaMessages.length)];
+  }
+
   const baseMessages = [
     "Il semblerait que vous essayez d'écrire une lettre. Puis-je vous aider ?",
     "Conseil : appuyez sur Ctrl+S pour sauvegarder. Ah non, c'est un site web.",

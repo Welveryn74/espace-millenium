@@ -7,6 +7,46 @@ import { getContextResponse } from "../../data/msnContextResponses";
 import { playMSNMessage, playMSNNudge } from "../../utils/uiSounds";
 import { getUsername, logActivity, loadState, saveState } from "../../utils/storage";
 
+const MSN_EMOTICONS = {
+  ":)": "😊", ":P": "😛", "(L)": "❤️", "(Y)": "👍", "^^": "😄",
+  "XD": "😆", ":D": "😁", ":'(": "😢", "(N)": "👎", "(6)": "😈",
+};
+
+const TRANSFER_FILES = [
+  "MiX_2005_FINAL.wma", "photo_vacances_lol.jpg",
+  "dragon_ball_z_episode_47.avi", "msn_emotion_pack_v3.zip",
+  "fond_decran_naruto.bmp",
+];
+
+function renderMSNMessage(text) {
+  const parts = [];
+  let remaining = text;
+  let key = 0;
+  while (remaining.length > 0) {
+    let earliest = -1;
+    let matchCode = null;
+    for (const code of Object.keys(MSN_EMOTICONS)) {
+      const idx = remaining.indexOf(code);
+      if (idx !== -1 && (earliest === -1 || idx < earliest)) {
+        earliest = idx;
+        matchCode = code;
+      }
+    }
+    if (earliest === -1) {
+      parts.push(remaining);
+      break;
+    }
+    if (earliest > 0) parts.push(remaining.slice(0, earliest));
+    parts.push(
+      <span key={key++} style={{ fontSize: 16, verticalAlign: "middle" }}>
+        {MSN_EMOTICONS[matchCode]}
+      </span>
+    );
+    remaining = remaining.slice(earliest + matchCode.length);
+  }
+  return parts;
+}
+
 export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz, openWindowIds = [], isMinimized = false, onNotification }) {
   const [messages, setMessages] = useState(() =>
     loadState('msn_messages', [{ from: "bot", msg: "cOuCou !! 😊 bienvenu sur msn !! sa fé plézir !!" }])
@@ -17,7 +57,9 @@ export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz
   const [botIdx, setBotIdx] = useState(0);
   const [typing, setTyping] = useState(false);
   const [nudgeCount, setNudgeCount] = useState(0);
+  const [transferProgress, setTransferProgress] = useState(null); // { file, progress }
   const chatRef = useRef(null);
+  const transferTimerRef = useRef(null);
 
   const sendMessage = () => {
     if (!input.trim()) return;
@@ -43,6 +85,30 @@ export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz
         onNotification(botMsg);
       } else {
         playMSNMessage();
+      }
+      // 10% chance: file transfer
+      if (Math.random() < 0.1 && !transferProgress) {
+        const file = TRANSFER_FILES[Math.floor(Math.random() * TRANSFER_FILES.length)];
+        const transferDelay = 1000 + Math.random() * 1000;
+        setTimeout(() => {
+          setMessages(prev => [...prev, { from: "system", msg: `📎 ~*~xX_DaRk_AnGeL_Xx~*~ vous envoie un fichier : ${file} (2.4 Mo)` }]);
+          setTransferProgress({ file, progress: 0 });
+          let prog = 0;
+          const duration = 2000 + Math.random() * 2000;
+          const steps = 20;
+          const increment = 100 / steps;
+          const interval = duration / steps;
+          transferTimerRef.current = setInterval(() => {
+            prog += increment;
+            if (prog >= 100) {
+              clearInterval(transferTimerRef.current);
+              setTransferProgress(null);
+              setMessages(prev => [...prev, { from: "system", msg: `✅ Transfert terminé ! Fichier sauvegardé dans Mes Documents` }]);
+            } else {
+              setTransferProgress({ file, progress: Math.min(100, prog) });
+            }
+          }, interval);
+        }, transferDelay);
       }
     }, delay);
   };
@@ -118,11 +184,24 @@ export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz
                   <div style={{
                     color: "#333", fontSize: 14, lineHeight: 1.5,
                     fontFamily: m.from === "bot" ? "'Comic Sans MS', 'Comic Sans', cursive" : "'Tahoma', sans-serif",
-                  }}>{m.msg}</div>
+                  }}>{renderMSNMessage(m.msg)}</div>
                 </>
               )}
             </div>
           ))}
+          {transferProgress && (
+            <div style={{ margin: "6px 0", padding: "6px 10px", background: "#F0F4FF", border: "1px solid #D0D8E8", borderRadius: 4, fontSize: 10 }}>
+              <div style={{ color: "#555", marginBottom: 4 }}>📁 Réception : {transferProgress.file}</div>
+              <div style={{ height: 8, background: "#ddd", borderRadius: 4, overflow: "hidden" }}>
+                <div style={{
+                  height: "100%", background: "linear-gradient(90deg, #0078D4, #00AAFF)",
+                  borderRadius: 4, width: `${transferProgress.progress}%`,
+                  transition: "width 0.15s linear",
+                }} />
+              </div>
+              <div style={{ color: "#888", marginTop: 2 }}>{Math.floor(transferProgress.progress)}%</div>
+            </div>
+          )}
           {typing && (
             <div style={{ color: "#999", fontSize: 11, fontStyle: "italic" }}>
               {botName} est en train d'écrire
