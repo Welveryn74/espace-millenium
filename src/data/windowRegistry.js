@@ -5,7 +5,7 @@ import SkyblogWindow from "../components/windows/SkyblogWindow";
 
 import CartableWindow from "../components/windows/CartableWindow";
 import SalleJeuxWindow from "../components/windows/SalleJeuxWindow";
-import ChambreWindow from "../components/windows/ChambreWindow";
+import ChambreWindow from "../components/windows/chambre/ChambreWindow";
 import DemineurWindow from "../components/windows/DemineurWindow";
 import PaintWindow from "../components/windows/PaintWindow";
 import CorbeilleWindow from "../components/windows/CorbeilleWindow";
