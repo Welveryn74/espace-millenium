@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { loadState, saveState } from "../../../utils/storage";
+import { playBounce, playBrickBreak, playLevelUp, playError, playGameOver } from "../../../utils/uiSounds";
 
 const W = 260;
 const H = 300;
@@ -16,6 +18,7 @@ export default function CasseBriquesGame({ screenBg, screenText, color }) {
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
   const [level, setLevel] = useState(1);
+  const [highScore, setHighScore] = useState(() => loadState("cassebriques_highscore", 0));
   const canvasRef = useRef(null);
   const stateRef = useRef(null);
   const animRef = useRef(null);
@@ -134,6 +137,7 @@ export default function CasseBriquesGame({ screenBg, screenText, color }) {
             const hit = (s.ballX - s.paddleX) / PADDLE_W - 0.5;
             s.ballVX = hit * s.speed * 2;
             s.ballY = H - 20 - PADDLE_H - BALL_R;
+            playBounce();
           }
         }
 
@@ -145,6 +149,7 @@ export default function CasseBriquesGame({ screenBg, screenText, color }) {
             b.alive = false;
             s.score += b.points;
             setScore(s.score);
+            playBrickBreak();
 
             // Determine bounce direction
             const overlapLeft = (s.ballX + BALL_R) - b.x;
@@ -161,6 +166,7 @@ export default function CasseBriquesGame({ screenBg, screenText, color }) {
 
         // All bricks cleared → level up
         if (s.bricks.every(b => !b.alive)) {
+          playLevelUp();
           s.level++;
           setLevel(s.level);
           s.bricks = makeBricks(s.level);
@@ -174,7 +180,15 @@ export default function CasseBriquesGame({ screenBg, screenText, color }) {
         if (s.ballY > H + 10) {
           s.lives--;
           setLives(s.lives);
-          if (s.lives <= 0) { setPhase("GAMEOVER"); return; }
+          if (s.lives <= 0) {
+            playGameOver();
+            if (s.score > loadState("cassebriques_highscore", 0)) {
+              saveState("cassebriques_highscore", s.score);
+              setHighScore(s.score);
+            }
+            setPhase("GAMEOVER"); return;
+          }
+          playError();
           s.launched = false;
           s.ballVY = -s.speed;
           s.ballVX = (Math.random() > 0.5 ? 1 : -1) * 1.5;
@@ -233,6 +247,7 @@ export default function CasseBriquesGame({ screenBg, screenText, color }) {
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
       <div style={{ display: "flex", justifyContent: "space-between", width: W, fontSize: 10, fontFamily: "monospace" }}>
         <span style={{ color: screenText || "#C8B8FF" }}>SCORE: {score}</span>
+        <span style={{ color: (screenText || "#C8B8FF") + "60" }}>HI: {highScore}</span>
         <span style={{ color: (screenText || "#C8B8FF") + "80" }}>{"❤".repeat(lives)}</span>
       </div>
 

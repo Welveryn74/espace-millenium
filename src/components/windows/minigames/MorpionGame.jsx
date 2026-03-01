@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { loadState, saveState } from "../../../utils/storage";
+import { playPop, playPieceLock, playVictorySound, playGameOver } from "../../../utils/uiSounds";
 
 const EMPTY = null;
 
@@ -49,6 +50,7 @@ export default function MorpionGame({ screenBg, screenText, color }) {
 
   const handleClick = useCallback((idx) => {
     if (board[idx] !== EMPTY || result || thinking) return;
+    playPop();
     const newBoard = [...board];
     newBoard[idx] = "X";
 
@@ -56,8 +58,8 @@ export default function MorpionGame({ screenBg, screenText, color }) {
     if (res) {
       setBoard(newBoard);
       setResult(res);
-      if (res.winner === "X") updateScores("x");
-      else if (res.winner === "draw") updateScores("draw");
+      if (res.winner === "X") { updateScores("x"); playVictorySound(); }
+      else if (res.winner === "draw") { updateScores("draw"); playGameOver(); }
       return;
     }
 
@@ -68,13 +70,14 @@ export default function MorpionGame({ screenBg, screenText, color }) {
     setTimeout(() => {
       const ci = cpuMove(newBoard);
       if (ci >= 0) {
+        playPieceLock();
         newBoard[ci] = "O";
         setBoard([...newBoard]);
         const res2 = checkWinner(newBoard);
         if (res2) {
           setResult(res2);
-          if (res2.winner === "O") updateScores("o");
-          else if (res2.winner === "draw") updateScores("draw");
+          if (res2.winner === "O") { updateScores("o"); playGameOver(); }
+          else if (res2.winner === "draw") { updateScores("draw"); playGameOver(); }
         }
       }
       setThinking(false);

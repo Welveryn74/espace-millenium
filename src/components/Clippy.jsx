@@ -8,9 +8,12 @@ const ACTIVITY_MESSAGES = {
   open_skyblog: "Ton skyblog a reçu un nouveau commentaire ! Ah non, c'est juste moi.",
   open_tv: "T'es encore devant la télé ? Va jouer dehors !",
   open_paint: "Oh, tu dessines ? Montre-moi quand t'as fini !",
-
   open_cartable: "T'as vérifié ton cartable ? T'as sûrement oublié un truc.",
   open_chambre: "Range ta chambre avant que maman arrive !",
+  open_ie: "Internet Explorer est le navigateur le plus sécurisé du monde. Si, si.",
+  open_demineur: "Le démineur, c'est comme la vraie vie : un mauvais clic et tout explose.",
+  open_caramail: "Vous avez 0 message. Mais moi je suis là, c'est déjà pas mal !",
+  open_corbeille: "Vous fouinez dans la corbeille ? Fascinant...",
 };
 
 export function pickClippyMessage() {
@@ -28,6 +31,15 @@ export function pickClippyMessage() {
     "Rappel : votre exposé sur les volcans est à rendre lundi.",
     `Tiens ${name}, t'as pas cours demain ? Il est 23h quand même...`,
     "Psst... tu veux voir un truc cool ? Tape 'about:blank' dans Internet Explorer.",
+    "Ça fait 20 minutes que vous êtes sur cet ordinateur. Pensez à cligner des yeux.",
+    "Astuce Windows : pour aller plus vite, appuyez sur Alt+F4. Faites-moi confiance.",
+    "Votre disque C: est fragmenté à 73%. Enfin, je crois. Je suis un trombone.",
+    "Saviez-vous ? En 2005, le mot de passe le plus utilisé est '123456'. Le vôtre aussi ?",
+    "Je détecte 4 barres d'outils dans Internet Explorer. Record battu !",
+    `${name}, vous avez ouvert beaucoup de fenêtres. Le Pentium III souffre.`,
+    "Encyclopédie Encarta 2005 : tout le savoir du monde sur 3 CD-ROM. Intéressé(e) ?",
+    "Fait amusant : je suis le trombone le plus détesté de l'histoire de l'informatique.",
+    "Vous ne m'avez pas demandé d'aide depuis 2 minutes. Tout va bien ? Je m'inquiète.",
   ];
 
   // Messages nocturnes (22h-6h)
@@ -39,6 +51,9 @@ export function pickClippyMessage() {
       "Ta mère va te gronder si elle voit que t'es encore debout.",
       "Les yeux rivés sur l'écran à cette heure... classique.",
       "Psst... tu sais quelle heure il est ? Moi oui, et c'est TARD.",
+      "Le ventilateur du PC fait plus de bruit que toi à cette heure.",
+      "Ton père va couper le Wi-Fi... Ah pardon, t'es en 56K.",
+      "Les fantômes d'Internet se réveillent après minuit. Méfie-toi.",
     ];
     if (Math.random() < 0.4) {
       return nightMessages[Math.floor(Math.random() * nightMessages.length)];
@@ -71,6 +86,15 @@ const MESSAGES = [
   "Rappel : votre exposé sur les volcans est à rendre lundi.",
   "Tiens, t'as pas cours demain ? Il est 23h quand même...",
   "Psst... tu veux voir un truc cool ? Tape 'about:blank' dans Internet Explorer.",
+  "Ça fait 20 minutes que vous êtes sur cet ordinateur. Pensez à cligner des yeux.",
+  "Astuce Windows : pour aller plus vite, appuyez sur Alt+F4. Faites-moi confiance.",
+  "Votre disque C: est fragmenté à 73%. Enfin, je crois. Je suis un trombone.",
+  "Saviez-vous ? En 2005, le mot de passe le plus utilisé est '123456'. Le vôtre aussi ?",
+  "Je détecte 4 barres d'outils dans Internet Explorer. Record battu !",
+  "Vous avez ouvert beaucoup de fenêtres. Le Pentium III souffre.",
+  "Encyclopédie Encarta 2005 : tout le savoir du monde sur 3 CD-ROM. Intéressé(e) ?",
+  "Fait amusant : je suis le trombone le plus détesté de l'histoire de l'informatique.",
+  "Vous ne m'avez pas demandé d'aide depuis 2 minutes. Tout va bien ? Je m'inquiète.",
 ];
 
 export { MESSAGES as CLIPPY_MESSAGES };

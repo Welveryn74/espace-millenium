@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { loadState, saveState } from "../../../utils/storage";
+import { playBounce, playPop, playVictorySound, playGameOver } from "../../../utils/uiSounds";
 
 const W = 280;
 const H = 200;
@@ -13,6 +15,7 @@ export default function PongGame({ screenBg, screenText, color }) {
   const [pScore, setPScore] = useState(0);
   const [cScore, setCScore] = useState(0);
   const [winner, setWinner] = useState(null);
+  const [wins, setWins] = useState(() => loadState("pong_wins", 0));
   const canvasRef = useRef(null);
   const stateRef = useRef(null);
   const keysRef = useRef({});
@@ -80,8 +83,8 @@ export default function PongGame({ screenBg, screenText, color }) {
       s.ballY += s.ballVY;
 
       // Top/bottom bounce
-      if (s.ballY <= 0) { s.ballY = 0; s.ballVY = -s.ballVY; }
-      if (s.ballY >= H - BALL_SIZE) { s.ballY = H - BALL_SIZE; s.ballVY = -s.ballVY; }
+      if (s.ballY <= 0) { s.ballY = 0; s.ballVY = -s.ballVY; playBounce(); }
+      if (s.ballY >= H - BALL_SIZE) { s.ballY = H - BALL_SIZE; s.ballVY = -s.ballVY; playBounce(); }
 
       // Player paddle collision (left)
       if (s.ballX <= 14 + PADDLE_W && s.ballX >= 14 && s.ballVX < 0) {
@@ -90,6 +93,7 @@ export default function PongGame({ screenBg, screenText, color }) {
           const hit = (s.ballY + BALL_SIZE / 2 - s.playerY) / PADDLE_H - 0.5;
           s.ballVY = hit * 5;
           s.ballX = 14 + PADDLE_W + 1;
+          playBounce();
         }
       }
 
@@ -100,6 +104,7 @@ export default function PongGame({ screenBg, screenText, color }) {
           const hit = (s.ballY + BALL_SIZE / 2 - s.cpuY) / PADDLE_H - 0.5;
           s.ballVY = hit * 5;
           s.ballX = W - 14 - PADDLE_W - BALL_SIZE - 1;
+          playBounce();
         }
       }
 
@@ -107,13 +112,21 @@ export default function PongGame({ screenBg, screenText, color }) {
       if (s.ballX < 0) {
         s.cScore++;
         setCScore(s.cScore);
-        if (s.cScore >= WIN_SCORE) { setWinner("CPU"); setPhase("GAMEOVER"); return; }
+        playPop();
+        if (s.cScore >= WIN_SCORE) { playGameOver(); setWinner("CPU"); setPhase("GAMEOVER"); return; }
         resetBall(s, 1);
       }
       if (s.ballX > W) {
         s.pScore++;
         setPScore(s.pScore);
-        if (s.pScore >= WIN_SCORE) { setWinner("Toi"); setPhase("GAMEOVER"); return; }
+        playPop();
+        if (s.pScore >= WIN_SCORE) {
+          playVictorySound();
+          const newWins = loadState("pong_wins", 0) + 1;
+          saveState("pong_wins", newWins);
+          setWins(newWins);
+          setWinner("Toi"); setPhase("GAMEOVER"); return;
+        }
         resetBall(s, -1);
       }
 

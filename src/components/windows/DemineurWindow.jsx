@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Win from "../Win";
 import { DIFFICULTIES, NUMBER_COLORS, SMILEY_STATES } from "../../data/demineurConfig";
 import { playVictorySound, playExplosionSound } from "../../utils/uiSounds";
+import { loadState, saveState } from "../../utils/storage";
 
 function createEmptyGrid(rows, cols) {
   const grid = [];
@@ -113,7 +114,7 @@ function countFlags(grid) {
 }
 
 export default function DemineurWindow({ onClose, onMinimize, zIndex, onFocus }) {
-  const [difficulty, setDifficulty] = useState("debutant");
+  const [difficulty, setDifficulty] = useState(() => loadState("demineur_difficulty", "debutant"));
   const [showMenu, setShowMenu] = useState(false);
   const level = DIFFICULTIES[difficulty];
 
@@ -140,7 +141,10 @@ export default function DemineurWindow({ onClose, onMinimize, zIndex, onFocus })
     if (timerRef.current) clearInterval(timerRef.current);
     const d = newDifficulty || difficulty;
     const lv = DIFFICULTIES[d];
-    if (newDifficulty) setDifficulty(newDifficulty);
+    if (newDifficulty) {
+      setDifficulty(newDifficulty);
+      saveState("demineur_difficulty", newDifficulty);
+    }
     setGrid(createEmptyGrid(lv.rows, lv.cols));
     setGameState("ready");
     setTimer(0);

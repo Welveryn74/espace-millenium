@@ -4,6 +4,7 @@ import NostalImg from "../NostalImg";
 import { CHANNELS } from "../../data/channels";
 import { tvBtnBase } from "../../styles/windowStyles";
 import { playTVStatic } from "../../utils/uiSounds";
+import { loadState, saveState } from "../../utils/storage";
 
 function BtnTV({ onClick, children }) {
   return <button onClick={onClick} style={tvBtnBase}>{children}</button>;
@@ -189,10 +190,10 @@ function ChannelContent({ channel, tick }) {
 // --- Main TVWindow ---
 
 export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
-  const [channel, setChannel] = useState(0);
+  const [channel, setChannel] = useState(() => loadState("tv_channel", 0));
   const [staticEffect, setStaticEffect] = useState(false);
   const [power, setPower] = useState(true);
-  const [volume, setVolume] = useState(75);
+  const [volume, setVolume] = useState(() => loadState("tv_volume", 75));
   const [tick, setTick] = useState(0);
 
   // Tick every 2s, reset on channel change
@@ -207,7 +208,11 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
     setStaticEffect(true);
     playTVStatic();
     setTimeout(() => {
-      setChannel(prev => (prev + dir + CHANNELS.length) % CHANNELS.length);
+      setChannel(prev => {
+        const next = (prev + dir + CHANNELS.length) % CHANNELS.length;
+        saveState("tv_channel", next);
+        return next;
+      });
       setStaticEffect(false);
     }, 350);
   };
@@ -289,11 +294,11 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
         {/* Controls */}
         <div style={{ display: "flex", gap: 10, marginTop: 14, alignItems: "center" }}>
           <BtnTV onClick={() => changeChannel(-1)}>◀ CH-</BtnTV>
-          <BtnTV onClick={() => setVolume(v => Math.max(0, v - 15))}>🔉 Vol-</BtnTV>
+          <BtnTV onClick={() => setVolume(v => { const nv = Math.max(0, v - 15); saveState("tv_volume", nv); return nv; })}>🔉 Vol-</BtnTV>
           <button onClick={() => setPower(!power)} style={{
             ...tvBtnBase, width: 50, background: power ? "linear-gradient(180deg, #F77 0%, #C33 100%)" : "linear-gradient(180deg, #7F7 0%, #3C3 100%)",
           }}>{power ? "⏻" : "⏻"}</button>
-          <BtnTV onClick={() => setVolume(v => Math.min(100, v + 15))}>🔊 Vol+</BtnTV>
+          <BtnTV onClick={() => setVolume(v => { const nv = Math.min(100, v + 15); saveState("tv_volume", nv); return nv; })}>🔊 Vol+</BtnTV>
           <BtnTV onClick={() => changeChannel(1)}>CH+ ▶</BtnTV>
         </div>
       </div>

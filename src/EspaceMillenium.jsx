@@ -10,6 +10,7 @@ import Taskbar from "./components/Taskbar";
 import StartMenu from "./components/StartMenu";
 import Screensaver from "./components/Screensaver";
 import MSNNotification from "./components/MSNNotification";
+import XPNotifications from "./components/XPNotifications";
 import { startAmbient, stopAmbient, setAmbientMuted } from "./utils/ambientSounds";
 import { playClick } from "./utils/uiSounds";
 import { loadState, saveState } from "./utils/storage";
@@ -202,6 +203,8 @@ export default function EspaceMillenium() {
       {showY2K && <Y2KPopup onClose={() => setShowY2K(false)} onBSOD={() => { setShowBSOD(true); setTimeout(() => setShowBSOD(false), 3000); }} />}
 
       {showClippy && <Clippy message={clippyMsg} onClose={() => setShowClippy(false)} />}
+
+      <XPNotifications muted={muted} />
 
       {msnNotification && (
         <MSNNotification

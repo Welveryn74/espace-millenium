@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { loadState, saveState } from "../../../utils/storage";
+import { playPieceLock, playLineClear, playGameOver } from "../../../utils/uiSounds";
 
 const COLS = 10;
 const ROWS = 20;
@@ -100,6 +101,7 @@ export default function TetrisGame({ screenBg, screenText, color }) {
         saveState("tetris_highscore", sc);
         setHighScore(sc);
       }
+      playGameOver();
       setPhase("GAMEOVER");
       phaseRef.current = "GAMEOVER";
       return;
@@ -114,11 +116,13 @@ export default function TetrisGame({ screenBg, screenText, color }) {
     const c = currentRef.current;
     const p = posRef.current;
     if (!c) return;
+    playPieceLock();
     const merged = merge(boardRef.current, c.shape, p.x, p.y, c.color);
     const { board: newBoard, cleared } = clearLines(merged);
     boardRef.current = newBoard;
     setBoard(newBoard);
     if (cleared > 0) {
+      playLineClear();
       scoreRef.current += SCORE_TABLE[cleared] || 0;
       linesRef.current += cleared;
       setScore(scoreRef.current);

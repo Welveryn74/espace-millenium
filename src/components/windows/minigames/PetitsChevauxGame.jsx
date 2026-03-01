@@ -1,4 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from "react";
+import { loadState, saveState } from "../../../utils/storage";
+import { playDiceRoll, playPop, playCapture, playVictorySound } from "../../../utils/uiSounds";
 
 const BOARD_SIZE = 20;
 const COLORS = {
@@ -66,23 +68,28 @@ export default function PetitsChevauxGame({ onBack }) {
       newH[player][move.idx].pos = 0;
       // Check if opponent is on pos 0 — send back
       newH[opponent].forEach(oh => {
-        if (oh.pos === 0 && !oh.finished) oh.pos = -1;
+        if (oh.pos === 0 && !oh.finished) { oh.pos = -1; playCapture(); }
       });
+      playPop();
     } else if (move.action === "finish") {
       newH[player][move.idx].finished = true;
       newH[player][move.idx].pos = BOARD_SIZE;
+      playPop();
     } else if (move.action === "move") {
       newH[player][move.idx].pos = move.to;
       // Check capture
+      let captured = false;
       newH[opponent].forEach(oh => {
-        if (oh.pos === move.to && !oh.finished) oh.pos = -1;
+        if (oh.pos === move.to && !oh.finished) { oh.pos = -1; captured = true; }
       });
+      if (captured) playCapture(); else playPop();
     }
     return newH;
   }, []);
 
   const rollDice = useCallback(() => {
     if (phase !== "ROLL" || turn !== "human") return;
+    playDiceRoll();
     setDiceRolling(true);
     let count = 0;
     const iv = setInterval(() => {
@@ -107,7 +114,7 @@ export default function PetitsChevauxGame({ onBack }) {
           const newH = applyMove("human", moves[0], val, horses);
           setHorses(newH);
           const w = checkWin(newH);
-          if (w) { setWinner(w); setPhase("WON"); setMessage("Tu as gagné !"); return; }
+          if (w) { playVictorySound(); const nw = loadState("chevaux_wins", 0) + 1; saveState("chevaux_wins", nw); setWinner(w); setPhase("WON"); setMessage("Tu as gagné !"); return; }
           setMessage(moves[0].action === "enter" ? "Cheval sorti !" : moves[0].action === "finish" ? "Cheval arrivé !" : `Avance de ${val}`);
           setTimeout(() => { setTurn("cpu"); setPhase("CPU_TURN"); setMessage("Tour de l'adversaire..."); }, 600);
         } else {
@@ -126,7 +133,7 @@ export default function PetitsChevauxGame({ onBack }) {
     const newH = applyMove("human", move, dice, horses);
     setHorses(newH);
     const w = checkWin(newH);
-    if (w) { setWinner(w); setPhase("WON"); setMessage("Tu as gagné !"); return; }
+    if (w) { playVictorySound(); const nw = loadState("chevaux_wins", 0) + 1; saveState("chevaux_wins", nw); setWinner(w); setPhase("WON"); setMessage("Tu as gagné !"); return; }
     setPhase("CPU_TURN");
     setTurn("cpu");
     setMessage("Tour de l'adversaire...");
@@ -158,7 +165,7 @@ export default function PetitsChevauxGame({ onBack }) {
       const newH = applyMove("cpu", best, val, horses);
       setHorses(newH);
       const w = checkWin(newH);
-      if (w) { setWinner(w); setPhase("WON"); setMessage("L'ordinateur a gagné !"); return; }
+      if (w) { playVictorySound(); setWinner(w); setPhase("WON"); setMessage("L'ordinateur a gagné !"); return; }
       setMessage(`CPU lance ${val}`);
       setTimeout(() => { setTurn("human"); setPhase("ROLL"); setMessage("Lance le dé !"); }, 800);
     }, 700);

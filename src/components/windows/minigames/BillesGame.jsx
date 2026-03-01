@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
+import { loadState, saveState } from "../../../utils/storage";
+import { playShoot, playBounce, playCapture, playVictorySound } from "../../../utils/uiSounds";
 
 const ARENA_SIZE = 300;
 const ARENA_R = ARENA_SIZE / 2;
@@ -90,6 +92,7 @@ export default function BillesGame({ onBack, billes, onScore }) {
     calotRef.current.vx = Math.cos(angle) * power;
     calotRef.current.vy = Math.sin(angle) * power;
 
+    playShoot();
     setShotsLeft(s => s - 1);
     setDragging(false);
     setDragStart(null);
@@ -146,6 +149,7 @@ export default function BillesGame({ onBack, billes, onScore }) {
           tgt.vy = relVy * 0.6;
           c.vx *= 0.4;
           c.vy *= 0.4;
+          playBounce();
           updated = true;
         }
 
@@ -153,6 +157,7 @@ export default function BillesGame({ onBack, billes, onScore }) {
         const tDist = dist({ x: tx, y: ty }, { x: ARENA_R, y: ARENA_R });
         if (tDist + TARGET_R > ARENA_R + 5) {
           scoreRef.current++;
+          playCapture();
           return { ...tgt, x: tx, y: ty, alive: false };
         }
 
@@ -189,6 +194,9 @@ export default function BillesGame({ onBack, billes, onScore }) {
         const alive = newTargets.filter(t => t.alive).length;
         if (alive === 0 || shotsLeft <= 1) {
           setPhase("DONE");
+          if (alive === 0) playVictorySound();
+          const best = loadState("billes_highscore", 0);
+          if (scoreRef.current > best) saveState("billes_highscore", scoreRef.current);
           if (onScore) onScore(scoreRef.current);
         } else {
           setPhase("AIM");

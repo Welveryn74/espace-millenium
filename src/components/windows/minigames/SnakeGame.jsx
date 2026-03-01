@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { loadState, saveState } from "../../../utils/storage";
+import { playPop, playGameOver } from "../../../utils/uiSounds";
 
 const COLS = 20;
 const ROWS = 18;
@@ -70,6 +71,7 @@ export default function SnakeGame({ screenBg, screenText, color }) {
           saveState("snake_highscore", sc);
           setHighScore(sc);
         }
+        playGameOver();
         setPhase("GAMEOVER");
         return;
       }
@@ -80,6 +82,7 @@ export default function SnakeGame({ screenBg, screenText, color }) {
           saveState("snake_highscore", sc);
           setHighScore(sc);
         }
+        playGameOver();
         setPhase("GAMEOVER");
         return;
       }
@@ -87,6 +90,7 @@ export default function SnakeGame({ screenBg, screenText, color }) {
       const newSnake = [head, ...s];
       // Eat food?
       if (head.x === foodRef.current.x && head.y === foodRef.current.y) {
+        playPop();
         scoreRef.current += 10;
         setScore(scoreRef.current);
         const f = randomFood(newSnake);

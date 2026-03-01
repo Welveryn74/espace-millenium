@@ -184,3 +184,138 @@ export function playZipSound() {
   osc.start(t);
   osc.stop(t + 0.2);
 }
+
+// ── Sons mini-jeux ──
+
+/** Pop court — manger fruit, flip carte */
+export function playPop() {
+  const ctx = getCtx();
+  if (!ctx) return;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = 'sine';
+  const t = ctx.currentTime;
+  osc.frequency.setValueAtTime(500, t);
+  osc.frequency.exponentialRampToValueAtTime(800, t + 0.06);
+  gain.gain.setValueAtTime(0.07, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
+  osc.connect(gain).connect(ctx.destination);
+  osc.start(t);
+  osc.stop(t + 0.08);
+}
+
+/** Sweep montant — Tetris ligne complète */
+export function playLineClear() {
+  const ctx = getCtx();
+  if (!ctx) return;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = 'triangle';
+  const t = ctx.currentTime;
+  osc.frequency.setValueAtTime(400, t);
+  osc.frequency.exponentialRampToValueAtTime(1200, t + 0.15);
+  gain.gain.setValueAtTime(0.07, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+  osc.connect(gain).connect(ctx.destination);
+  osc.start(t);
+  osc.stop(t + 0.18);
+}
+
+/** Tick court — Tetris pièce posée */
+export function playPieceLock() {
+  playTone(300, 0.04, 'square', 0.06);
+}
+
+/** Rebond court — paddle Pong/CasseBriques */
+export function playBounce() {
+  playTone(600, 0.03, 'sine', 0.06);
+}
+
+/** Brique cassée — noise + tone */
+export function playBrickBreak() {
+  const ctx = getCtx();
+  if (!ctx) return;
+  const bufferSize = ctx.sampleRate * 0.05;
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) {
+    data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+  }
+  const source = ctx.createBufferSource();
+  source.buffer = buffer;
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(0.05, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+  source.connect(gain).connect(ctx.destination);
+  source.start();
+  playTone(800, 0.05, 'sine', 0.05);
+}
+
+/** Dé qui roule — 5 tones rapides aléatoires */
+export function playDiceRoll() {
+  const ctx = getCtx();
+  if (!ctx) return;
+  for (let i = 0; i < 5; i++) {
+    playTone(300 + Math.random() * 300, 0.03, 'sine', 0.04, i * 0.04);
+  }
+}
+
+/** Capture/élimination — sweep descendant */
+export function playCapture() {
+  const ctx = getCtx();
+  if (!ctx) return;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = 'sine';
+  const t = ctx.currentTime;
+  osc.frequency.setValueAtTime(800, t);
+  osc.frequency.exponentialRampToValueAtTime(200, t + 0.1);
+  gain.gain.setValueAtTime(0.07, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+  osc.connect(gain).connect(ctx.destination);
+  osc.start(t);
+  osc.stop(t + 0.12);
+}
+
+/** Game over — 3 notes descendantes */
+export function playGameOver() {
+  playTone(400, 0.15, 'square', 0.06, 0);
+  playTone(300, 0.15, 'square', 0.06, 0.12);
+  playTone(200, 0.25, 'square', 0.06, 0.24);
+}
+
+/** Level up — 4 notes montantes rapides */
+export function playLevelUp() {
+  playTone(523, 0.08, 'triangle', 0.06, 0);
+  playTone(659, 0.08, 'triangle', 0.06, 0.07);
+  playTone(784, 0.08, 'triangle', 0.06, 0.14);
+  playTone(1047, 0.15, 'triangle', 0.07, 0.21);
+}
+
+/** Paire trouvée — 2 notes montantes */
+export function playMatchSound() {
+  playTone(500, 0.1, 'sine', 0.06, 0);
+  playTone(700, 0.15, 'sine', 0.06, 0.08);
+}
+
+/** Mauvaise paire — note basse */
+export function playMismatch() {
+  playTone(200, 0.08, 'sine', 0.05);
+}
+
+/** Tir bille — sweep montant court */
+export function playShoot() {
+  const ctx = getCtx();
+  if (!ctx) return;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = 'sine';
+  const t = ctx.currentTime;
+  osc.frequency.setValueAtTime(200, t);
+  osc.frequency.exponentialRampToValueAtTime(600, t + 0.08);
+  gain.gain.setValueAtTime(0.06, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+  osc.connect(gain).connect(ctx.destination);
+  osc.start(t);
+  osc.stop(t + 0.1);
+}

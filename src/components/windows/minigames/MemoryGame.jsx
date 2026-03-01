@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import { loadState, saveState } from "../../../utils/storage";
+import { playPop, playMatchSound, playMismatch, playVictorySound } from "../../../utils/uiSounds";
 
 const POKEMON = ["Pikachu", "Dracaufeu", "Tortank", "Florizarre", "Mewtwo", "Ronflex", "Évoli", "Salamèche"];
 const ICONS = ["⚡", "🔥", "🐢", "🌿", "🔮", "😴", "🦊", "🔥"];
@@ -25,6 +27,7 @@ export default function MemoryGame({ screenBg, screenText, color }) {
   const [timer, setTimer] = useState(0);
   const [won, setWon] = useState(false);
   const [started, setStarted] = useState(false);
+  const [bestMoves, setBestMoves] = useState(() => loadState("memory_bestMoves", null));
   const timerRef = useRef(null);
 
   // Timer
@@ -42,15 +45,26 @@ export default function MemoryGame({ screenBg, screenText, color }) {
     setMoves(m => m + 1);
 
     if (cards[a].name === cards[b].name) {
+      playMatchSound();
       setTimeout(() => {
         setCards(prev => {
           const next = prev.map((c, i) => (i === a || i === b ? { ...c, matched: true } : c));
-          if (next.every(c => c.matched)) setWon(true);
+          if (next.every(c => c.matched)) {
+            playVictorySound();
+            setWon(true);
+            const finalMoves = moves + 1;
+            const best = loadState("memory_bestMoves", null);
+            if (best === null || finalMoves < best) {
+              saveState("memory_bestMoves", finalMoves);
+              setBestMoves(finalMoves);
+            }
+          }
           return next;
         });
         setFlipped([]);
       }, 400);
     } else {
+      playMismatch();
       setTimeout(() => {
         setCards(prev => prev.map((c, i) => (i === a || i === b ? { ...c, flipped: false } : c)));
         setFlipped([]);
@@ -60,6 +74,7 @@ export default function MemoryGame({ screenBg, screenText, color }) {
 
   const handleFlip = (idx) => {
     if (flipped.length >= 2 || cards[idx].flipped || cards[idx].matched) return;
+    playPop();
     if (!started) setStarted(true);
     setCards(prev => prev.map((c, i) => (i === idx ? { ...c, flipped: true } : c)));
     setFlipped(prev => [...prev, idx]);
@@ -82,6 +97,7 @@ export default function MemoryGame({ screenBg, screenText, color }) {
       {/* Header */}
       <div style={{ display: "flex", justifyContent: "space-between", width: "100%", fontSize: 10, fontFamily: "monospace", padding: "0 4px" }}>
         <span style={{ color: txtColor }}>Coups : {moves}</span>
+        {bestMoves !== null && <span style={{ color: `${txtColor}80` }}>Record : {bestMoves}</span>}
         <span style={{ color: txtColor }}>Temps : {timer}s</span>
       </div>
 
