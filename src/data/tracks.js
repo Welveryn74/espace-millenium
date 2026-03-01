@@ -271,4 +271,136 @@ export const TRACKS = [
       [E3,2,0.5],[E3,2,0.5],[A3,2,0.4],[E3,2,0.5],
     ] }
   },
+  // ── Ajouts vague 2 ─────────────────────────────
+  {
+    title: "Coldplay — Clocks", duration: "5:07", genre: "Rock",
+    cover: "/images/mp3/coldplay-clocks.svg", previewUrl: "https://p.scdn.co/mp3-preview/f7af250125a083c8212e4b7dd508a12c12aeac37",
+    melody: { bpm: 131, wave: "triangle", notes: [
+      [Eb5,0.5,0.5],[Bb4,0.5,0.4],[G4,0.5,0.4],[Eb5,0.5,0.5],[Bb4,0.5,0.4],[G4,0.5,0.4],
+      [Eb5,0.5,0.5],[Bb4,0.5,0.4],[G4,1,0.5],[R,0.5],
+      [Eb5,0.5,0.5],[Bb4,0.5,0.4],[Ab4,0.5,0.4],[Eb5,0.5,0.5],[Bb4,0.5,0.4],[Ab4,1,0.5],[R,0.5],
+    ], bass: [
+      [Eb4,2,0.4],[Bb3,2,0.4],[F3,2,0.4],[Ab3,2,0.4],
+    ] }
+  },
+  {
+    title: "Christina Aguilera — Beautiful", duration: "3:58", genre: "Pop",
+    cover: "/images/mp3/aguilera-beautiful.svg", previewUrl: "https://p.scdn.co/mp3-preview/c0187def7753b97d1ff388ef4cfb6078da0d7481",
+    melody: { bpm: 76, wave: "triangle", notes: [
+      [Eb5,1.5,0.5],[D5,0.5,0.4],[Eb5,1,0.5],[Bb4,1.5,0.5],[R,0.5],
+      [G4,1,0.4],[Ab4,1,0.5],[Bb4,1.5,0.5],[Ab4,0.5,0.4],[G4,2,0.5],[R,0.5],
+    ], bass: [
+      [Eb4,2,0.4],[Bb3,2,0.3],[C3,2,0.4],[Ab3,2,0.4],
+    ] }
+  },
+  {
+    title: "Sean Paul — Get Busy", duration: "3:30", genre: "Dancehall",
+    cover: "/images/mp3/sean-paul-get-busy.svg", previewUrl: "https://p.scdn.co/mp3-preview/4b9d5a3ffc001106bd73da2759abbdb528af64a7",
+    melody: { bpm: 100, wave: "square", notes: [
+      [A4,0.5,0.5],[A4,0.5,0.4],[C5,0.5,0.5],[A4,0.5,0.4],[G4,0.5,0.4],[A4,1,0.5],[R,0.5],
+      [E4,0.5,0.4],[G4,0.5,0.4],[A4,1,0.5],[G4,0.5,0.4],[E4,0.5,0.4],[D4,1.5,0.5],[R,0.5],
+    ], bass: [
+      [A3,2,0.4],[E3,2,0.4],[G3,2,0.4],[D3,2,0.4],
+    ] }
+  },
+  {
+    title: "Justin Timberlake — Cry Me a River", duration: "4:48", genre: "Pop",
+    cover: "/images/mp3/jt-cry-me-a-river.svg", previewUrl: "https://p.scdn.co/mp3-preview/143896ba6eee1270f4116cec384bb3bcce09d6eb",
+    melody: { bpm: 76, wave: "triangle", notes: [
+      [A4,1,0.5],[C5,1,0.5],[B4,0.5,0.4],[A4,0.5,0.4],[G4,1.5,0.5],[R,0.5],
+      [A4,0.5,0.4],[B4,0.5,0.4],[C5,1,0.5],[A4,1,0.5],[G4,0.5,0.4],[E4,1.5,0.5],[R,0.5],
+    ], bass: [
+      [A3,2,0.4],[F3,2,0.4],[G3,2,0.4],[E3,2,0.4],
+    ] }
+  },
+  {
+    title: "System of a Down — Chop Suey!", duration: "3:30", genre: "Rock",
+    cover: "/images/mp3/soad-chop-suey.svg", previewUrl: "https://p.scdn.co/mp3-preview/00ee92420f3919ac0014fdb108b747abd704f2fe",
+    melody: { bpm: 128, wave: "sawtooth", notes: [
+      [G4,0.5,0.5],[G4,0.5,0.5],[Bb4,0.5,0.5],[G4,0.5,0.4],[F4,0.5,0.4],[G4,0.5,0.5],[Eb4,1,0.5],[R,0.25],
+      [G4,0.5,0.5],[Bb4,0.5,0.5],[C5,1,0.5],[Bb4,0.5,0.4],[G4,0.5,0.4],[F4,1,0.5],[R,0.5],
+    ], bass: [
+      [G3,2,0.5],[E3,2,0.5],[F3,2,0.4],[G3,2,0.5],
+    ] }
+  },
+  {
+    title: "Beyoncé — Crazy in Love", duration: "3:56", genre: "R&B",
+    cover: "/images/mp3/beyonce-crazy-in-love.svg", previewUrl: "https://p.scdn.co/mp3-preview/bcd82e2e27606ec0a0d024e10dfdec5c58188a53",
+    melody: { bpm: 100, wave: "square", notes: [
+      [D4,0.5,0.5],[D4,0.5,0.5],[F4,0.5,0.5],[D4,0.5,0.4],[A4,1,0.5],[G4,0.5,0.4],[F4,0.5,0.4],[D4,1,0.5],[R,0.5],
+      [D4,0.5,0.4],[F4,0.5,0.5],[A4,1,0.5],[G4,1,0.5],[F4,0.5,0.4],[D4,0.5,0.4],[C4,1.5,0.5],[R,0.5],
+    ], bass: [
+      [D3,2,0.5],[A3,2,0.4],[F3,2,0.4],[G3,2,0.4],
+    ] }
+  },
+  {
+    title: "Modjo — Lady (Hear Me Tonight)", duration: "3:38", genre: "Electro",
+    cover: "/images/mp3/modjo-lady.svg", previewUrl: "https://p.scdn.co/mp3-preview/05e58f0bcf5a9a29f60d5aa4fd685a528a59f328",
+    melody: { bpm: 122, wave: "triangle", notes: [
+      [A4,0.5,0.5],[C5,0.5,0.5],[E5,0.5,0.5],[C5,0.5,0.4],[A4,1,0.5],[G4,0.5,0.4],[A4,0.5,0.4],
+      [C5,0.5,0.4],[A4,0.5,0.4],[G4,0.5,0.4],[E4,0.5,0.4],[G4,1,0.5],[A4,1.5,0.5],[R,0.5],
+    ], bass: [
+      [A3,1,0.4],[A3,1,0.4],[C3,1,0.4],[C3,1,0.4],[F3,1,0.4],[F3,1,0.4],[G3,1,0.4],[G3,1,0.4],
+    ] }
+  },
+  {
+    title: "Star Academy — La Musique", duration: "4:05", genre: "Pop FR",
+    cover: "/images/mp3/star-ac-la-musique.svg", previewUrl: "https://p.scdn.co/mp3-preview/b80aa0f94cf3b38262d3c4eeb56914c3ec45785b",
+    melody: { bpm: 120, wave: "square", notes: [
+      [G4,1,0.5],[A4,0.5,0.4],[B4,1,0.5],[D5,1,0.5],[B4,0.5,0.4],[A4,0.5,0.4],[G4,1.5,0.5],[R,0.5],
+      [G4,0.5,0.4],[A4,0.5,0.4],[B4,1,0.5],[A4,0.5,0.4],[G4,0.5,0.4],[E4,1.5,0.5],[D4,1,0.4],[R,0.5],
+    ], bass: [
+      [G3,2,0.4],[D3,2,0.4],[E3,2,0.4],[C3,2,0.4],
+    ] }
+  },
+  {
+    title: "Tragédie — Hey Oh", duration: "3:52", genre: "R&B",
+    cover: "/images/mp3/tragedie-hey-oh.svg", previewUrl: "https://p.scdn.co/mp3-preview/62061c5fa488c21c4a093e44e4f32eafa5b8f8c1",
+    melody: { bpm: 92, wave: "square", notes: [
+      [A4,0.5,0.5],[A4,0.5,0.4],[C5,0.5,0.5],[B4,0.5,0.4],[A4,1,0.5],[G4,0.5,0.4],[E4,1,0.5],[R,0.5],
+      [E4,0.5,0.4],[G4,0.5,0.4],[A4,1,0.5],[G4,1,0.5],[E4,0.5,0.4],[D4,1.5,0.5],[R,0.5],
+    ], bass: [
+      [A3,2,0.4],[E3,2,0.4],[F3,2,0.4],[D3,2,0.4],
+    ] }
+  },
+  {
+    title: "Alicia Keys — Fallin'", duration: "3:30", genre: "R&B",
+    cover: "/images/mp3/alicia-keys-fallin.svg", previewUrl: "https://p.scdn.co/mp3-preview/79526addc56f4ca7b29c73df65d063b7a026a46b",
+    melody: { bpm: 68, wave: "triangle", notes: [
+      [E4,1.5,0.5],[G4,1,0.4],[A4,0.5,0.4],[B4,1.5,0.5],[A4,0.5,0.4],[G4,1,0.4],[E4,1,0.5],[R,0.5],
+      [G4,1,0.4],[A4,0.5,0.4],[B4,1,0.5],[A4,1,0.5],[G4,0.5,0.4],[E4,2,0.5],[R,0.5],
+    ], bass: [
+      [E3,2,0.5],[B3,2,0.4],[C3,2,0.4],[D3,2,0.4],
+    ] }
+  },
+  {
+    title: "Red Hot Chili Peppers — Californication", duration: "5:21", genre: "Rock",
+    cover: "/images/mp3/rhcp-californication.svg", previewUrl: "https://p.scdn.co/mp3-preview/0fd595c5b63db10f4a99683f8248ea5d13700683",
+    melody: { bpm: 96, wave: "sawtooth", notes: [
+      [A4,1,0.5],[G4,0.5,0.4],[A4,0.5,0.4],[C5,1.5,0.5],[A4,0.5,0.4],[G4,1,0.4],[E4,1,0.5],[R,0.5],
+      [A4,0.5,0.4],[C5,0.5,0.4],[D5,1,0.5],[C5,0.5,0.4],[A4,0.5,0.4],[G4,1,0.5],[A4,1.5,0.5],[R,0.5],
+    ], bass: [
+      [A3,2,0.4],[F3,2,0.4],[C3,2,0.4],[G3,2,0.4],
+    ] }
+  },
+  {
+    title: "Ilona Mitrecey — Un monde parfait", duration: "3:25", genre: "Pop FR",
+    cover: "/images/mp3/ilona-monde-parfait.svg", previewUrl: "https://p.scdn.co/mp3-preview/db0bf468f206ded7a402df86d97e0836104e0fea",
+    melody: { bpm: 130, wave: "square", notes: [
+      [C5,0.5,0.5],[D5,0.5,0.5],[E5,1,0.5],[G5,0.5,0.5],[E5,0.5,0.4],[D5,0.5,0.4],[C5,1.5,0.5],[R,0.5],
+      [E5,0.5,0.4],[D5,0.5,0.4],[C5,0.5,0.4],[D5,0.5,0.4],[E5,1,0.5],[D5,0.5,0.4],[C5,1.5,0.5],[R,0.5],
+    ], bass: [
+      [C3,2,0.4],[G3,2,0.4],[A3,2,0.4],[F3,2,0.4],
+    ] }
+  },
+  {
+    title: "Sum 41 — Fat Lip", duration: "2:56", genre: "Rock",
+    cover: "/images/mp3/sum-41-fat-lip.svg", previewUrl: "https://p.scdn.co/mp3-preview/ab6a3195917608bf9f386d4d7f84832b64e52cf8",
+    melody: { bpm: 98, wave: "sawtooth", notes: [
+      [E4,0.5,0.5],[E4,0.5,0.5],[G4,0.5,0.5],[A4,0.5,0.5],[G4,0.5,0.4],[E4,0.5,0.4],[B4,1,0.5],[A4,0.5,0.4],[G4,0.5,0.4],[E4,1,0.5],[R,0.5],
+      [E4,0.5,0.4],[G4,0.5,0.5],[A4,1,0.5],[B4,0.5,0.5],[A4,0.5,0.4],[G4,0.5,0.4],[E4,1.5,0.5],[R,0.5],
+    ], bass: [
+      [E3,2,0.5],[G3,2,0.4],[A3,2,0.4],[E3,2,0.5],
+    ] }
+  },
 ];

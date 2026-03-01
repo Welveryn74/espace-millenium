@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="#111"/>
+  <!-- Jagged lines (chaos) -->
+  <g stroke="#cc0000" stroke-width="2.5" fill="none" opacity="0.7">
+    <polyline points="20,80 40,50 60,90 80,40 100,85 120,45 140,90 160,50 180,80"/>
+    <polyline points="30,95 50,70 70,100 90,60 110,95 130,65 150,100 170,70"/>
+  </g>
+  <!-- Hand reaching up -->
+  <g fill="#cc0000" opacity="0.4">
+    <rect x="92" y="105" width="16" height="40" rx="3"/>
+    <rect x="85" y="100" width="8" height="25" rx="2" transform="rotate(-10 89 112)"/>
+    <rect x="107" y="100" width="8" height="25" rx="2" transform="rotate(10 111 112)"/>
+    <rect x="96" y="95" width="8" height="22" rx="2" transform="rotate(-5 100 106)"/>
+    <rect x="100" y="97" width="8" height="20" rx="2" transform="rotate(5 104 107)"/>
+  </g>
+  <text x="100" y="165" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="8" fill="#cc0000" letter-spacing="2">SYSTEM OF A DOWN</text>
+  <text x="100" y="184" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#ddd" font-weight="bold">Chop Suey!</text>
+</svg>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a1a"/>
+      <stop offset="100%" stop-color="#333"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg)"/>
+  <!-- Skull (punk) -->
+  <g transform="translate(100,72)">
+    <ellipse cx="0" cy="-5" rx="25" ry="28" fill="none" stroke="#ff6600" stroke-width="2"/>
+    <!-- Eye sockets -->
+    <ellipse cx="-10" cy="-10" rx="7" ry="8" fill="#ff6600" opacity="0.3"/>
+    <ellipse cx="10" cy="-10" rx="7" ry="8" fill="#ff6600" opacity="0.3"/>
+    <!-- Nose -->
+    <path d="M -3 2 L 0 6 L 3 2" fill="none" stroke="#ff6600" stroke-width="1.5"/>
+    <!-- Teeth -->
+    <g stroke="#ff6600" stroke-width="1" opacity="0.5">
+      <line x1="-10" y1="15" x2="-10" y2="20"/><line x1="-5" y1="15" x2="-5" y2="21"/>
+      <line x1="0" y1="15" x2="0" y2="20"/><line x1="5" y1="15" x2="5" y2="21"/>
+      <line x1="10" y1="15" x2="10" y2="20"/>
+    </g>
+    <line x1="-12" y1="15" x2="12" y2="15" stroke="#ff6600" stroke-width="1.5"/>
+  </g>
+  <text x="100" y="128" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="14" fill="#ff6600" letter-spacing="1">SUM 41</text>
+  <text x="100" y="150" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="white" font-weight="bold">Fat Lip</text>
+  <text x="100" y="170" text-anchor="middle" font-family="Arial" font-size="8" fill="#555" letter-spacing="1">ALL KILLER NO FILLER</text>
+</svg>

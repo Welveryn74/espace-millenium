@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0a1628"/>
+      <stop offset="100%" stop-color="#1a2a4a"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg)"/>
+  <!-- Rain drops -->
+  <g stroke="#6688cc" stroke-width="1" opacity="0.3">
+    <line x1="30" y1="20" x2="28" y2="40"/><line x1="55" y1="10" x2="53" y2="30"/>
+    <line x1="80" y1="25" x2="78" y2="45"/><line x1="110" y1="15" x2="108" y2="35"/>
+    <line x1="140" y1="20" x2="138" y2="40"/><line x1="170" y1="10" x2="168" y2="30"/>
+    <line x1="45" y1="50" x2="43" y2="70"/><line x1="95" y1="55" x2="93" y2="75"/>
+    <line x1="155" y1="45" x2="153" y2="65"/><line x1="65" y1="65" x2="63" y2="85"/>
+    <line x1="125" y1="60" x2="123" y2="80"/>
+  </g>
+  <!-- Water reflection -->
+  <path d="M 0 130 Q 50 120 100 130 Q 150 140 200 130 L 200 200 L 0 200 Z" fill="#1a2a4a" opacity="0.5"/>
+  <path d="M 0 140 Q 50 135 100 140 Q 150 145 200 140" fill="none" stroke="#6688cc" stroke-width="0.5" opacity="0.3"/>
+  <text x="100" y="110" text-anchor="middle" font-family="Arial" font-size="8" fill="#6688cc" letter-spacing="2">JUSTIN TIMBERLAKE</text>
+  <text x="100" y="132" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="#aabbdd" font-style="italic">Cry Me a River</text>
+  <text x="100" y="152" text-anchor="middle" font-family="Arial" font-size="8" fill="#334" letter-spacing="1">JUSTIFIED</text>
+</svg>

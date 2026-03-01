@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2a1a3a"/>
+      <stop offset="100%" stop-color="#1a0a2a"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg)"/>
+  <!-- Butterfly -->
+  <g transform="translate(100,75)">
+    <path d="M 0 0 C -15,-25 -40,-20 -30,-5 C -25,5 -10,5 0,0" fill="#d4a5ff" opacity="0.6"/>
+    <path d="M 0 0 C 15,-25 40,-20 30,-5 C 25,5 10,5 0,0" fill="#d4a5ff" opacity="0.6"/>
+    <path d="M 0 0 C -10,10 -25,20 -18,10 C -12,5 -5,2 0,0" fill="#b388ff" opacity="0.4"/>
+    <path d="M 0 0 C 10,10 25,20 18,10 C 12,5 5,2 0,0" fill="#b388ff" opacity="0.4"/>
+    <ellipse cx="0" cy="2" rx="1.5" ry="8" fill="#8855aa"/>
+  </g>
+  <text x="100" y="130" text-anchor="middle" font-family="Arial" font-size="8" fill="#b388ff" letter-spacing="2">CHRISTINA AGUILERA</text>
+  <text x="100" y="152" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="white" font-style="italic">Beautiful</text>
+  <text x="100" y="172" text-anchor="middle" font-family="Arial" font-size="8" fill="#443" letter-spacing="1">STRIPPED</text>
+</svg>

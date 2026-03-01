@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#003399"/>
+      <stop offset="100%" stop-color="#0055cc"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg)"/>
+  <!-- Big star -->
+  <g transform="translate(100,72)">
+    <polygon points="0,-38 10,-12 38,-12 16,5 24,32 0,16 -24,32 -16,5 -38,-12 -10,-12" fill="#ffd700" opacity="0.7"/>
+    <polygon points="0,-22 6,-7 22,-7 9,3 14,18 0,9 -14,18 -9,3 -22,-7 -6,-7" fill="#fff" opacity="0.3"/>
+  </g>
+  <!-- Microphone -->
+  <g transform="translate(100,75)" opacity="0.5">
+    <circle cx="0" cy="-5" r="6" fill="none" stroke="#fff" stroke-width="1.5"/>
+    <line x1="0" y1="1" x2="0" y2="15" stroke="#fff" stroke-width="1.5"/>
+    <line x1="-5" y1="15" x2="5" y2="15" stroke="#fff" stroke-width="1.5"/>
+  </g>
+  <text x="100" y="135" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="9" fill="#ffd700" letter-spacing="1">STAR ACADEMY</text>
+  <text x="100" y="157" text-anchor="middle" font-family="Georgia,serif" font-size="13" fill="white">La Musique</text>
+</svg>
