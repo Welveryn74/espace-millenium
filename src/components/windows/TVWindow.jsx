@@ -248,8 +248,7 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
         videoId: video.id,
         onReady: () => {
           setVideoReady(true);
-          // Sync volume after a short delay (DM needs time to accept postMessages)
-          setTimeout(() => playerRef.current?.setVolume?.(volume), 500);
+          playerRef.current?.setVolume?.(volume);
         },
         onError: () => { setVideoError(true); },
         onEnded: () => {

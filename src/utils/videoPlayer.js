@@ -1,7 +1,10 @@
 // Dailymotion video player (no npm deps, no ads, no suggestions)
+// Uses the OLD embed URL format which supports postMessage API
+
+const DM_ORIGIN = "https://www.dailymotion.com";
 
 function buildDMUrl(videoId) {
-  return `https://geo.dailymotion.com/player.html?video=${videoId}&mute=true&controls=false&queue-enable=false&sharing-enable=false&ui-logo=false&autoplay=true`;
+  return `${DM_ORIGIN}/embed/video/${videoId}?api=postMessage&autoplay=1&mute=1&controls=0&queue-enable=0&sharing-enable=0&ui-logo=0&ui-start-screen-info=0`;
 }
 
 export function createVideoPlayer(containerId, { videoId, onReady, onError, onEnded }) {
@@ -17,34 +20,39 @@ export function createVideoPlayer(containerId, { videoId, onReady, onError, onEn
   container.appendChild(iframe);
 
   let destroyed = false;
-  let readyFired = false;
+  let apiReady = false;
+  let pendingCmds = [];
 
-  function fireReady() {
-    if (!readyFired && !destroyed) { readyFired = true; onReady?.(); }
+  function postCmd(method, value) {
+    const msg = { command: method };
+    if (value !== undefined) msg.parameters = [value];
+    if (!apiReady) { pendingCmds.push(msg); return; }
+    try { iframe.contentWindow?.postMessage(JSON.stringify(msg), DM_ORIGIN); } catch {}
   }
 
-  // Listen for Dailymotion postMessage events
+  function flushCmds() {
+    apiReady = true;
+    for (const msg of pendingCmds) {
+      try { iframe.contentWindow?.postMessage(JSON.stringify(msg), DM_ORIGIN); } catch {}
+    }
+    pendingCmds = [];
+  }
+
   function onMessage(e) {
-    if (destroyed) return;
+    if (destroyed || e.origin !== DM_ORIGIN) return;
     try {
       const data = typeof e.data === "string" ? JSON.parse(e.data) : e.data;
+      if (data.event === "apiready") { flushCmds(); onReady?.(); }
       if (data.event === "video_end" || data.event === "ended") onEnded?.();
-      if (data.event === "playback_ready" || data.event === "video_start") fireReady();
       if (data.event === "error") onError?.(data);
     } catch {}
   }
   window.addEventListener("message", onMessage);
 
-  // Fallback: assume ready after short delay (DM doesn't always fire events)
-  const readyTimer = setTimeout(fireReady, 2500);
-
-  function postCmd(method, value) {
-    try {
-      const msg = { command: method };
-      if (value !== undefined) msg.parameters = [value];
-      iframe.contentWindow?.postMessage(JSON.stringify(msg), "*");
-    } catch {}
-  }
+  // Fallback if apiready never fires
+  const readyTimer = setTimeout(() => {
+    if (!destroyed && !apiReady) { flushCmds(); onReady?.(); }
+  }, 5000);
 
   return {
     setVolume(v) {
@@ -57,7 +65,16 @@ export function createVideoPlayer(containerId, { videoId, onReady, onError, onEn
     },
     play() { postCmd("play"); },
     pause() { postCmd("pause"); },
-    loadVideo(id) { iframe.src = buildDMUrl(id); readyFired = false; },
-    destroy() { destroyed = true; clearTimeout(readyTimer); window.removeEventListener("message", onMessage); container.innerHTML = ""; },
+    loadVideo(id) {
+      apiReady = false;
+      pendingCmds = [];
+      iframe.src = buildDMUrl(id);
+    },
+    destroy() {
+      destroyed = true;
+      clearTimeout(readyTimer);
+      window.removeEventListener("message", onMessage);
+      container.innerHTML = "";
+    },
   };
 }
