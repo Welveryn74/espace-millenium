@@ -9,17 +9,14 @@ export default function PageWanadoo({ navigateTo, setSearchQuery }) {
   const handleVoilaSearch = () => {
     const q = voilaQuery.trim();
     if (!q) return;
-    // Vrai Google archivé de 2005
-    navigateTo("google.fr/search?q=" + encodeURIComponent(q));
+    if (setSearchQuery) setSearchQuery(q);
+    navigateTo("google.fr");
   };
 
   const handleNewsClick = (news) => {
     if (!news.url) return;
-    if (news.searchQuery) {
-      navigateTo("google.fr/search?q=" + encodeURIComponent(news.searchQuery));
-    } else {
-      navigateTo(news.url);
-    }
+    if (news.searchQuery && setSearchQuery) setSearchQuery(news.searchQuery);
+    navigateTo(news.url);
   };
 
   return (
