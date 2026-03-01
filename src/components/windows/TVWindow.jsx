@@ -215,10 +215,22 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
     return videos[Math.floor(Math.random() * videos.length)];
   };
 
-  // Destroy current player
+  // Destroy current player and restore the inner container div
   const destroyPlayer = () => {
     playerRef.current?.destroy?.();
     playerRef.current = null;
+    // YT.Player.destroy() removes the iframe+div — recreate the container
+    const existing = document.getElementById(containerId);
+    if (!existing) {
+      const wrapper = document.querySelector(`[data-video-wrapper]`);
+      if (wrapper) {
+        wrapper.innerHTML = "";
+        const div = document.createElement("div");
+        div.id = containerId;
+        div.style.cssText = "width:100%;height:100%";
+        wrapper.appendChild(div);
+      }
+    }
   };
 
   // Start a video for the current channel
@@ -348,19 +360,19 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
               display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
               position: "relative", animation: "crtFlicker 4s infinite",
             }}>
-              {/* z-0: Video layer */}
+              {/* z-0: Video layer — wrapper keeps styles when YT replaces the inner div */}
               {hasVideo && (
-                <div
-                  id={containerId}
-                  style={{
-                    position: "absolute", inset: 0, zIndex: 0,
-                    pointerEvents: "none",
-                    transform: "scale(1.15)",
-                    transformOrigin: "center",
-                    opacity: videoReady && !videoError ? 1 : 0,
-                    transition: "opacity 0.6s ease-in",
-                  }}
-                />
+                <div data-video-wrapper="" style={{
+                  position: "absolute", inset: 0, zIndex: 0,
+                  pointerEvents: "none",
+                  transform: "scale(1.15)",
+                  transformOrigin: "center",
+                  opacity: videoReady && !videoError ? 1 : 0,
+                  transition: "opacity 0.6s ease-in",
+                  overflow: "hidden",
+                }}>
+                  <div id={containerId} style={{ width: "100%", height: "100%" }} />
+                </div>
               )}
               {/* z-1: Fallback text content */}
               <div style={{

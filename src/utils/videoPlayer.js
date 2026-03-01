@@ -26,6 +26,8 @@ function createYouTubePlayer(containerId, { videoId, start, onReady, onError, on
     .then(() => {
       if (destroyed) return;
       player = new window.YT.Player(containerId, {
+        width: "100%",
+        height: "100%",
         videoId,
         playerVars: {
           controls: 0, autoplay: 1, mute: 1, rel: 0, fs: 0,
