@@ -59,10 +59,6 @@ export default function EspaceMillenium() {
   const konamiRef = useRef([]);
   const bootTimeRef = useRef(Date.now());
 
-  const pickClippyMsg = useCallback(() => {
-    return pickClippyMessage(openWindowIds.length, bootTimeRef.current);
-  }, [openWindowIds.length]);
-
   const {
     windows, shaking, startMenu, setStartMenu,
     selectedIcon, setSelectedIcon,
@@ -72,6 +68,10 @@ export default function EspaceMillenium() {
     closing, restoring,
     muted, toggleMute,
   } = useDesktop();
+
+  const pickClippyMsg = useCallback(() => {
+    return pickClippyMessage(openWindowIds.length, bootTimeRef.current);
+  }, [openWindowIds.length]);
 
   useEffect(() => {
     const iv = setInterval(() => setTime(new Date()), 1000);
