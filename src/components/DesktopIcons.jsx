@@ -4,35 +4,38 @@ import NostalImg from "./NostalImg";
 import { playIconSelect } from "../utils/uiSounds";
 import { loadState, saveState } from "../utils/storage";
 
-const GRID = 90;
-const ICON_W = 90;
-const ICON_H = 90;
+const GRID = 100;
+const ICON_W = 80;
+const ICON_H = 100;
+const PAD_X = 12;
+const PAD_Y = 10;
+const ICONS_PER_COL = 7;
 const DRAG_THRESHOLD = 5;
 
 function getDefaultPositions() {
   const positions = {};
   DESKTOP_ICONS.forEach((icon, i) => {
-    const col = Math.floor(i / 8);
-    const row = i % 8;
-    positions[icon.id] = { x: 18 + col * GRID, y: 18 + row * GRID };
+    const col = Math.floor(i / ICONS_PER_COL);
+    const row = i % ICONS_PER_COL;
+    positions[icon.id] = { x: PAD_X + col * GRID, y: PAD_Y + row * GRID };
   });
   return positions;
 }
 
 export function resetIconPositions() {
-  saveState('icon_positions', null);
+  saveState('icon_grid_v2', null);
 }
 
 export default function DesktopIcons({ selectedIcon, setSelectedIcon, openWindow, konamiActive }) {
   const [positions, setPositions] = useState(() => {
-    const saved = loadState('icon_positions', null);
+    const saved = loadState('icon_grid_v2', null);
     return saved || getDefaultPositions();
   });
   const dragRef = useRef(null);
 
   // Persist positions
   useEffect(() => {
-    saveState('icon_positions', positions);
+    saveState('icon_grid_v2', positions);
   }, [positions]);
 
   const handleMouseDown = useCallback((e, iconId) => {
@@ -50,11 +53,15 @@ export default function DesktopIcons({ selectedIcon, setSelectedIcon, openWindow
       dragging = true;
       dragRef.current = true;
 
-      // Snap to grid + constrain to viewport
+      // Snap to grid (offset-aware) + constrain to viewport
       const maxX = window.innerWidth - ICON_W;
       const maxY = window.innerHeight - ICON_H - 36; // taskbar
-      const newX = Math.max(0, Math.min(maxX, Math.round((startPos.x + dx) / GRID) * GRID));
-      const newY = Math.max(0, Math.min(maxY, Math.round((startPos.y + dy) / GRID) * GRID));
+      const rawX = startPos.x + dx;
+      const rawY = startPos.y + dy;
+      const snapX = PAD_X + Math.round((rawX - PAD_X) / GRID) * GRID;
+      const snapY = PAD_Y + Math.round((rawY - PAD_Y) / GRID) * GRID;
+      const newX = Math.max(PAD_X, Math.min(maxX, snapX));
+      const newY = Math.max(PAD_Y, Math.min(maxY, snapY));
 
       setPositions(prev => ({ ...prev, [iconId]: { x: newX, y: newY } }));
     };
@@ -86,7 +93,7 @@ export default function DesktopIcons({ selectedIcon, setSelectedIcon, openWindow
   return (
     <>
       {DESKTOP_ICONS.map((icon) => {
-        const pos = positions[icon.id] || { x: 18, y: 18 };
+        const pos = positions[icon.id] || { x: PAD_X, y: PAD_Y };
         return (
           <div
             key={icon.id}
