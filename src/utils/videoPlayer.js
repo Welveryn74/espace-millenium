@@ -39,11 +39,22 @@ export function createVideoPlayer(containerId, { videoId, onReady, onError, onEn
   const readyTimer = setTimeout(fireReady, 2500);
 
   function postCmd(method, value) {
-    try { iframe.contentWindow?.postMessage(JSON.stringify({ command: method, parameters: value != null ? [value] : [] }), "*"); } catch {}
+    try {
+      const msg = { command: method };
+      if (value !== undefined) msg.parameters = [value];
+      iframe.contentWindow?.postMessage(JSON.stringify(msg), "*");
+    } catch {}
   }
 
   return {
-    setVolume(v) { postCmd("muted", v === 0); postCmd("volume", v / 100); },
+    setVolume(v) {
+      if (v === 0) {
+        postCmd("mute");
+      } else {
+        postCmd("unmute");
+        postCmd("volume", v / 100);
+      }
+    },
     play() { postCmd("play"); },
     pause() { postCmd("pause"); },
     loadVideo(id) { iframe.src = buildDMUrl(id); readyFired = false; },
