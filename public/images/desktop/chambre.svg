@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <!-- Mur -->
+  <rect x="2" y="2" width="44" height="44" rx="3" fill="#E8D8C8" stroke="#B89878" stroke-width="1.5"/>
+  <!-- Fenêtre -->
+  <rect x="28" y="5" width="14" height="12" rx="1" fill="#87CEEB" stroke="#8B7355" stroke-width="1.5"/>
+  <line x1="35" y1="5" x2="35" y2="17" stroke="#8B7355" stroke-width="1"/>
+  <line x1="28" y1="11" x2="42" y2="11" stroke="#8B7355" stroke-width="1"/>
+  <!-- Poster étoile -->
+  <rect x="6" y="5" width="10" height="13" rx="1" fill="#4466AA" stroke="#334488" stroke-width="0.8"/>
+  <polygon points="11,8 12.2,11 15,11 12.8,13 13.6,16 11,14 8.4,16 9.2,13 7,11 9.8,11" fill="#FFD700"/>
+  <!-- Lit -->
+  <rect x="4" y="28" width="28" height="16" rx="2" fill="#6699CC" stroke="#4477AA" stroke-width="1.2"/>
+  <!-- Oreiller -->
+  <rect x="5" y="29" width="10" height="7" rx="3" fill="#FFF" stroke="#DDD" stroke-width="0.8"/>
+  <!-- Couverture pliée -->
+  <path d="M5 36 Q19 33 32 36" stroke="#5588BB" stroke-width="1" fill="none"/>
+  <!-- Tête de lit -->
+  <rect x="3" y="26" width="4" height="20" rx="1.5" fill="#8B6914" stroke="#6B4914" stroke-width="0.8"/>
+  <!-- Pied de lit -->
+  <rect x="29" y="32" width="4" height="14" rx="1.5" fill="#8B6914" stroke="#6B4914" stroke-width="0.8"/>
+  <!-- Table de chevet -->
+  <rect x="36" y="32" width="10" height="14" rx="1" fill="#A0784A" stroke="#8B6914" stroke-width="1"/>
+  <line x1="36" y1="38" x2="46" y2="38" stroke="#8B6914" stroke-width="0.8"/>
+  <!-- Lampe -->
+  <rect x="39.5" y="27" width="3" height="5" rx="0.5" fill="#CD853F"/>
+  <path d="M37 27 Q41 22 45 27" fill="#FFEE88" stroke="#DDCC44" stroke-width="0.8"/>
+  <!-- Tapis -->
+  <ellipse cx="22" cy="46" rx="14" ry="2" fill="#CC6677" opacity="0.6"/>
+</svg>

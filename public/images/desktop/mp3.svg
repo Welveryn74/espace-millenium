@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <!-- Corps du baladeur MP3 -->
+  <rect x="10" y="3" width="28" height="42" rx="5" fill="#E8E8E8" stroke="#999" stroke-width="1.5"/>
+  <!-- Écran LCD -->
+  <rect x="14" y="7" width="20" height="12" rx="2" fill="#A8C8A0" stroke="#788870" stroke-width="1"/>
+  <!-- Texte sur écran -->
+  <rect x="16" y="9" width="12" height="2" rx="0.5" fill="#5A7A52"/>
+  <rect x="16" y="12.5" width="16" height="1.5" rx="0.5" fill="#5A7A52"/>
+  <rect x="16" y="15.5" width="8" height="1.5" rx="0.5" fill="#5A7A52"/>
+  <!-- Molette circulaire (style iPod/Creative) -->
+  <circle cx="24" cy="31" r="9" fill="#D0D0D0" stroke="#AAA" stroke-width="1"/>
+  <circle cx="24" cy="31" r="3.5" fill="#B0B0B0" stroke="#999" stroke-width="0.8"/>
+  <!-- Boutons direction sur la molette -->
+  <polygon points="24,23.5 22.5,26 25.5,26" fill="#888"/>
+  <polygon points="24,38.5 22.5,36 25.5,36" fill="#888"/>
+  <polygon points="16.5,31 19,29.5 19,32.5" fill="#888"/>
+  <polygon points="31.5,31 29,29.5 29,32.5" fill="#888"/>
+  <!-- Prise casque en haut -->
+  <circle cx="24" cy="3" r="1.5" fill="#555"/>
+  <!-- Câble du casque -->
+  <path d="M24 1 Q24 -4 20 -4" stroke="#333" stroke-width="1" fill="none" stroke-linecap="round"/>
+  <path d="M24 1 Q24 -4 28 -4" stroke="#333" stroke-width="1" fill="none" stroke-linecap="round"/>
+</svg>
