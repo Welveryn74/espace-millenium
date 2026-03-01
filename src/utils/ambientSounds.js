@@ -1,7 +1,9 @@
 /**
  * ambientSounds.js — Ambiance PC de bureau (ventilateur + clics disque dur)
- * Tout en Web Audio API, respecte em_muted
+ * Tout en Web Audio API, respecte em_muted + em_volume
  */
+
+import { getVolumeMultiplier } from './volumeManager';
 
 let audioCtx = null;
 let fanNode = null;
@@ -42,7 +44,7 @@ function startFan() {
   filter.Q.value = 0.5;
 
   fanGain = ctx.createGain();
-  fanGain.gain.value = 0.06;
+  fanGain.gain.value = 0.06 * getVolumeMultiplier();
 
   fanNode.connect(filter).connect(fanGain).connect(ctx.destination);
   fanNode.start();
@@ -64,7 +66,8 @@ function scheduleHDClick() {
     osc.type = 'square';
     osc.frequency.value = 4000 + Math.random() * 1000;
     const t = ctx.currentTime;
-    gain.gain.setValueAtTime(0.025, t);
+    const vol = 0.025 * getVolumeMultiplier();
+    gain.gain.setValueAtTime(vol || 0.001, t);
     gain.gain.exponentialRampToValueAtTime(0.001, t + 0.03);
     osc.connect(gain).connect(ctx.destination);
     osc.start(t);
@@ -99,9 +102,9 @@ export function stopAmbient() {
   }
 }
 
-/** Mettre à jour le mute (couper le fan sans arrêter le cycle) */
-export function setAmbientMuted(muted) {
+/** Mettre à jour le volume du fan (0.0 — 1.0) */
+export function setAmbientVolume(multiplier) {
   if (fanGain) {
-    fanGain.gain.value = muted ? 0 : 0.06;
+    fanGain.gain.value = 0.06 * multiplier;
   }
 }

@@ -1,9 +1,11 @@
+import { getVolumeMultiplier } from './volumeManager';
+
 // XP shutdown jingle — 4 descending sine notes
 export function playShutdownSound(audioCtx) {
   if (!audioCtx) return;
   const now = audioCtx.currentTime;
   const masterGain = audioCtx.createGain();
-  masterGain.gain.value = 0.1;
+  masterGain.gain.value = 0.1 * getVolumeMultiplier();
   masterGain.connect(audioCtx.destination);
 
   const notes = [

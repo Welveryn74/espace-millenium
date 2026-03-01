@@ -1,8 +1,10 @@
 /**
  * chambreSounds.js — Sons ambiants de la chambre d'enfant
  * Tic-tac d'horloge, grillons nocturnes, clic de lampe, câlin peluche
- * Respecte em_muted
+ * Respecte em_muted + em_volume
  */
+
+import { getVolumeMultiplier } from './volumeManager';
 
 let audioCtx = null;
 let tickInterval = null;
@@ -21,12 +23,14 @@ function getCtx() {
 function playTone(freq, duration, type = 'sine', volume = 0.04, startDelay = 0) {
   const ctx = getCtx();
   if (!ctx) return;
+  const vol = volume * getVolumeMultiplier();
+  if (vol < 0.001) return;
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
   osc.type = type;
   osc.frequency.value = freq;
   const t = ctx.currentTime + startDelay;
-  gain.gain.setValueAtTime(volume, t);
+  gain.gain.setValueAtTime(vol, t);
   gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
   osc.connect(gain).connect(ctx.destination);
   osc.start(t);
@@ -94,13 +98,15 @@ export function playLampClick() {
 export function playHugSound() {
   const ctx = getCtx();
   if (!ctx) return;
+  const vm = getVolumeMultiplier();
+  if (vm < 0.001) return;
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
   osc.type = 'sine';
   const t = ctx.currentTime;
   osc.frequency.setValueAtTime(300, t);
   osc.frequency.linearRampToValueAtTime(400, t + 0.3);
-  gain.gain.setValueAtTime(0.06, t);
+  gain.gain.setValueAtTime(0.06 * vm, t);
   gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
   osc.connect(gain).connect(ctx.destination);
   osc.start(t);

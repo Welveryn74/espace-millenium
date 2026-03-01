@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { playWindowOpen, playWindowClose, playMinimize } from "../utils/uiSounds";
 import { logActivity } from "../utils/storage";
+import { getVolume, saveVolume } from "../utils/volumeManager";
 
 export function useDesktop() {
   const [windows, setWindows] = useState({});
@@ -14,6 +15,7 @@ export function useDesktop() {
   const [muted, setMuted] = useState(() => {
     try { return localStorage.getItem('em_muted') === 'true'; } catch { return false; }
   });
+  const [volume, setVolumeState] = useState(getVolume);
 
   const toggleMute = useCallback(() => {
     setMuted(prev => {
@@ -21,6 +23,17 @@ export function useDesktop() {
       try { localStorage.setItem('em_muted', String(next)); } catch {}
       return next;
     });
+  }, []);
+
+  const setVolume = useCallback((v) => {
+    const clamped = Math.max(0, Math.min(100, v));
+    setVolumeState(clamped);
+    saveVolume(clamped);
+    // Désactiver mute si on monte le volume
+    if (clamped > 0 && localStorage.getItem('em_muted') === 'true') {
+      setMuted(false);
+      try { localStorage.setItem('em_muted', 'false'); } catch {}
+    }
   }, []);
 
   const bringToFront = useCallback((id) => {
@@ -130,5 +143,7 @@ export function useDesktop() {
     restoring,
     muted,
     toggleMute,
+    volume,
+    setVolume,
   };
 }

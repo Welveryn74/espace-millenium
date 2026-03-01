@@ -1,8 +1,10 @@
+import { getVolumeMultiplier } from './volumeManager';
+
 export function playModemSound(audioCtx, duration = 3) {
   if (!audioCtx) return;
   const now = audioCtx.currentTime;
   const masterGain = audioCtx.createGain();
-  masterGain.gain.value = 0.08;
+  masterGain.gain.value = 0.08 * getVolumeMultiplier();
   masterGain.connect(audioCtx.destination);
 
   // Dial tones

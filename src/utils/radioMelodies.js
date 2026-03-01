@@ -1,8 +1,10 @@
 /**
  * radioMelodies.js — Mélodies chiptune en boucle pour la radio de chambre
  * 4 stations avec oscillateurs Web Audio
- * Respecte em_muted
+ * Respecte em_muted + em_volume
  */
+
+import { getVolumeMultiplier } from './volumeManager';
 
 let audioCtx = null;
 let currentOsc = null;
@@ -70,7 +72,7 @@ function playMelody(stationId) {
     osc.type = station.type;
     osc.frequency.value = notes[i];
     const t = ctx.currentTime + time;
-    gain.gain.setValueAtTime(station.volume, t);
+    gain.gain.setValueAtTime(station.volume * getVolumeMultiplier(), t);
     gain.gain.exponentialRampToValueAtTime(0.001, t + durs[i] * 0.9);
     osc.connect(gain).connect(ctx.destination);
     osc.start(t);

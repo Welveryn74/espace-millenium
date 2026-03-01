@@ -1,16 +1,19 @@
+import { useState, useRef, useEffect, useCallback } from "react";
 import { DESKTOP_ICONS } from "../data/desktopIcons";
 import NostalImg from "./NostalImg";
 import { playClick } from "../utils/uiSounds";
 
 /* ── Icônes system tray en SVG inline (style XP) ── */
-const TrayVolume = ({ size = 15, muted }) => (
+const TrayVolume = ({ size = 15, muted, volume }) => (
   <svg width={size} height={size} viewBox="0 0 16 16" fill="none">
     <path d="M2 6h2.5l3-2.5v9L4.5 10H2a1 1 0 01-1-1V7a1 1 0 011-1z" fill="#fff"/>
-    {muted ? (
+    {muted || volume === 0 ? (
       <>
         <line x1="10" y1="5" x2="15" y2="11" stroke="#F44" strokeWidth="1.8" strokeLinecap="round"/>
         <line x1="15" y1="5" x2="10" y2="11" stroke="#F44" strokeWidth="1.8" strokeLinecap="round"/>
       </>
+    ) : volume < 40 ? (
+      <path d="M10 5.5a3.5 3.5 0 010 5" stroke="#fff" strokeWidth="1.2" fill="none" strokeLinecap="round"/>
     ) : (
       <>
         <path d="M10 5.5a3.5 3.5 0 010 5" stroke="#fff" strokeWidth="1.2" fill="none" strokeLinecap="round"/>
@@ -19,6 +22,129 @@ const TrayVolume = ({ size = 15, muted }) => (
     )}
   </svg>
 );
+
+/* ── Popup contrôle de volume (style Windows XP) ── */
+function VolumePopup({ volume, setVolume, muted, toggleMute, onClose }) {
+  const popupRef = useRef(null);
+  const sliderRef = useRef(null);
+  const dragging = useRef(false);
+
+  // Fermer au clic extérieur
+  useEffect(() => {
+    const handler = (e) => {
+      if (popupRef.current && !popupRef.current.contains(e.target)) {
+        onClose();
+      }
+    };
+    setTimeout(() => document.addEventListener("mousedown", handler), 0);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [onClose]);
+
+  const TRACK_HEIGHT = 120;
+  const THUMB_H = 10;
+
+  const volumeFromY = useCallback((clientY) => {
+    if (!sliderRef.current) return volume;
+    const rect = sliderRef.current.getBoundingClientRect();
+    const y = clientY - rect.top;
+    const ratio = 1 - Math.max(0, Math.min(1, y / TRACK_HEIGHT));
+    return Math.round(ratio * 100);
+  }, [volume]);
+
+  const handleMouseDown = (e) => {
+    e.preventDefault();
+    dragging.current = true;
+    setVolume(volumeFromY(e.clientY));
+    const onMove = (ev) => {
+      if (dragging.current) setVolume(volumeFromY(ev.clientY));
+    };
+    const onUp = () => {
+      dragging.current = false;
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseup", onUp);
+    };
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", onUp);
+  };
+
+  const thumbTop = TRACK_HEIGHT * (1 - volume / 100) - THUMB_H / 2;
+
+  return (
+    <div ref={popupRef} style={{
+      position: "absolute", bottom: 44, right: 40, zIndex: 101,
+      background: "#ECE9D8", border: "2px solid #0055E5",
+      borderRadius: "8px 8px 0 0", boxShadow: "2px -2px 8px rgba(0,0,50,0.3)",
+      fontFamily: "'Tahoma', sans-serif", width: 72,
+    }}>
+      {/* Titre */}
+      <div style={{
+        background: "linear-gradient(180deg, #0055E5 0%, #0055E5BB 100%)",
+        padding: "3px 8px", color: "#fff", fontWeight: "bold", fontSize: 10,
+        borderRadius: "6px 6px 0 0", textAlign: "center",
+      }}>Volume</div>
+
+      {/* Corps */}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "10px 0 8px" }}>
+        {/* Labels haut/bas */}
+        <div style={{ fontSize: 9, color: "#555", marginBottom: 4 }}>+</div>
+
+        {/* Slider vertical */}
+        <div
+          ref={sliderRef}
+          style={{
+            position: "relative", width: 28, height: TRACK_HEIGHT, cursor: "pointer",
+            display: "flex", justifyContent: "center",
+          }}
+          onMouseDown={handleMouseDown}
+        >
+          {/* Piste */}
+          <div style={{
+            position: "absolute", left: "50%", top: 0, width: 4, height: TRACK_HEIGHT,
+            transform: "translateX(-50%)",
+            background: "linear-gradient(180deg, #888 0%, #bbb 100%)",
+            border: "1px solid #666", borderRadius: 2,
+          }} />
+          {/* Graduations */}
+          {[0, 25, 50, 75, 100].map(v => (
+            <div key={v} style={{
+              position: "absolute", top: TRACK_HEIGHT * (1 - v / 100),
+              left: 2, right: 2, height: 1,
+              background: v === 0 || v === 100 ? "transparent" : "rgba(0,0,0,0.15)",
+            }} />
+          ))}
+          {/* Curseur */}
+          <div style={{
+            position: "absolute", left: 0, right: 0,
+            top: Math.max(-THUMB_H / 2, Math.min(TRACK_HEIGHT - THUMB_H / 2, thumbTop)),
+            height: THUMB_H, borderRadius: 2,
+            background: "linear-gradient(180deg, #F8F8F8 0%, #C8C8C8 100%)",
+            border: "1px solid #666",
+            boxShadow: "0 1px 2px rgba(0,0,0,0.2)",
+          }} />
+        </div>
+
+        <div style={{ fontSize: 9, color: "#555", marginTop: 4 }}>-</div>
+
+        {/* Pourcentage */}
+        <div style={{ fontSize: 10, color: "#333", margin: "4px 0 2px", fontWeight: "bold" }}>{volume}%</div>
+
+        {/* Checkbox mute */}
+        <label style={{
+          display: "flex", alignItems: "center", gap: 4, fontSize: 10, color: "#333",
+          cursor: "pointer", marginTop: 2, padding: "2px 0",
+        }}>
+          <input
+            type="checkbox"
+            checked={muted}
+            onChange={toggleMute}
+            style={{ width: 12, height: 12, cursor: "pointer" }}
+          />
+          Muet
+        </label>
+      </div>
+    </div>
+  );
+}
 
 const TrayNetwork = ({ size = 15 }) => (
   <svg width={size} height={size} viewBox="0 0 16 16" fill="none">
@@ -38,7 +164,9 @@ const TrayMSN = ({ size = 15 }) => (
   </svg>
 );
 
-export default function Taskbar({ startMenu, setStartMenu, openWindowIds, isTopWindow, isMinimized, toggleMinimize, bringToFront, time, muted, toggleMute }) {
+export default function Taskbar({ startMenu, setStartMenu, openWindowIds, isTopWindow, isMinimized, toggleMinimize, bringToFront, time, muted, toggleMute, volume, setVolume }) {
+  const [showVolume, setShowVolume] = useState(false);
+
   return (
     <div style={{
       position: "absolute", bottom: 0, left: 0, right: 0, height: 42,
@@ -106,9 +234,22 @@ export default function Taskbar({ startMenu, setStartMenu, openWindowIds, isTopW
         background: "linear-gradient(180deg, rgba(0,40,120,0.4) 0%, rgba(0,20,80,0.4) 100%)",
         borderLeft: "1px solid rgba(255,255,255,0.12)", borderRadius: 2,
       }}>
-        <span style={{ cursor: "pointer", display: "flex", alignItems: "center" }} title={muted ? "Son coupé" : "Volume"} onClick={toggleMute}>
-          <TrayVolume size={15} muted={muted} />
+        <span
+          style={{ cursor: "pointer", display: "flex", alignItems: "center" }}
+          title={muted ? "Son coupé" : `Volume : ${volume}%`}
+          onClick={(e) => { e.stopPropagation(); playClick(); setShowVolume(v => !v); }}
+        >
+          <TrayVolume size={15} muted={muted} volume={volume} />
         </span>
+        {showVolume && (
+          <VolumePopup
+            volume={volume}
+            setVolume={setVolume}
+            muted={muted}
+            toggleMute={toggleMute}
+            onClose={() => setShowVolume(false)}
+          />
+        )}
         <span style={{ cursor: "pointer", display: "flex", alignItems: "center" }} title="Réseau">
           <TrayNetwork size={15} />
         </span>

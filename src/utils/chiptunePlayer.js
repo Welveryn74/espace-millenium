@@ -5,6 +5,8 @@
  * Visualiseur : réagit au chiptune via AnalyserNode, animation simulée en mode preview
  */
 
+import { getVolumeMultiplier } from './volumeManager';
+
 let audioCtx = null;
 let analyser = null;
 let masterGain = null;
@@ -21,12 +23,13 @@ let pauseTime = 0;
 let audioElement = null;
 let playbackMode = 'chiptune'; // 'chiptune' | 'preview'
 let onEndedCallback = null;
+let baseVolume = 0.1; // volume demandé par le player (avant multiplicateur global)
 
 function getCtx() {
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     masterGain = audioCtx.createGain();
-    masterGain.gain.value = localStorage.getItem('em_muted') === 'true' ? 0 : 0.1;
+    masterGain.gain.value = 0.1 * getVolumeMultiplier();
     analyser = audioCtx.createAnalyser();
     analyser.fftSize = 64;
     analyser.smoothingTimeConstant = 0.7;
@@ -42,7 +45,7 @@ function getAudioElement() {
     audioElement = new Audio();
     audioElement.preload = 'auto';
     // Volume aligné sur le gain chiptune (0.1 par défaut)
-    audioElement.volume = localStorage.getItem('em_muted') === 'true' ? 0 : 0.1;
+    audioElement.volume = 0.1 * getVolumeMultiplier();
   }
   return audioElement;
 }
@@ -296,6 +299,13 @@ export function getIsPlaying() {
 }
 
 export function setVolume(v) {
-  if (masterGain) masterGain.gain.value = v;
-  if (audioElement) audioElement.volume = v;
+  baseVolume = v;
+  const actual = v * getVolumeMultiplier();
+  if (masterGain) masterGain.gain.value = actual;
+  if (audioElement) audioElement.volume = actual;
+}
+
+/** Resynchroniser avec le volume global (appelé quand em_volume change) */
+export function syncGlobalVolume() {
+  setVolume(baseVolume);
 }

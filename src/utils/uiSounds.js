@@ -1,7 +1,9 @@
 /**
  * uiSounds.js — Sons d'interface Windows XP via Web Audio API
- * Vérifie em_muted avant chaque son
+ * Vérifie em_muted + em_volume avant chaque son
  */
+
+import { getVolumeMultiplier } from './volumeManager';
 
 let audioCtx = null;
 
@@ -17,12 +19,14 @@ function getCtx() {
 function playTone(freq, duration, type = 'sine', volume = 0.08, startDelay = 0) {
   const ctx = getCtx();
   if (!ctx) return;
+  const vol = volume * getVolumeMultiplier();
+  if (vol < 0.001) return;
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
   osc.type = type;
   osc.frequency.value = freq;
   const t = ctx.currentTime + startDelay;
-  gain.gain.setValueAtTime(volume, t);
+  gain.gain.setValueAtTime(vol, t);
   gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
   osc.connect(gain).connect(ctx.destination);
   osc.start(t);
@@ -51,13 +55,15 @@ export function playWindowClose() {
 export function playMinimize() {
   const ctx = getCtx();
   if (!ctx) return;
+  const vm = getVolumeMultiplier();
+  if (vm < 0.001) return;
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
   osc.type = 'sine';
   const t = ctx.currentTime;
   osc.frequency.setValueAtTime(600, t);
   osc.frequency.exponentialRampToValueAtTime(200, t + 0.12);
-  gain.gain.setValueAtTime(0.05, t);
+  gain.gain.setValueAtTime(0.05 * vm, t);
   gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
   osc.connect(gain).connect(ctx.destination);
   osc.start(t);
@@ -108,6 +114,8 @@ export function playVictorySound() {
 export function playExplosionSound() {
   const ctx = getCtx();
   if (!ctx) return;
+  const vm = getVolumeMultiplier();
+  if (vm < 0.001) return;
   const bufferSize = ctx.sampleRate * 0.3;
   const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
   const data = buffer.getChannelData(0);
@@ -117,7 +125,7 @@ export function playExplosionSound() {
   const source = ctx.createBufferSource();
   source.buffer = buffer;
   const gain = ctx.createGain();
-  gain.gain.setValueAtTime(0.08, ctx.currentTime);
+  gain.gain.setValueAtTime(0.08 * vm, ctx.currentTime);
   gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
   source.connect(gain).connect(ctx.destination);
   source.start();
@@ -128,6 +136,8 @@ export function playExplosionSound() {
 export function playPaperSound() {
   const ctx = getCtx();
   if (!ctx) return;
+  const vm = getVolumeMultiplier();
+  if (vm < 0.001) return;
   const bufferSize = ctx.sampleRate * 0.15;
   const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
   const data = buffer.getChannelData(0);
@@ -140,7 +150,7 @@ export function playPaperSound() {
   filter.type = 'highpass';
   filter.frequency.value = 2000;
   const gain = ctx.createGain();
-  gain.gain.setValueAtTime(0.04, ctx.currentTime);
+  gain.gain.setValueAtTime(0.04 * vm, ctx.currentTime);
   gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
   source.connect(filter).connect(gain).connect(ctx.destination);
   source.start();
@@ -150,6 +160,8 @@ export function playPaperSound() {
 export function playTVStatic() {
   const ctx = getCtx();
   if (!ctx) return;
+  const vm = getVolumeMultiplier();
+  if (vm < 0.001) return;
   const bufferSize = ctx.sampleRate * 0.3;
   const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
   const data = buffer.getChannelData(0);
@@ -162,7 +174,7 @@ export function playTVStatic() {
   filter.type = 'highpass';
   filter.frequency.value = 3000;
   const gain = ctx.createGain();
-  gain.gain.setValueAtTime(0.04, ctx.currentTime);
+  gain.gain.setValueAtTime(0.04 * vm, ctx.currentTime);
   gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
   source.connect(filter).connect(gain).connect(ctx.destination);
   source.start();
@@ -172,13 +184,15 @@ export function playTVStatic() {
 export function playZipSound() {
   const ctx = getCtx();
   if (!ctx) return;
+  const vm = getVolumeMultiplier();
+  if (vm < 0.001) return;
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
   osc.type = 'sawtooth';
   const t = ctx.currentTime;
   osc.frequency.setValueAtTime(800, t);
   osc.frequency.linearRampToValueAtTime(3000, t + 0.15);
-  gain.gain.setValueAtTime(0.03, t);
+  gain.gain.setValueAtTime(0.03 * vm, t);
   gain.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
   osc.connect(gain).connect(ctx.destination);
   osc.start(t);
@@ -191,13 +205,15 @@ export function playZipSound() {
 export function playPop() {
   const ctx = getCtx();
   if (!ctx) return;
+  const vm = getVolumeMultiplier();
+  if (vm < 0.001) return;
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
   osc.type = 'sine';
   const t = ctx.currentTime;
   osc.frequency.setValueAtTime(500, t);
   osc.frequency.exponentialRampToValueAtTime(800, t + 0.06);
-  gain.gain.setValueAtTime(0.07, t);
+  gain.gain.setValueAtTime(0.07 * vm, t);
   gain.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
   osc.connect(gain).connect(ctx.destination);
   osc.start(t);
@@ -208,13 +224,15 @@ export function playPop() {
 export function playLineClear() {
   const ctx = getCtx();
   if (!ctx) return;
+  const vm = getVolumeMultiplier();
+  if (vm < 0.001) return;
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
   osc.type = 'triangle';
   const t = ctx.currentTime;
   osc.frequency.setValueAtTime(400, t);
   osc.frequency.exponentialRampToValueAtTime(1200, t + 0.15);
-  gain.gain.setValueAtTime(0.07, t);
+  gain.gain.setValueAtTime(0.07 * vm, t);
   gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
   osc.connect(gain).connect(ctx.destination);
   osc.start(t);
@@ -235,6 +253,8 @@ export function playBounce() {
 export function playBrickBreak() {
   const ctx = getCtx();
   if (!ctx) return;
+  const vm = getVolumeMultiplier();
+  if (vm < 0.001) return;
   const bufferSize = ctx.sampleRate * 0.05;
   const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
   const data = buffer.getChannelData(0);
@@ -244,7 +264,7 @@ export function playBrickBreak() {
   const source = ctx.createBufferSource();
   source.buffer = buffer;
   const gain = ctx.createGain();
-  gain.gain.setValueAtTime(0.05, ctx.currentTime);
+  gain.gain.setValueAtTime(0.05 * vm, ctx.currentTime);
   gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
   source.connect(gain).connect(ctx.destination);
   source.start();
@@ -264,13 +284,15 @@ export function playDiceRoll() {
 export function playCapture() {
   const ctx = getCtx();
   if (!ctx) return;
+  const vm = getVolumeMultiplier();
+  if (vm < 0.001) return;
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
   osc.type = 'sine';
   const t = ctx.currentTime;
   osc.frequency.setValueAtTime(800, t);
   osc.frequency.exponentialRampToValueAtTime(200, t + 0.1);
-  gain.gain.setValueAtTime(0.07, t);
+  gain.gain.setValueAtTime(0.07 * vm, t);
   gain.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
   osc.connect(gain).connect(ctx.destination);
   osc.start(t);
@@ -307,13 +329,15 @@ export function playMismatch() {
 export function playShoot() {
   const ctx = getCtx();
   if (!ctx) return;
+  const vm = getVolumeMultiplier();
+  if (vm < 0.001) return;
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
   osc.type = 'sine';
   const t = ctx.currentTime;
   osc.frequency.setValueAtTime(200, t);
   osc.frequency.exponentialRampToValueAtTime(600, t + 0.08);
-  gain.gain.setValueAtTime(0.06, t);
+  gain.gain.setValueAtTime(0.06 * vm, t);
   gain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
   osc.connect(gain).connect(ctx.destination);
   osc.start(t);

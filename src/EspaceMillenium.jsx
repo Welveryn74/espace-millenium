@@ -11,7 +11,8 @@ import StartMenu from "./components/StartMenu";
 import Screensaver from "./components/Screensaver";
 import MSNNotification from "./components/MSNNotification";
 import XPNotifications from "./components/XPNotifications";
-import { startAmbient, stopAmbient, setAmbientMuted } from "./utils/ambientSounds";
+import { startAmbient, stopAmbient, setAmbientVolume } from "./utils/ambientSounds";
+import { syncGlobalVolume as syncChiptuneVolume } from "./utils/chiptunePlayer";
 import { playClick } from "./utils/uiSounds";
 import { loadState, saveState } from "./utils/storage";
 
@@ -67,6 +68,7 @@ export default function EspaceMillenium() {
     toggleMinimize, isMinimized,
     closing, restoring,
     muted, toggleMute,
+    volume, setVolume,
   } = useDesktop();
 
   const pickClippyMsg = useCallback(() => {
@@ -78,16 +80,10 @@ export default function EspaceMillenium() {
     return () => clearInterval(iv);
   }, []);
 
-  // Start ambient PC sounds when booted
+  // Sync all audio with muted/volume state
   useEffect(() => {
-    if (booted) startAmbient();
-    return () => stopAmbient();
-  }, [booted]);
-
-  // Sync ambient mute with muted state
-  useEffect(() => {
-    setAmbientMuted(muted);
-  }, [muted]);
+    syncChiptuneVolume();
+  }, [muted, volume]);
 
   // Idle detection — screensaver after 2 min
   useEffect(() => {
@@ -233,6 +229,8 @@ export default function EspaceMillenium() {
         time={time}
         muted={muted}
         toggleMute={toggleMute}
+        volume={volume}
+        setVolume={setVolume}
       />
 
       {startMenu && <StartMenu openWindow={openWindow} onShutdown={() => { setStartMenu(false); setShowShutdown(true); }} />}
