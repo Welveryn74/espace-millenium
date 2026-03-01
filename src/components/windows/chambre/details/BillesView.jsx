@@ -3,6 +3,7 @@ import NostalImg from "../../../NostalImg";
 import { BILLES_COLLECTION } from "../../../../data/chambreItems";
 import { loadState, saveState } from "../../../../utils/storage";
 import BillesGame from "../../minigames/BillesGame";
+import { viewTitle, viewSubtitle, viewFlavor, C } from "../../../../styles/chambreStyles";
 
 export default function BillesView() {
   const [selected, setSelected] = useState(null);
@@ -35,12 +36,8 @@ export default function BillesView() {
     <div style={{ animation: "fadeIn 0.3s ease-out" }}>
       <div style={{ textAlign: "center", marginBottom: 16 }}>
         <NostalImg fallback="🔮" size={36} />
-        <div style={{ color: "#C8B0E8", fontSize: 15, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif", marginTop: 4 }}>
-          Ma Pochette de Billes
-        </div>
-        <div style={{ color: "#8B6BAE", fontSize: 11, marginTop: 4, fontStyle: "italic" }}>
-          "Tu joues pour de vrai ou pour de faux ?"
-        </div>
+        <div style={{ ...viewTitle, marginTop: 4 }}>Ma Pochette de Billes</div>
+        <div style={viewSubtitle}>"Tu joues pour de vrai ou pour de faux ?"</div>
         <div style={{ color: "#FFD700", fontSize: 12, marginTop: 6, fontWeight: "bold" }}>
           🏆 Billes gagnées : {billesWon}
         </div>
@@ -62,7 +59,7 @@ export default function BillesView() {
             <div
               key={b.id}
               onClick={() => setSelected(isSelected ? null : b.id)}
-              style={{ textAlign: "center", cursor: "pointer", transition: "transform 0.2s" }}
+              style={{ textAlign: "center", cursor: "pointer", transition: "all 0.25s ease" }}
               onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.15)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; }}
             >
@@ -107,7 +104,7 @@ export default function BillesView() {
         </div>
       )}
 
-      <div style={{ textAlign: "center", marginTop: 14, color: "#8B6BAE", fontSize: 10, fontStyle: "italic" }}>
+      <div style={viewFlavor}>
         La pochette en filet avec le cordon. Le trésor de la récré.
       </div>
     </div>

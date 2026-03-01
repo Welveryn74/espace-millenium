@@ -2,6 +2,7 @@ import { useState } from "react";
 import NostalImg from "../../../NostalImg";
 import { SCOUBIDOUS } from "../../../../data/chambreItems";
 import { loadState, saveState } from "../../../../utils/storage";
+import { viewTitle, viewSubtitle, viewFlavor } from "../../../../styles/chambreStyles";
 
 const SCOUBIE_COLORS = ["#FF4444", "#FFDD44", "#4488FF", "#44FF88", "#FF44FF", "#FF8844"];
 
@@ -36,12 +37,8 @@ export default function ScoubidousView() {
     <div style={{ animation: "fadeIn 0.3s ease-out" }}>
       <div style={{ textAlign: "center", marginBottom: 16 }}>
         <NostalImg fallback="🪢" size={36} />
-        <div style={{ color: "#C8B0E8", fontSize: 15, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif", marginTop: 4 }}>
-          Mes Scoubidous
-        </div>
-        <div style={{ color: "#8B6BAE", fontSize: 11, marginTop: 4, fontStyle: "italic" }}>
-          Dessus, dessous, tirer, recommencer...
-        </div>
+        <div style={{ ...viewTitle, marginTop: 4 }}>Mes Scoubidous</div>
+        <div style={viewSubtitle}>Dessus, dessous, tirer, recommencer...</div>
         <div style={{ color: "#FFD700", fontSize: 11, marginTop: 4 }}>
           🪢 {collection.length} scoubidou{collection.length > 1 ? "s" : ""} tressé{collection.length > 1 ? "s" : ""}
         </div>
@@ -204,7 +201,7 @@ export default function ScoubidousView() {
         </div>
       )}
 
-      <div style={{ textAlign: "center", marginTop: 14, color: "#8B6BAE", fontSize: 10, fontStyle: "italic" }}>
+      <div style={viewFlavor}>
         Fils en plastique achetés 50 centimes à la papeterie. Bonheur : gratuit.
       </div>
     </div>

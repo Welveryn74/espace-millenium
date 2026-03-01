@@ -2,6 +2,7 @@ import { useState } from "react";
 import NostalImg from "../../../NostalImg";
 import { LEGO_SETS } from "../../../../data/chambreItems";
 import { loadState, saveState } from "../../../../utils/storage";
+import { viewTitle, viewSubtitle, viewFlavor, C } from "../../../../styles/chambreStyles";
 
 export default function LegoGallery() {
   const [expanded, setExpanded] = useState(null);
@@ -32,12 +33,8 @@ export default function LegoGallery() {
     <div style={{ animation: "fadeIn 0.3s ease-out" }}>
       <div style={{ textAlign: "center", marginBottom: 16 }}>
         <NostalImg fallback="🧱" size={36} />
-        <div style={{ color: "#C8B0E8", fontSize: 15, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif", marginTop: 4 }}>
-          Ma Collection Lego
-        </div>
-        <div style={{ color: "#8B6BAE", fontSize: 11, marginTop: 4, fontStyle: "italic" }}>
-          Le catalogue de Noël, page cornée sur les Lego...
-        </div>
+        <div style={{ ...viewTitle, marginTop: 4 }}>Ma Collection Lego</div>
+        <div style={viewSubtitle}>Le catalogue de Noël, page cornée sur les Lego...</div>
         <div style={{ color: "#FFD700", fontSize: 11, marginTop: 4 }}>
           ⭐ {builtSets.length}/{LEGO_SETS.length} sets construits
         </div>
@@ -127,7 +124,7 @@ export default function LegoGallery() {
         })}
       </div>
 
-      <div style={{ textAlign: "center", marginTop: 14, color: "#8B6BAE", fontSize: 10, fontStyle: "italic" }}>
+      <div style={viewFlavor}>
         L'odeur des briques neuves quand tu ouvrais le sachet. Inoubliable.
       </div>
     </div>

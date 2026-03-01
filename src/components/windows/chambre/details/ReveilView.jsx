@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { viewTitle, viewSubtitle, viewFlavor } from "../../../../styles/chambreStyles";
 
 export default function ReveilView() {
   const [time, setTime] = useState(new Date());
@@ -39,12 +40,8 @@ export default function ReveilView() {
   return (
     <div style={{ textAlign: "center", animation: "fadeIn 0.3s ease-out" }}>
       <div style={{ marginBottom: 20 }}>
-        <div style={{ color: "#C8B0E8", fontSize: 15, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif" }}>
-          Réveil Digital
-        </div>
-        <div style={{ color: "#8B6BAE", fontSize: 11, marginTop: 4, fontStyle: "italic" }}>
-          Le petit rectangle rouge qui brillait dans le noir. Tu le regardais quand tu n'arrivais pas à dormir.
-        </div>
+        <div style={viewTitle}>Réveil Digital</div>
+        <div style={viewSubtitle}>Le petit rectangle rouge qui brillait dans le noir. Tu le regardais quand tu n'arrivais pas à dormir.</div>
       </div>
 
       <div style={{
@@ -84,8 +81,8 @@ export default function ReveilView() {
         </button>
       </div>
 
-      <div style={{ marginTop: 20, color: "#666", fontSize: 10, lineHeight: 1.6 }}>
-        Modèle Radio-Réveil FM circa 2001. Les chiffres rouges dans l'obscurité,<br/>
+      <div style={{ ...viewFlavor, marginTop: 20, lineHeight: 1.6 }}>
+        Modèle Radio-Réveil FM circa 2001. Les chiffres rouges dans l'obscurité,
         c'était à la fois rassurant et un peu flippant.
       </div>
     </div>

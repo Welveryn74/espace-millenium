@@ -1,3 +1,5 @@
+import { viewFlavor } from "../../../../styles/chambreStyles";
+
 export default function TamagotchiWidget({ tama, tamaDo, tamaMood, tamaAction, neglected, onReset, tamaTotal, TAMA_MAX }) {
   const statBar = (label, value, color) => (
     <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
@@ -86,7 +88,7 @@ export default function TamagotchiWidget({ tama, tamaDo, tamaMood, tamaAction, n
           </>
         )}
       </div>
-      <div style={{ textAlign: "center", marginTop: 16, color: "#8B6BAE", fontSize: 11, fontStyle: "italic" }}>
+      <div style={{ ...viewFlavor, marginTop: 16, fontSize: 11 }}>
         {tamaTotal >= 12
           ? "Ton Tamagotchi est au top ! Des petits coeurs flottent autour de lui..."
           : tamaTotal >= 6

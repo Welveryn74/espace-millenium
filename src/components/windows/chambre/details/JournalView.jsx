@@ -1,15 +1,12 @@
 import { saveState } from "../../../../utils/storage";
+import { viewTitle, viewSubtitle, viewFlavor } from "../../../../styles/chambreStyles";
 
 export default function JournalView({ entries, setEntries, text, setText, addEntry }) {
   return (
     <div style={{ animation: "fadeIn 0.3s ease-out" }}>
       <div style={{ textAlign: "center", marginBottom: 16 }}>
-        <div style={{ color: "#C8B0E8", fontSize: 15, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif" }}>
-          Mon Journal Intime 🔒
-        </div>
-        <div style={{ color: "#8B6BAE", fontSize: 11, marginTop: 4, fontStyle: "italic" }}>
-          "Cher journal, aujourd'hui..."
-        </div>
+        <div style={viewTitle}>Mon Journal Intime 🔒</div>
+        <div style={viewSubtitle}>"Cher journal, aujourd'hui..."</div>
       </div>
 
       <div style={{
@@ -75,7 +72,7 @@ export default function JournalView({ entries, setEntries, text, setText, addEnt
         </div>
       )}
 
-      <div style={{ textAlign: "center", marginTop: 14, color: "#8B6BAE", fontSize: 10, fontStyle: "italic" }}>
+      <div style={viewFlavor}>
         Cadenas en plastique inclus. Sécurité maximale contre les petits frères.
       </div>
     </div>

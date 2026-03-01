@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { BEYBLADE_TOUPIES } from "../../data/chambreItems";
+import { viewTitle, viewSubtitle } from "../../styles/chambreStyles";
 
 const ARENA_SIZE = 220;
 const ARENA_CENTER = ARENA_SIZE / 2;
@@ -260,12 +261,8 @@ export default function BeybladeArena() {
       <div style={{ animation: "fadeIn 0.3s ease-out" }}>
         <div style={{ textAlign: "center", marginBottom: 16 }}>
           <span style={{ fontSize: 36 }}>🌀</span>
-          <div style={{ color: "#C8B0E8", fontSize: 15, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif", marginTop: 4 }}>
-            Beyblade Arena
-          </div>
-          <div style={{ color: "#8B6BAE", fontSize: 11, marginTop: 4, fontStyle: "italic" }}>
-            Choisis ta toupie et affronte un adversaire !
-          </div>
+          <div style={{ ...viewTitle, marginTop: 4 }}>Beyblade Arena</div>
+          <div style={viewSubtitle}>Choisis ta toupie et affronte un adversaire !</div>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
           {BEYBLADE_TOUPIES.map((t) => (

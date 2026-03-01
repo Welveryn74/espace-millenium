@@ -38,7 +38,7 @@ export default function ChambreDetailRouter({ activeItem, goBack, state }) {
           ← Retour
         </button>
       </div>
-      <div style={{ flex: 1, overflowY: "auto", padding: 16 }}>
+      <div key={activeItem} style={{ flex: 1, overflowY: "auto", padding: 16, animation: "slideUp 0.3s ease-out" }}>
         {activeItem === "couette" && (
           <CouetteSelector couette={couette} setCouette={setCouette} />
         )}
