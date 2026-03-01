@@ -1,6 +1,8 @@
 /**
  * chiptunePlayer.js — Moteur audio dual-mode : preview Spotify (~30s) + chiptune 8-bit
- * Le visualiseur fréquentiel fonctionne identiquement dans les deux modes.
+ * Preview : <audio> joue directement (pas de MediaElementSource → pas de piège CORS)
+ * Chiptune : oscillateurs Web Audio → masterGain → analyser → destination
+ * Visualiseur : réagit au chiptune via AnalyserNode, animation simulée en mode preview
  */
 
 let audioCtx = null;
@@ -17,7 +19,6 @@ let pauseTime = 0;
 
 // Preview mode
 let audioElement = null;
-let mediaSource = null;
 let playbackMode = 'chiptune'; // 'chiptune' | 'preview'
 let onEndedCallback = null;
 
@@ -39,18 +40,11 @@ function getCtx() {
 function getAudioElement() {
   if (!audioElement) {
     audioElement = new Audio();
-    audioElement.crossOrigin = 'anonymous';
     audioElement.preload = 'auto';
+    // Volume aligné sur le gain chiptune (0.1 par défaut)
+    audioElement.volume = localStorage.getItem('em_muted') === 'true' ? 0 : 0.1;
   }
   return audioElement;
-}
-
-function connectMediaSource() {
-  if (mediaSource) return; // createMediaElementSource ne peut être appelé qu'une fois
-  const ctx = getCtx();
-  const el = getAudioElement();
-  mediaSource = ctx.createMediaElementSource(el);
-  mediaSource.connect(masterGain);
 }
 
 function stopScheduled() {
@@ -137,21 +131,18 @@ function scheduleMelody(melody) {
 function playPreview(url, melody) {
   const ctx = getCtx();
   const el = getAudioElement();
-  connectMediaSource();
 
   playbackMode = 'preview';
   el.src = url;
 
-  const handleError = () => {
-    el.removeEventListener('error', handleError);
-    // Fallback chiptune
-    if (melody) {
+  const fallbackToChiptune = () => {
+    if (melody && isPlaying) {
       playbackMode = 'chiptune';
       scheduleMelody(melody);
     }
   };
 
-  el.addEventListener('error', handleError, { once: true });
+  el.addEventListener('error', () => fallbackToChiptune(), { once: true });
 
   el.addEventListener('loadedmetadata', () => {
     totalDuration = el.duration || 30;
@@ -165,12 +156,7 @@ function playPreview(url, melody) {
   const playPromise = el.play();
   if (playPromise) {
     playPromise.catch(() => {
-      // play() rejeté (autoplay policy, etc.) → fallback chiptune
-      el.removeEventListener('error', handleError);
-      if (melody) {
-        playbackMode = 'chiptune';
-        scheduleMelody(melody);
-      }
+      fallbackToChiptune();
     });
   }
 }
@@ -235,7 +221,6 @@ export function destroy() {
     audioElement.removeAttribute('src');
     audioElement.load();
     audioElement = null;
-    mediaSource = null;
   }
   if (audioCtx) {
     audioCtx.close().catch(() => {});
@@ -249,6 +234,16 @@ export function getFrequencyData() {
   if (!analyser) return new Uint8Array(32);
   const data = new Uint8Array(analyser.frequencyBinCount);
   analyser.getByteFrequencyData(data);
+
+  // En mode preview, l'audio ne passe pas par l'AnalyserNode → simuler le visualiseur
+  if (playbackMode === 'preview' && isPlaying && !isPaused) {
+    for (let i = 0; i < data.length; i++) {
+      // Courbe descendante réaliste : basses fortes, aigus faibles
+      const base = Math.max(0, 1 - i / data.length);
+      data[i] = Math.floor((100 + Math.random() * 100) * base);
+    }
+  }
+
   return data;
 }
 
@@ -287,4 +282,5 @@ export function getIsPlaying() {
 
 export function setVolume(v) {
   if (masterGain) masterGain.gain.value = v;
+  if (audioElement) audioElement.volume = v;
 }
