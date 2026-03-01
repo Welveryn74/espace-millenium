@@ -11,7 +11,6 @@ import StartMenu from "./components/StartMenu";
 import Screensaver from "./components/Screensaver";
 import MSNNotification from "./components/MSNNotification";
 import XPNotifications from "./components/XPNotifications";
-import { startAmbient, stopAmbient, setAmbientVolume } from "./utils/ambientSounds";
 import { syncGlobalVolume as syncChiptuneVolume } from "./utils/chiptunePlayer";
 import { playClick } from "./utils/uiSounds";
 import { loadState, saveState } from "./utils/storage";
