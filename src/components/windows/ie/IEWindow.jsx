@@ -4,7 +4,7 @@ import IEToolbar from "./IEToolbar";
 import IEStatusBar from "./IEStatusBar";
 import IEPageRouter from "./IEPageRouter";
 import { useIENavigation, resolveUrl, cleanUrl } from "./hooks/useIENavigation";
-import { useWaybackLookup } from "./hooks/useWaybackLookup";
+import { useWaybackLookup, isPrecached } from "./hooks/useWaybackLookup";
 import { playModemSound } from "../../../utils/playModemSound";
 
 export default function IEWindow({ onClose, onMinimize, zIndex, onFocus, onBSOD, initialUrl }) {
@@ -30,7 +30,8 @@ export default function IEWindow({ onClose, onMinimize, zIndex, onFocus, onBSOD,
     if (!resolveUrl(clean)) {
       // Unknown URL — start wayback check NOW, don't wait for loading to finish
       wayback.checkWayback(clean);
-      playModem();
+      // Modem sound only for real lookups (not pre-cached favorites)
+      if (!isPrecached(clean)) playModem();
     } else {
       wayback.reset();
     }
@@ -60,7 +61,7 @@ export default function IEWindow({ onClose, onMinimize, zIndex, onFocus, onBSOD,
         // Only trigger if wayback isn't already checking/found for this URL
         if (wayback.state === "idle") {
           wayback.checkWayback(nav.currentUrl);
-          playModem();
+          if (!isPrecached(nav.currentUrl)) playModem();
         }
       } else {
         wayback.reset();
