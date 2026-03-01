@@ -1,4 +1,4 @@
-import { useRef, useCallback, useState } from "react";
+import { useRef, useCallback } from "react";
 import { Html } from "@react-three/drei";
 import { ROOM_ITEMS } from "../../../../data/chambreItems";
 import { HITBOXES } from "./roomLayout";
@@ -39,12 +39,17 @@ function Hitbox({ item, hitbox, isHovered, onHover, onClick }) {
       <mesh
         ref={meshRef}
         position={hitbox.position}
-        rotation={isFloor ? [-Math.PI / 2, 0, 0] : [0, 0, 0]}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
         onClick={handleClick}
       >
-        <planeGeometry args={hitbox.size} />
+        <boxGeometry
+          args={
+            isFloor
+              ? [hitbox.size[0], 0.15, hitbox.size[1]]
+              : [hitbox.size[0], hitbox.size[1], 0.2]
+          }
+        />
         <meshBasicMaterial
           transparent
           opacity={isHovered ? 0.12 : 0}
@@ -55,11 +60,14 @@ function Hitbox({ item, hitbox, isHovered, onHover, onClick }) {
 
       {/* Hover border effect */}
       {isHovered && (
-        <mesh
-          position={hitbox.position}
-          rotation={isFloor ? [-Math.PI / 2, 0, 0] : [0, 0, 0]}
-        >
-          <planeGeometry args={[hitbox.size[0] + 0.04, hitbox.size[1] + 0.04]} />
+        <mesh position={hitbox.position}>
+          <boxGeometry
+            args={
+              isFloor
+                ? [hitbox.size[0] + 0.04, 0.16, hitbox.size[1] + 0.04]
+                : [hitbox.size[0] + 0.04, hitbox.size[1] + 0.04, 0.22]
+            }
+          />
           <meshBasicMaterial
             transparent
             opacity={0.2}
@@ -78,6 +86,7 @@ function Hitbox({ item, hitbox, isHovered, onHover, onClick }) {
             hitbox.position[2] + 0.1,
           ]}
           center
+          distanceFactor={3}
           style={{ pointerEvents: "none" }}
         >
           <div

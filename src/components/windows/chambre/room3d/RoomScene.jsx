@@ -1,10 +1,11 @@
-import { useRef, useMemo, useCallback, useEffect } from "react";
-import { useFrame, useThree, useLoader } from "@react-three/fiber";
+import { useRef, useMemo } from "react";
+import { useFrame, useLoader } from "@react-three/fiber";
 import * as THREE from "three";
 import {
   ROOM, WALL_SPRITES, FURNITURE, LAMP,
   NIGHTSTAND_ITEMS, SHELF_ITEMS, FLOOR_OBJECTS, LIGHTING,
 } from "./roomLayout";
+import FirstPersonController from "./FirstPersonController";
 
 // ---------------------------------------------------------------------------
 // PS1-style texture loader — NearestFilter, no mipmaps
@@ -45,37 +46,7 @@ function useCouetteTexture(color) {
   }, [color]);
 }
 
-// ---------------------------------------------------------------------------
-// Mouse-look camera — fixed position, smooth look-around
-// ---------------------------------------------------------------------------
-function CameraRig() {
-  const { camera, gl } = useThree();
-  const mouse = useRef({ x: 0, y: 0 });
-  const target = useRef({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const el = gl.domElement;
-    const handler = (e) => {
-      const rect = el.getBoundingClientRect();
-      mouse.current.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      mouse.current.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-    };
-    el.addEventListener("mousemove", handler);
-    return () => el.removeEventListener("mousemove", handler);
-  }, [gl]);
-
-  useFrame(() => {
-    target.current.x += (mouse.current.x - target.current.x) * 0.08;
-    target.current.y += (mouse.current.y - target.current.y) * 0.08;
-    const maxH = (50 * Math.PI) / 180;
-    const maxV = (20 * Math.PI) / 180;
-    camera.rotation.order = "YXZ";
-    camera.rotation.y = -target.current.x * maxH;
-    camera.rotation.x = target.current.y * maxV;
-  });
-
-  return null;
-}
+// CameraRig removed — replaced by FirstPersonController
 
 // ---------------------------------------------------------------------------
 // Room geometry — 4 walls + floor + ceiling + baseboards
@@ -217,9 +188,10 @@ function Lamp3D({ lampOn }) {
 // ---------------------------------------------------------------------------
 function Rug() {
   const tex = usePixelTexture(FURNITURE.rug.tex);
+  const r = FURNITURE.rug;
   return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={FURNITURE.rug.position}>
-      <planeGeometry args={FURNITURE.rug.size} />
+    <mesh position={[r.position[0], r.position[1] + 0.015, r.position[2]]}>
+      <boxGeometry args={[r.size[0], 0.03, r.size[1]]} />
       <meshBasicMaterial map={tex} transparent alphaTest={0.1} />
     </mesh>
   );
@@ -238,7 +210,7 @@ function WindowSprite({ lampOn, sprite }) {
         <meshLambertMaterial color="#6B4830" flatShading />
       </mesh>
       <mesh>
-        <planeGeometry args={sprite.size} />
+        <boxGeometry args={[sprite.size[0], sprite.size[1], 0.02]} />
         <meshBasicMaterial map={texture} transparent alphaTest={0.1} />
       </mesh>
       {/* Window cross bars */}
@@ -274,7 +246,7 @@ function PosterSprite({ sprite }) {
         <meshLambertMaterial color="#222" flatShading />
       </mesh>
       <mesh>
-        <planeGeometry args={sprite.size} />
+        <boxGeometry args={[sprite.size[0], sprite.size[1], 0.01]} />
         <meshBasicMaterial map={texture} transparent alphaTest={0.1} />
       </mesh>
     </group>
@@ -294,7 +266,7 @@ function GlowStarsSprite({ lampOn, sprite }) {
 
   return (
     <mesh ref={meshRef} position={sprite.position}>
-      <planeGeometry args={sprite.size} />
+      <boxGeometry args={[sprite.size[0], sprite.size[1], 0.01]} />
       <meshBasicMaterial map={texture} transparent opacity={targetOpacity} />
     </mesh>
   );
@@ -322,10 +294,9 @@ function CouetteOverlay({ color }) {
   const b = FURNITURE.bed;
   return (
     <mesh
-      rotation={[-Math.PI / 2, 0, 0]}
       position={[b.mattress.position[0], b.mattress.position[1] + 0.08, b.mattress.position[2] + 0.3]}
     >
-      <planeGeometry args={[b.mattress.size[0] - 0.05, b.mattress.size[2] * 0.6]} />
+      <boxGeometry args={[b.mattress.size[0] - 0.05, 0.06, b.mattress.size[2] * 0.6]} />
       <meshBasicMaterial map={texture} transparent opacity={0.7} side={THREE.DoubleSide} />
     </mesh>
   );
@@ -491,11 +462,14 @@ function RoomLighting({ lampOn }) {
 // ---------------------------------------------------------------------------
 // Main scene export
 // ---------------------------------------------------------------------------
-export default function RoomScene({ lampOn, couetteColor }) {
+export default function RoomScene({ lampOn, couetteColor, fpsEnabled }) {
   return (
     <>
-      <CameraRig />
+      <FirstPersonController enabled={fpsEnabled} />
       <RoomLighting lampOn={lampOn} />
+      {/* Extra fill lights for visibility */}
+      <hemisphereLight args={["#FFFFFF", "#6B4830", 0.25]} />
+      <pointLight position={[0, 3, 0]} intensity={0.3} distance={10} />
       <RoomBox />
 
       {/* 3D Furniture */}

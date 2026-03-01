@@ -6,10 +6,10 @@ export const ROOM = {
   width: 6,
   height: 3.5,
   depth: 5,
-  walls: "#362952",
-  floor: "#6B4830",
-  ceiling: "#2E2245",
-  baseboard: "#3E2518",
+  walls: "#4E3972",
+  floor: "#8B6840",
+  ceiling: "#3E3260",
+  baseboard: "#5E3828",
 };
 
 // Wall sprites — flat items that belong on walls (posters, window, stars)
@@ -207,13 +207,13 @@ export const HITBOXES = [
 // Lighting presets
 export const LIGHTING = {
   lampOn: {
-    ambient: { intensity: 0.4, color: "#FFF5E6" },
-    lamp: { intensity: 1.2, color: "#FFE082", position: [-0.7, 1.3, -1.8] },
-    window: { intensity: 0.3, color: "#87CEEB", position: [-1.8, 2.5, -1.0] },
+    ambient: { intensity: 0.7, color: "#FFF5E6" },
+    lamp: { intensity: 1.5, color: "#FFE082", position: [-0.7, 1.3, -1.8] },
+    window: { intensity: 0.6, color: "#87CEEB", position: [-1.8, 2.5, -1.0] },
   },
   lampOff: {
-    ambient: { intensity: 0.08, color: "#1a1050" },
-    moon: { intensity: 0.2, color: "#6666AA", position: [-1.8, 2.5, -1.0] },
-    stars: { intensity: 0.05, color: "#96FF96", position: [1.8, 3.0, -2.0] },
+    ambient: { intensity: 0.18, color: "#1a1050" },
+    moon: { intensity: 0.4, color: "#6666AA", position: [-1.8, 2.5, -1.0] },
+    stars: { intensity: 0.12, color: "#96FF96", position: [1.8, 3.0, -2.0] },
   },
 };

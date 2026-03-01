@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Suspense, useRef, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import RoomScene from "./room3d/RoomScene";
 import RoomInteraction from "./room3d/RoomInteraction";
@@ -17,17 +17,28 @@ export default function ChambreRoom3D({
   hoveredItem,
   setHoveredItem,
 }) {
+  const containerRef = useRef(null);
+
+  // Auto-focus the container so WASD works immediately
+  useEffect(() => {
+    containerRef.current?.focus();
+  }, []);
+
   return (
-    <div style={{ position: "absolute", inset: 0 }}>
+    <div
+      ref={containerRef}
+      tabIndex={-1}
+      style={{ position: "absolute", inset: 0, outline: "none" }}
+    >
       <Canvas
-        dpr={0.4}
+        dpr={0.5}
         gl={{ antialias: false, alpha: false }}
-        camera={{ fov: 60, position: [0, 1.5, 2.0], near: 0.1, far: 20 }}
+        camera={{ fov: 60, position: [0, 1.5, 1.5], near: 0.1, far: 20 }}
         style={CANVAS_STYLE}
         raycaster={{ params: { Line: { threshold: 0.1 } } }}
       >
         <Suspense fallback={null}>
-          <RoomScene lampOn={lampOn} couetteColor={couetteColor} />
+          <RoomScene lampOn={lampOn} couetteColor={couetteColor} fpsEnabled />
           <RoomInteraction
             setActiveItem={setActiveItem}
             onToggleLamp={onToggleLamp}
@@ -36,6 +47,21 @@ export default function ChambreRoom3D({
           />
         </Suspense>
       </Canvas>
+
+      {/* Crosshair — central dot */}
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 6,
+          height: 6,
+          borderRadius: "50%",
+          background: "rgba(200,176,232,0.45)",
+          pointerEvents: "none",
+        }}
+      />
 
       {/* Hint text — HTML overlay, stays crisp */}
       <div
@@ -52,7 +78,7 @@ export default function ChambreRoom3D({
           userSelect: "none",
         }}
       >
-        Clique sur les objets pour les explorer
+        ZQSD / WASD pour se déplacer — Clique sur les objets
       </div>
     </div>
   );
