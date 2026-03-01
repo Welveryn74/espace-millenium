@@ -30,6 +30,7 @@ export default function CorbeilleWindow({ onClose, onMinimize, zIndex, onFocus }
   const [hoveredRow, setHoveredRow] = useState(null);
   const [locked, setLocked] = useState(() => loadState('corbeille_locked', false));
   const [previewMsg, setPreviewMsg] = useState(null);
+  const [restoreMsg, setRestoreMsg] = useState(null);
 
   return (
     <Win title="Corbeille" onClose={onClose} onMinimize={onMinimize} width={560} height={440} zIndex={zIndex} onFocus={onFocus} color="#888">
@@ -56,6 +57,21 @@ export default function CorbeilleWindow({ onClose, onMinimize, zIndex, onFocus }
               color: locked ? "#888" : "#000",
             }}
           >{locked ? "Ces souvenirs sont protégés. \u{1F512}" : "Vider la corbeille"}</button>
+          <button
+            onClick={() => {
+              playPaperSound();
+              setRestoreMsg("Ce fichier fait partie de ton histoire, il reste ici.");
+              setTimeout(() => setRestoreMsg(null), 3000);
+            }}
+            style={{
+              padding: "2px 10px",
+              background: "linear-gradient(180deg, #F8F8F4 0%, #D8D4C8 100%)",
+              border: "1px solid #ACA899",
+              borderRadius: 3,
+              fontSize: 11, fontFamily: "'Tahoma', sans-serif",
+              cursor: "pointer",
+            }}
+          >Restaurer</button>
           <span style={{ marginLeft: "auto", color: "#666", fontSize: 10 }}>
             {DELETED_ITEMS.length} éléments
           </span>
@@ -106,6 +122,19 @@ export default function CorbeilleWindow({ onClose, onMinimize, zIndex, onFocus }
             );
           })}
         </div>
+        {/* Restore message */}
+        {restoreMsg && (
+          <div style={{
+            position: "absolute", bottom: 8, left: "50%", transform: "translateX(-50%)",
+            background: "#FFF8E1", border: "1px solid #FFB74D", borderRadius: 4,
+            padding: "8px 16px", fontSize: 11, fontFamily: "'Tahoma', sans-serif",
+            color: "#5D4037", boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+            animation: "popIn 0.2s ease-out", zIndex: 99,
+            whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 6,
+          }}>
+            <span style={{ fontSize: 14 }}>📦</span> {restoreMsg}
+          </div>
+        )}
         {/* Preview dialog */}
         {previewMsg && (
           <div style={{

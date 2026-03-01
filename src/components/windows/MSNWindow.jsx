@@ -54,6 +54,7 @@ export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz
   const [input, setInput] = useState("");
   const [status, setStatus] = useState(0);
   const [showStatus, setShowStatus] = useState(false);
+  const [personalPhrase, setPersonalPhrase] = useState(() => loadState('em_msn_phrase', '♫ I walk a lonely road... ♫'));
   const [botIdx, setBotIdx] = useState(0);
   const [typing, setTyping] = useState(false);
   const [nudgeCount, setNudgeCount] = useState(0);
@@ -146,7 +147,16 @@ export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz
             <NostalImg src="/images/ui/msn-contact.png" fallback="😈" size={28} />
           </div>
           <div>
-            <div style={{ fontSize: 12, fontWeight: "bold", color: "#003" }}>{botName}</div>
+            <div style={{ fontSize: 12, fontWeight: "bold", color: "#003", display: "flex", alignItems: "center", gap: 4 }}>
+              <span style={{
+                width: 8, height: 8, borderRadius: "50%",
+                background: "#4CAF50",
+                display: "inline-block",
+                boxShadow: "0 0 4px #4CAF50",
+                animation: "pulse 2s ease-in-out infinite",
+              }} />
+              {botName}
+            </div>
             <div style={{ fontSize: 10, color: "#666" }}>🎵 Evanescence — Bring Me To Life 🎵</div>
           </div>
         </div>
@@ -168,6 +178,21 @@ export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz
               ))}
             </div>
           )}
+        </div>
+
+        {/* Personal phrase */}
+        <div style={{ padding: "2px 10px 4px", background: "#F0F4FF", borderBottom: "1px solid #D0D8E8", fontSize: 10 }}>
+          <input
+            value={personalPhrase}
+            onChange={e => { setPersonalPhrase(e.target.value); saveState('em_msn_phrase', e.target.value); }}
+            placeholder="Saisissez votre phrase perso..."
+            style={{
+              width: "100%", border: "none", background: "transparent",
+              fontSize: 10, color: "#666", fontStyle: "italic",
+              outline: "none", fontFamily: "'Tahoma', sans-serif",
+              padding: "2px 0",
+            }}
+          />
         </div>
 
         {/* Chat area */}

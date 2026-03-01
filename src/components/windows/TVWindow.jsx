@@ -234,10 +234,29 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
           ) : staticEffect ? (
             <div style={{
               width: "100%", height: "100%",
-              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.6'/%3E%3C/svg%3E")`,
-              backgroundSize: "200px",
-              animation: "tvStatic 0.15s infinite",
-            }} />
+              background: `
+                repeating-radial-gradient(circle at ${Math.random()*100}% ${Math.random()*100}%, rgba(255,255,255,0.15) 0px, transparent 1px, transparent 2px),
+                linear-gradient(rgba(255,255,255,0.08), rgba(0,0,0,0.08))
+              `,
+              backgroundSize: "3px 3px, 100% 4px",
+              animation: "tvStatic 0.08s steps(4) infinite",
+              position: "relative",
+            }}>
+              {/* White flash overlay */}
+              <div style={{
+                position: "absolute", inset: 0,
+                background: "white",
+                animation: "fadeOut 0.3s ease-out forwards",
+              }} />
+              {/* Noise grain */}
+              <div style={{
+                position: "absolute", inset: 0,
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.7'/%3E%3C/svg%3E")`,
+                backgroundSize: "128px",
+                animation: "tvStatic 0.1s steps(8) infinite",
+                mixBlendMode: "overlay",
+              }} />
+            </div>
           ) : (
             <div style={{
               width: "100%", height: "100%", padding: 20,
@@ -248,7 +267,7 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
               {/* Scanlines overlay */}
               <div style={{
                 position: "absolute", inset: 0, pointerEvents: "none",
-                background: "repeating-linear-gradient(transparent 0px, transparent 1px, rgba(0,0,0,0.12) 1px, rgba(0,0,0,0.12) 3px)",
+                background: "repeating-linear-gradient(transparent 0px, transparent 1px, rgba(0,0,0,0.18) 1px, rgba(0,0,0,0.18) 2px)",
               }} />
               {/* Screen curvature effect */}
               <div style={{

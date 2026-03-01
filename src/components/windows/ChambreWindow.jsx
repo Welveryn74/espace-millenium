@@ -287,17 +287,24 @@ function RoomScene({ items, hoveredItem, setHoveredItem, setActiveItem, couetteC
 
   return (
     <div ref={containerRef} style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden", background: "#1a1028", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <div style={{ width: 560, height: 488, position: "relative", transform: `scale(${roomScale})`, transformOrigin: "center center", flexShrink: 0 }}>
+      <div style={{ width: 560, height: 488, position: "relative", transform: `scale(${roomScale})`, transformOrigin: "center center", flexShrink: 0, boxShadow: "inset 0 0 60px 20px rgba(0,0,0,0.4)" }}>
+
+      {/* Lamp ambient glow overlay */}
+      {lampOn && (
+        <div style={{
+          position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none",
+          background: "radial-gradient(ellipse at 15% 55%, rgba(255,200,80,0.12) 0%, transparent 50%)",
+          mixBlendMode: "soft-light",
+        }} />
+      )}
 
       {/* ====== WALL ====== */}
       <div style={{
         position: "absolute", top: 0, left: 0, right: 0, height: "55%",
         background: "linear-gradient(180deg, #2E2245 0%, #362952 40%, #3D2F5C 100%)",
-        backgroundImage: `
-          linear-gradient(180deg, #2E2245 0%, #362952 40%, #3D2F5C 100%),
-          repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(255,255,255,0.012) 28px, rgba(255,255,255,0.012) 30px),
-          repeating-linear-gradient(90deg, transparent, transparent 28px, rgba(255,255,255,0.012) 28px, rgba(255,255,255,0.012) 30px)
-        `,
+        backgroundImage: `url('/images/chambre/room/wall-background.png'), linear-gradient(180deg, #2E2245 0%, #362952 40%, #3D2F5C 100%)`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
       }} />
 
       {/* ====== BASEBOARD / PLINTHE ====== */}
@@ -310,12 +317,10 @@ function RoomScene({ items, hoveredItem, setHoveredItem, setActiveItem, couetteC
       {/* ====== FLOOR (PARQUET) ====== */}
       <div style={{
         position: "absolute", top: "55%", left: 0, right: 0, bottom: 0,
-        background: "#5C3D2A",
-        backgroundImage: `
-          repeating-linear-gradient(90deg, transparent 0px, transparent 68px, rgba(0,0,0,0.12) 68px, rgba(0,0,0,0.12) 70px),
-          repeating-linear-gradient(0deg, transparent 0px, transparent 22px, rgba(0,0,0,0.06) 22px, rgba(0,0,0,0.06) 23px),
-          linear-gradient(180deg, #4A3328 0%, #6B4830 30%, #7B5638 60%, #6B4830 100%)
-        `,
+        background: "linear-gradient(180deg, #4A3328 0%, #6B4830 30%, #7B5638 60%, #6B4830 100%)",
+        backgroundImage: `url('/images/chambre/room/floor-parquet.png'), linear-gradient(180deg, #4A3328 0%, #6B4830 30%, #7B5638 60%, #6B4830 100%)`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
       }} />
 
       {/* ====== WINDOW ON WALL (night/dusk sky) ====== */}
@@ -324,13 +329,21 @@ function RoomScene({ items, hoveredItem, setHoveredItem, setActiveItem, couetteC
         background: lampOn
           ? "linear-gradient(180deg, #1a1050, #2E1B6B 40%, #5B3A8C 70%, #D4956B)"
           : "linear-gradient(180deg, #020210, #060620 50%, #0B0B3E)",
-        border: "5px solid #6B4830", borderRadius: 3,
+        borderRadius: 3,
         boxShadow: lampOn
           ? "inset 0 0 20px rgba(100,60,160,0.3), 0 3px 10px rgba(0,0,0,0.5)"
           : "inset 0 0 20px rgba(0,0,80,0.5), 0 3px 10px rgba(0,0,0,0.5), inset 0 0 40px rgba(30,30,100,0.2)",
         overflow: "hidden",
         transition: "background 0.8s ease",
       }}>
+        {/* Window illustration (covers CSS fallback) */}
+        <NostalImg
+          src={lampOn ? "/images/chambre/room/window-day.png" : "/images/chambre/room/window-night.png"}
+          fallback=""
+          size={110}
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 1 }}
+        />
+        {/* CSS fallback elements (hidden when image loads) */}
         {/* Window cross frame */}
         <div style={{ position: "absolute", top: "50%", left: 0, right: 0, height: 4, background: "#6B4830", transform: "translateY(-50%)", zIndex: 2 }} />
         <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 4, background: "#6B4830", transform: "translateX(-50%)", zIndex: 2 }} />
@@ -399,67 +412,55 @@ function RoomScene({ items, hoveredItem, setHoveredItem, setActiveItem, couetteC
       {/* ====== POSTER DBZ ====== */}
       <div style={{
         position: "absolute", top: "3%", left: "24%", width: 76, height: 56,
-        background: "linear-gradient(135deg, #FF7800, #FF9500 30%, #FFB800 60%, #FF7800)",
-        border: "3px solid #5C4033", borderRadius: 2,
-        boxShadow: "2px 3px 8px rgba(0,0,0,0.5), inset 0 0 25px rgba(255,255,255,0.1)",
-        display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden",
+        borderRadius: 2, overflow: "hidden",
+        boxShadow: "2px 3px 8px rgba(0,0,0,0.5)",
       }}>
-        {/* Starburst rays */}
-        <div style={{ position: "absolute", inset: 0, background: "conic-gradient(from 0deg, transparent, rgba(255,255,255,0.08) 10%, transparent 20%)", }} />
-        <div style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
-          <div style={{ fontSize: 24, textShadow: "0 0 8px rgba(255,200,0,0.6)" }}>⚡</div>
-          <div style={{ fontSize: 6, fontWeight: "bold", color: "#FFF", textShadow: "1px 1px 2px rgba(0,0,0,0.9)", letterSpacing: 2, marginTop: 1, fontFamily: "Impact, sans-serif" }}>DRAGON BALL Z</div>
-        </div>
+        <NostalImg src="/images/chambre/room/poster-dbz.png" fallback="⚡" size={76}
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
       </div>
 
-      {/* ====== SECOND POSTER (Yu-Gi-Oh / Pokémon) ====== */}
+      {/* ====== SECOND POSTER (Yu-Gi-Oh) ====== */}
       <div style={{
         position: "absolute", top: "12%", left: "40%", width: 48, height: 62,
-        background: "linear-gradient(180deg, #1A237E, #283593 40%, #3949AB)",
-        border: "2px solid #5C4033", borderRadius: 2,
+        borderRadius: 2, overflow: "hidden",
         boxShadow: "2px 2px 6px rgba(0,0,0,0.4)",
-        display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden",
       }}>
-        <div style={{ textAlign: "center" }}>
-          <div style={{ fontSize: 22 }}>🃏</div>
-          <div style={{ fontSize: 5, color: "#FFD54F", fontWeight: "bold", marginTop: 2, letterSpacing: 0.5 }}>YU-GI-OH!</div>
-        </div>
+        <NostalImg src="/images/chambre/room/poster-yugioh.png" fallback="🃏" size={62}
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
       </div>
 
       {/* ====== GLOW-IN-THE-DARK STARS (on wall) ====== */}
-      {[{t:"3%",l:"52%"},{t:"6%",l:"60%"},{t:"2%",l:"70%"},{t:"9%",l:"56%"},{t:"4%",l:"48%"},{t:"7%",l:"64%"},{t:"1%",l:"58%"},{t:"10%",l:"72%"}].map((s,i) => (
-        <div key={`glow${i}`} style={{
-          position: "absolute", top: s.t, left: s.l,
-          fontSize: 7,
-          color: lampOn ? "rgba(180,255,180,0.1)" : "rgba(150,255,150,0.85)",
-          textShadow: lampOn ? "none" : `0 0 6px rgba(150,255,150,0.8), 0 0 12px rgba(150,255,150,0.4)`,
-          transition: "color 0.6s ease, text-shadow 0.6s ease",
-          animation: lampOn ? "none" : `starPulse ${2 + i * 0.3}s ease-in-out infinite`,
-          zIndex: 1, pointerEvents: "none",
-        }}>✦</div>
-      ))}
+      <div style={{
+        position: "absolute", top: "1%", left: "46%", width: 200, height: 130,
+        opacity: lampOn ? 0.06 : 0.85,
+        filter: lampOn ? "none" : "drop-shadow(0 0 8px rgba(150,255,150,0.6))",
+        transition: "opacity 0.8s ease, filter 0.8s ease",
+        animation: lampOn ? "none" : "starPulse 3s ease-in-out infinite",
+        zIndex: 1, pointerEvents: "none",
+      }}>
+        <NostalImg src="/images/chambre/room/glow-stars.png" fallback="" size={200}
+          style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+        {/* CSS fallback stars (shown when image missing) */}
+        {[{t:"10%",l:"12%"},{t:"25%",l:"32%"},{t:"5%",l:"55%"},{t:"35%",l:"20%"},{t:"15%",l:"2%"},{t:"30%",l:"45%"},{t:"2%",l:"28%"},{t:"40%",l:"60%"}].map((s,i) => (
+          <div key={`glow${i}`} style={{
+            position: "absolute", top: s.t, left: s.l, fontSize: 7,
+            color: "rgba(150,255,150,0.85)",
+          }}>✦</div>
+        ))}
+      </div>
 
       {/* ====== SHELF ====== */}
       <div style={{
-        position: "absolute", top: 78, right: 22, width: 160,
+        position: "absolute", top: 78, right: 22, width: 160, height: 80,
         zIndex: 4,
       }}>
-        {/* Shelf board */}
-        <div style={{
-          width: "100%", height: 8,
-          background: "linear-gradient(180deg, #8B6B4A, #6B4830, #5C3D2A)",
-          borderRadius: "2px 2px 0 0",
-          boxShadow: "0 3px 8px rgba(0,0,0,0.5)",
-        }} />
-        {/* Brackets */}
+        <NostalImg src="/images/chambre/room/shelf.png" fallback="" size={160}
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain" }} />
+        {/* CSS fallback */}
+        <div style={{ width: "100%", height: 8, background: "linear-gradient(180deg, #8B6B4A, #6B4830, #5C3D2A)", borderRadius: "2px 2px 0 0", boxShadow: "0 3px 8px rgba(0,0,0,0.5)" }} />
         <div style={{ position: "absolute", top: 8, left: 14, width: 5, height: 18, background: "linear-gradient(90deg, #5C4033, #4A3328)", borderRadius: "0 0 2px 2px" }} />
         <div style={{ position: "absolute", top: 8, right: 14, width: 5, height: 18, background: "linear-gradient(90deg, #4A3328, #5C4033)", borderRadius: "0 0 2px 2px" }} />
-        {/* Second shelf */}
-        <div style={{
-          position: "absolute", top: 56, left: 10, right: 10, height: 6,
-          background: "linear-gradient(180deg, #7B5B3A, #5C4033)",
-          borderRadius: 1, boxShadow: "0 2px 5px rgba(0,0,0,0.4)",
-        }} />
+        <div style={{ position: "absolute", top: 56, left: 10, right: 10, height: 6, background: "linear-gradient(180deg, #7B5B3A, #5C4033)", borderRadius: 1, boxShadow: "0 2px 5px rgba(0,0,0,0.4)" }} />
         <div style={{ position: "absolute", top: 62, left: 20, width: 4, height: 14, background: "#4A3328" }} />
         <div style={{ position: "absolute", top: 62, right: 20, width: 4, height: 14, background: "#4A3328" }} />
       </div>
@@ -507,63 +508,37 @@ function RoomScene({ items, hoveredItem, setHoveredItem, setActiveItem, couetteC
       <div style={{
         position: "absolute", top: 215, right: 17, width: 302, height: 205, zIndex: 2,
       }}>
-        {/* Headboard */}
+        {/* Bed illustration */}
+        <NostalImg src="/images/chambre/room/bed.png" fallback="" size={302}
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", objectPosition: "bottom" }} />
+        {/* CSS fallback headboard + mattress */}
         <div style={{
           position: "absolute", top: 0, left: 0, right: 0, height: 40,
           background: "linear-gradient(180deg, #7B5B3A 0%, #6B4830 50%, #5C3D2A 100%)",
           borderRadius: "8px 8px 0 0",
           boxShadow: "inset 0 2px 6px rgba(255,255,255,0.08), 0 -2px 8px rgba(0,0,0,0.3)",
         }}>
-          {/* Decorative headboard panels */}
           <div style={{ position: "absolute", top: 5, left: 10, right: 10, bottom: 5, border: "1px solid rgba(255,255,255,0.06)", borderRadius: 4 }} />
-          <div style={{ position: "absolute", top: 8, left: "35%", right: "35%", bottom: 8, border: "1px solid rgba(255,255,255,0.04)", borderRadius: 3 }} />
         </div>
-        {/* Mattress frame */}
-        <div style={{
-          position: "absolute", top: 38, left: -2, right: -2, bottom: -2,
-          background: "linear-gradient(180deg, #5C4033, #4A3328)",
-          borderRadius: "0 0 4px 4px",
-        }} />
-        {/* Mattress */}
-        <div style={{
-          position: "absolute", top: 38, left: 2, right: 2, bottom: 2,
-          background: "linear-gradient(180deg, #F5F0E8, #E8E0D0)",
-          borderRadius: "0 0 3px 3px", overflow: "hidden",
-        }}>
-          {/* Pillow */}
-          <div style={{
-            position: "absolute", top: 2, left: 10, width: "30%", height: 22,
-            background: "linear-gradient(180deg, #FFFEF8, #F5F0E0)",
-            borderRadius: 10, border: "1px solid #E8E0C8",
-            boxShadow: "inset 0 2px 4px rgba(0,0,0,0.05), 0 2px 3px rgba(0,0,0,0.08)",
-          }} />
-          <div style={{
-            position: "absolute", top: 4, left: "36%", width: "25%", height: 18,
-            background: "linear-gradient(180deg, #FFFEF8, #F5F0E0)",
-            borderRadius: 8, border: "1px solid #E8E0C8",
-            boxShadow: "inset 0 2px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06)",
-          }} />
-          {/* Couette / blanket */}
+        <div style={{ position: "absolute", top: 38, left: -2, right: -2, bottom: -2, background: "linear-gradient(180deg, #5C4033, #4A3328)", borderRadius: "0 0 4px 4px" }} />
+        <div style={{ position: "absolute", top: 38, left: 2, right: 2, bottom: 2, background: "linear-gradient(180deg, #F5F0E8, #E8E0D0)", borderRadius: "0 0 3px 3px", overflow: "hidden" }}>
+          <div style={{ position: "absolute", top: 2, left: 10, width: "30%", height: 22, background: "linear-gradient(180deg, #FFFEF8, #F5F0E0)", borderRadius: 10, border: "1px solid #E8E0C8", boxShadow: "inset 0 2px 4px rgba(0,0,0,0.05), 0 2px 3px rgba(0,0,0,0.08)" }} />
+          <div style={{ position: "absolute", top: 4, left: "36%", width: "25%", height: 18, background: "linear-gradient(180deg, #FFFEF8, #F5F0E0)", borderRadius: 8, border: "1px solid #E8E0C8" }} />
+          {/* Couette / blanket (kept as CSS overlay) */}
           <div style={{
             position: "absolute", top: 20, left: 3, right: 3, bottom: 3,
             background: `linear-gradient(150deg, ${couetteColor}, ${couetteColor}DD 40%, ${couetteColor}EE 70%, ${couetteColor})`,
-            borderRadius: 4,
+            borderRadius: 4, zIndex: 1,
             boxShadow: `inset 0 3px 10px rgba(0,0,0,0.12), inset 0 -2px 6px rgba(255,255,255,0.08)`,
           }}>
-            {/* Blanket quilting pattern */}
             <div style={{
               position: "absolute", inset: 0, borderRadius: 4, opacity: 0.4,
-              backgroundImage: `
-                repeating-linear-gradient(45deg, transparent, transparent 14px, rgba(255,255,255,0.05) 14px, rgba(255,255,255,0.05) 16px),
-                repeating-linear-gradient(-45deg, transparent, transparent 14px, rgba(255,255,255,0.03) 14px, rgba(255,255,255,0.03) 16px)
-              `,
+              backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 14px, rgba(255,255,255,0.05) 14px, rgba(255,255,255,0.05) 16px), repeating-linear-gradient(-45deg, transparent, transparent 14px, rgba(255,255,255,0.03) 14px, rgba(255,255,255,0.03) 16px)`,
             }} />
-            {/* Folded edge */}
             <div style={{
               position: "absolute", top: 0, left: 0, right: 0, height: 8,
               background: `linear-gradient(180deg, ${couetteColor}FF, ${couetteColor}CC)`,
-              borderRadius: "4px 4px 0 0",
-              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+              borderRadius: "4px 4px 0 0", boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
             }} />
           </div>
         </div>
@@ -586,52 +561,45 @@ function RoomScene({ items, hoveredItem, setHoveredItem, setActiveItem, couetteC
       <div style={{
         position: "absolute", top: 254, left: 22, width: 72, height: 65, zIndex: 3,
       }}>
-        {/* Table top surface */}
-        <div style={{
-          position: "absolute", top: 0, left: -4, right: -4, height: 7,
-          background: "linear-gradient(180deg, #8B6B4A, #6B4830)",
-          borderRadius: 3, boxShadow: "0 3px 6px rgba(0,0,0,0.4)",
-        }} />
-        {/* Table body */}
-        <div style={{
-          position: "absolute", top: 7, left: 0, right: 0, bottom: 6,
-          background: "linear-gradient(180deg, #6B4830, #5C3D2A, #4A3328)",
-          borderRadius: "0 0 2px 2px",
-        }}>
-          {/* Drawer */}
-          <div style={{
-            position: "absolute", top: 5, left: 5, right: 5, height: 20,
-            background: "linear-gradient(180deg, #5C3D2A, #4A3328)",
-            border: "1px solid rgba(255,255,255,0.04)", borderRadius: 2,
-          }}>
-            {/* Drawer knob */}
+        <NostalImg src="/images/chambre/room/nightstand.png" fallback="" size={72}
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain" }} />
+        {/* CSS fallback */}
+        <div style={{ position: "absolute", top: 0, left: -4, right: -4, height: 7, background: "linear-gradient(180deg, #8B6B4A, #6B4830)", borderRadius: 3, boxShadow: "0 3px 6px rgba(0,0,0,0.4)" }} />
+        <div style={{ position: "absolute", top: 7, left: 0, right: 0, bottom: 6, background: "linear-gradient(180deg, #6B4830, #5C3D2A, #4A3328)", borderRadius: "0 0 2px 2px" }}>
+          <div style={{ position: "absolute", top: 5, left: 5, right: 5, height: 20, background: "linear-gradient(180deg, #5C3D2A, #4A3328)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 2 }}>
             <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 12, height: 5, borderRadius: 3, background: "linear-gradient(180deg, #9B8060, #7B6040)", boxShadow: "0 1px 2px rgba(0,0,0,0.3)" }} />
           </div>
         </div>
-        {/* Legs */}
         <div style={{ position: "absolute", bottom: 0, left: 3, width: 5, height: 6, background: "#4A3328", borderRadius: "0 0 1px 1px" }} />
         <div style={{ position: "absolute", bottom: 0, right: 3, width: 5, height: 6, background: "#4A3328", borderRadius: "0 0 1px 1px" }} />
       </div>
 
       {/* Lamp on nightstand */}
       {spot("lampe", (
-        <div style={{ textAlign: "center", position: "relative" }}>
-          {/* Lamp glow aura */}
-          {lampOn && <div style={{ position: "absolute", top: -8, left: -10, width: 50, height: 30, background: "radial-gradient(ellipse, rgba(255,220,80,0.25), transparent 70%)", pointerEvents: "none" }} />}
-          {/* Shade */}
+        <div style={{ textAlign: "center", position: "relative", width: 30, height: 40 }}>
+          {/* Lamp glow aura (improved) */}
+          {lampOn && <div style={{ position: "absolute", top: -20, left: -25, width: 80, height: 60, background: "radial-gradient(ellipse, rgba(255,220,80,0.3), rgba(255,200,60,0.1) 50%, transparent 80%)", pointerEvents: "none", mixBlendMode: "soft-light" }} />}
+          <NostalImg
+            src={lampOn ? "/images/chambre/room/lamp-on.png" : "/images/chambre/room/lamp-off.png"}
+            fallback=""
+            size={40}
+            style={{ width: 30, height: 40, objectFit: "contain" }}
+          />
+          {/* CSS fallback */}
           <div style={{
-            width: 30, height: 20, margin: "0 auto",
-            background: lampOn
-              ? "linear-gradient(180deg, #FFE082, #FFCC02, #FFB300)"
-              : "linear-gradient(180deg, #8B7355, #6B5335, #5C4528)",
-            clipPath: "polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%)",
-            boxShadow: lampOn ? "0 0 25px rgba(255,200,0,0.5), 0 4px 8px rgba(255,180,0,0.3)" : "0 1px 3px rgba(0,0,0,0.3)",
-            transition: "all 0.3s ease",
-          }} />
-          {/* Stem */}
-          <div style={{ width: 4, height: 14, background: lampOn ? "#C8A050" : "#7B6040", margin: "0 auto", transition: "background 0.3s" }} />
-          {/* Base */}
-          <div style={{ width: 18, height: 5, background: lampOn ? "#B8903A" : "#6B5335", borderRadius: 3, margin: "0 auto", boxShadow: "0 1px 2px rgba(0,0,0,0.3)" }} />
+            position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
+            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start",
+          }}>
+            <div style={{
+              width: 30, height: 20,
+              background: lampOn ? "linear-gradient(180deg, #FFE082, #FFCC02, #FFB300)" : "linear-gradient(180deg, #8B7355, #6B5335, #5C4528)",
+              clipPath: "polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%)",
+              boxShadow: lampOn ? "0 0 25px rgba(255,200,0,0.5), 0 4px 8px rgba(255,180,0,0.3)" : "0 1px 3px rgba(0,0,0,0.3)",
+              transition: "all 0.3s ease",
+            }} />
+            <div style={{ width: 4, height: 14, background: lampOn ? "#C8A050" : "#7B6040", transition: "background 0.3s" }} />
+            <div style={{ width: 18, height: 5, background: lampOn ? "#B8903A" : "#6B5335", borderRadius: 3, boxShadow: "0 1px 2px rgba(0,0,0,0.3)" }} />
+          </div>
         </div>
       ), { top: 214, left: 30, zIndex: 6 }, onToggleLamp)}
 
@@ -658,20 +626,22 @@ function RoomScene({ items, hoveredItem, setHoveredItem, setActiveItem, couetteC
       {/* ====== RUG ON FLOOR ====== */}
       <div style={{
         position: "absolute", top: 336, left: 34, width: 235, height: 137,
-        background: "linear-gradient(135deg, #6A1B4D, #8B2252 30%, #9B2862 50%, #8B2252 70%, #6A1B4D)",
-        borderRadius: 6,
-        boxShadow: "inset 0 0 20px rgba(0,0,0,0.2), 0 2px 6px rgba(0,0,0,0.25)",
+        borderRadius: 6, overflow: "hidden",
+        boxShadow: "0 2px 6px rgba(0,0,0,0.25)",
         zIndex: 1,
       }}>
-        {/* Rug border ornament */}
-        <div style={{ position: "absolute", inset: 6, border: "1px solid rgba(255,200,100,0.15)", borderRadius: 3 }} />
-        <div style={{ position: "absolute", inset: 10, border: "1px solid rgba(255,200,100,0.08)", borderRadius: 2 }} />
-        {/* Center medallion pattern */}
+        <NostalImg src="/images/chambre/room/rug.png" fallback="" size={235}
+          style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        {/* CSS fallback */}
         <div style={{
-          position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)",
-          width: 30, height: 30, borderRadius: "50%",
-          border: "1px solid rgba(255,200,100,0.1)",
-        }} />
+          position: "absolute", inset: 0,
+          background: "linear-gradient(135deg, #6A1B4D, #8B2252 30%, #9B2862 50%, #8B2252 70%, #6A1B4D)",
+          borderRadius: 6, zIndex: -1,
+        }}>
+          <div style={{ position: "absolute", inset: 6, border: "1px solid rgba(255,200,100,0.15)", borderRadius: 3 }} />
+          <div style={{ position: "absolute", inset: 10, border: "1px solid rgba(255,200,100,0.08)", borderRadius: 2 }} />
+          <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 30, height: 30, borderRadius: "50%", border: "1px solid rgba(255,200,100,0.1)" }} />
+        </div>
       </div>
 
       {/* ====== FLOOR ITEMS ====== */}

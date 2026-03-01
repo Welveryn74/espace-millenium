@@ -124,6 +124,8 @@ export default function DemineurWindow({ onClose, onMinimize, zIndex, onFocus })
   const [firstClick, setFirstClick] = useState(true);
   const [clicking, setClicking] = useState(false);
   const [clickedMine, setClickedMine] = useState(null);
+  const [scores, setScores] = useState(() => loadState('em_demineur_scores', {}));
+  const [showScores, setShowScores] = useState(false);
   const timerRef = useRef(null);
 
   useEffect(() => {
@@ -152,6 +154,7 @@ export default function DemineurWindow({ onClose, onMinimize, zIndex, onFocus })
     setClicking(false);
     setClickedMine(null);
     setShowMenu(false);
+    setShowScores(false);
   }, [difficulty]);
 
   const handleReveal = useCallback(
@@ -179,6 +182,14 @@ export default function DemineurWindow({ onClose, onMinimize, zIndex, onFocus })
         setGrid(result.grid);
         setGameState("won");
         playVictorySound();
+        // Save score
+        const currentScores = loadState('em_demineur_scores', {});
+        const diffScores = currentScores[difficulty] || [];
+        const newScores = [...diffScores, timer + 1].sort((a, b) => a - b).slice(0, 3);
+        const updated = { ...currentScores, [difficulty]: newScores };
+        saveState('em_demineur_scores', updated);
+        setScores(updated);
+        setShowScores(true);
       } else {
         setGrid(result.grid);
       }
@@ -232,6 +243,7 @@ export default function DemineurWindow({ onClose, onMinimize, zIndex, onFocus })
           flexDirection: "column",
           fontFamily: "'Tahoma', sans-serif",
           userSelect: "none",
+          position: "relative",
         }}
       >
         {/* Menu bar */}
@@ -394,6 +406,64 @@ export default function DemineurWindow({ onClose, onMinimize, zIndex, onFocus })
             )}
           </div>
         </div>
+
+        {/* Victory scores overlay */}
+        {showScores && gameState === "won" && (
+          <div style={{
+            position: "absolute", inset: 0, zIndex: 999,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            background: "rgba(0,0,0,0.3)",
+          }} onClick={() => setShowScores(false)}>
+            <div onClick={e => e.stopPropagation()} style={{
+              background: "#ECE9D8", border: "2px solid #0055E5",
+              borderRadius: "8px 8px 0 0", width: 250,
+              boxShadow: "4px 4px 16px rgba(0,0,50,0.4)",
+              animation: "popIn 0.2s ease-out",
+            }}>
+              <div style={{
+                background: "linear-gradient(180deg, #0055E5 0%, #0033AA 100%)",
+                padding: "4px 8px", color: "#fff", fontWeight: "bold", fontSize: 11,
+                display: "flex", justifyContent: "space-between", alignItems: "center",
+              }}>
+                <span>Victoire ! 🎉</span>
+                <button onClick={() => setShowScores(false)} style={{
+                  width: 18, height: 18, border: "1px solid rgba(0,0,0,0.3)", borderRadius: 3,
+                  background: "linear-gradient(180deg, #E97 0%, #C44 100%)", color: "#fff",
+                  fontWeight: "bold", fontSize: 10, cursor: "pointer", display: "flex",
+                  alignItems: "center", justifyContent: "center",
+                }}>✕</button>
+              </div>
+              <div style={{ padding: 16, fontSize: 11, fontFamily: "'Tahoma', sans-serif" }}>
+                <div style={{ textAlign: "center", marginBottom: 10 }}>
+                  <div style={{ fontSize: 14, fontWeight: "bold", color: "#333" }}>Temps : {timer}s</div>
+                  <div style={{ color: "#666", fontSize: 10 }}>{DIFFICULTIES[difficulty].label}</div>
+                </div>
+                <div style={{ fontWeight: "bold", marginBottom: 6, color: "#333" }}>Meilleurs temps :</div>
+                {(scores[difficulty] || []).map((s, i) => (
+                  <div key={i} style={{
+                    display: "flex", justifyContent: "space-between",
+                    padding: "3px 8px", fontSize: 11,
+                    background: s === timer + 1 && i === (scores[difficulty] || []).indexOf(timer + 1) ? "#FFE082" : (i % 2 === 0 ? "#F5F5F0" : "#fff"),
+                    borderRadius: 2,
+                  }}>
+                    <span>{["🥇", "🥈", "🥉"][i]} #{i + 1}</span>
+                    <span style={{ fontWeight: "bold" }}>{s}s</span>
+                  </div>
+                ))}
+                {(!scores[difficulty] || scores[difficulty].length === 0) && (
+                  <div style={{ color: "#888", fontStyle: "italic", textAlign: "center" }}>Premier score enregistré !</div>
+                )}
+              </div>
+              <div style={{ padding: "8px 16px 12px", textAlign: "center" }}>
+                <button onClick={() => { setShowScores(false); resetGame(); }} style={{
+                  padding: "4px 28px", background: "linear-gradient(180deg, #F0F0F0 0%, #D0D0D0 100%)",
+                  border: "1px solid #888", borderRadius: 3, cursor: "pointer", fontSize: 11,
+                  fontFamily: "'Tahoma', sans-serif",
+                }}>Rejouer</button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Win>
   );
