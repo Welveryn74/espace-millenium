@@ -215,21 +215,22 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
     return videos[Math.floor(Math.random() * videos.length)];
   };
 
-  // Destroy current player and restore the inner container div
+  // Destroy current player
   const destroyPlayer = () => {
     playerRef.current?.destroy?.();
     playerRef.current = null;
-    // YT.Player.destroy() removes the iframe+div — recreate the container
-    const existing = document.getElementById(containerId);
-    if (!existing) {
-      const wrapper = document.querySelector(`[data-video-wrapper]`);
-      if (wrapper) {
-        wrapper.innerHTML = "";
-        const div = document.createElement("div");
-        div.id = containerId;
-        div.style.cssText = "width:100%;height:100%";
-        wrapper.appendChild(div);
-      }
+  };
+
+  // Ensure the inner container div exists (after destroy it may be gone)
+  const ensureContainer = () => {
+    if (document.getElementById(containerId)) return;
+    const wrapper = document.querySelector(`[data-video-wrapper]`);
+    if (wrapper) {
+      wrapper.innerHTML = "";
+      const div = document.createElement("div");
+      div.id = containerId;
+      div.style.cssText = "width:100%;height:100%";
+      wrapper.appendChild(div);
     }
   };
 
@@ -240,21 +241,15 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
     setVideoError(false);
     const video = pickVideo(ch);
     if (!video) { setVideoError(true); return; }
-    // Small delay to ensure DOM container is rendered
     requestAnimationFrame(() => {
+      ensureContainer();
       const container = document.getElementById(containerId);
       if (!container) { setVideoError(true); return; }
       playerRef.current = createVideoPlayer(containerId, {
         videoId: video.id,
-        onReady: () => {
-          setVideoReady(true);
-          playerRef.current?.setVolume?.(volume);
-        },
-        onError: () => { setVideoError(true); },
-        onEnded: () => {
-          // Play next video (random from same channel, or a pub)
-          startVideo(ch);
-        },
+        onReady: () => setVideoReady(true),
+        onError: () => setVideoError(true),
+        onEnded: () => startVideo(ch),
       });
     });
   };
@@ -274,18 +269,17 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
     return () => destroyPlayer();
   }, [channel, power]);
 
-  // Sync volume to player
+  // Sync volume to player (triggers iframe reload on mute/unmute transitions)
   useEffect(() => {
     playerRef.current?.setVolume?.(volume);
   }, [volume]);
 
   // Power on/off
   useEffect(() => {
-    if (power) {
-      playerRef.current?.play?.();
-    } else {
+    if (!power) {
       playerRef.current?.pause?.();
     }
+    // Power on is handled by the channel useEffect above
   }, [power]);
 
   // Cleanup on unmount

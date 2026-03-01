@@ -1,79 +1,64 @@
 // Dailymotion video player (no npm deps, no ads, no suggestions)
-// Uses the OLD embed URL format which supports postMessage API
+//
+// L'ancien embed postMessage a été déprécié en fév. 2025.
+// Le nouveau format ne supporte que les paramètres: mute, startTime, loop.
+// On contrôle le mute/unmute en rechargeant l'iframe (le clic Vol+
+// est un geste utilisateur → le navigateur autorise le son).
 
-const DM_ORIGIN = "https://www.dailymotion.com";
-
-function buildDMUrl(videoId) {
-  return `${DM_ORIGIN}/embed/video/${videoId}?api=postMessage&autoplay=1&mute=1&controls=0&queue-enable=0&sharing-enable=0&ui-logo=0&ui-start-screen-info=0`;
+function buildDMUrl(videoId, muted) {
+  return `https://www.dailymotion.com/embed/video/${videoId}?autoplay=1&mute=${muted ? 1 : 0}&loop=0`;
 }
 
 export function createVideoPlayer(containerId, { videoId, onReady, onError, onEnded }) {
   const container = document.getElementById(containerId);
   if (!container) { onError?.(new Error("Container not found")); return null; }
 
+  let currentVideoId = videoId;
+  let muted = true; // start muted for reliable autoplay
+  let destroyed = false;
+
   const iframe = document.createElement("iframe");
-  iframe.src = buildDMUrl(videoId);
+  iframe.src = buildDMUrl(videoId, true);
   iframe.style.cssText = "width:100%;height:100%;border:none;pointer-events:none;";
   iframe.allow = "autoplay; encrypted-media";
   iframe.setAttribute("allowfullscreen", "false");
   container.innerHTML = "";
   container.appendChild(iframe);
 
-  let destroyed = false;
-  let apiReady = false;
-  let pendingCmds = [];
+  // Detect iframe loaded → video ready
+  iframe.onload = () => { if (!destroyed) onReady?.(); };
+  iframe.onerror = () => { if (!destroyed) onError?.(); };
 
-  function postCmd(method, value) {
-    const msg = { command: method };
-    if (value !== undefined) msg.parameters = [value];
-    if (!apiReady) { pendingCmds.push(msg); return; }
-    try { iframe.contentWindow?.postMessage(JSON.stringify(msg), DM_ORIGIN); } catch {}
-  }
-
-  function flushCmds() {
-    apiReady = true;
-    for (const msg of pendingCmds) {
-      try { iframe.contentWindow?.postMessage(JSON.stringify(msg), DM_ORIGIN); } catch {}
-    }
-    pendingCmds = [];
-  }
-
-  function onMessage(e) {
-    if (destroyed || e.origin !== DM_ORIGIN) return;
-    try {
-      const data = typeof e.data === "string" ? JSON.parse(e.data) : e.data;
-      if (data.event === "apiready") { flushCmds(); onReady?.(); }
-      if (data.event === "video_end" || data.event === "ended") onEnded?.();
-      if (data.event === "error") onError?.(data);
-    } catch {}
-  }
-  window.addEventListener("message", onMessage);
-
-  // Fallback if apiready never fires
-  const readyTimer = setTimeout(() => {
-    if (!destroyed && !apiReady) { flushCmds(); onReady?.(); }
-  }, 5000);
+  // Dailymotion embeds loop or end — listen for navigation away as "ended"
+  // (no reliable ended event without SDK, so we don't auto-chain for now)
 
   return {
     setVolume(v) {
-      if (v === 0) {
-        postCmd("mute");
-      } else {
-        postCmd("unmute");
-        postCmd("volume", v / 100);
+      const shouldMute = v === 0;
+      if (shouldMute !== muted) {
+        muted = shouldMute;
+        // Reload iframe with new mute state
+        // This is triggered by a user click (Vol+/Vol-) so browser allows sound
+        iframe.src = buildDMUrl(currentVideoId, muted);
       }
     },
-    play() { postCmd("play"); },
-    pause() { postCmd("pause"); },
+    play() {
+      // Can't control via API — reload to restart
+      iframe.src = buildDMUrl(currentVideoId, muted);
+    },
+    pause() {
+      // Only reliable way to stop: blank the src
+      iframe.src = "about:blank";
+    },
     loadVideo(id) {
-      apiReady = false;
-      pendingCmds = [];
-      iframe.src = buildDMUrl(id);
+      currentVideoId = id;
+      muted = true; // reset to muted for autoplay
+      iframe.src = buildDMUrl(id, true);
     },
     destroy() {
       destroyed = true;
-      clearTimeout(readyTimer);
-      window.removeEventListener("message", onMessage);
+      iframe.onload = null;
+      iframe.onerror = null;
       container.innerHTML = "";
     },
   };
