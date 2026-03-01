@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff8c00"/>
+      <stop offset="100%" stop-color="#ffd700"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg)"/>
+  <!-- Big heart -->
+  <g transform="translate(100,75)">
+    <path d="M 0 15 C 0 -15 -35 -25 -35 -5 C -35 15 0 35 0 45 C 0 35 35 15 35 -5 C 35 -25 0 -15 0 15 Z" fill="#ff4500" opacity="0.7"/>
+    <path d="M 0 10 C 0 -8 -20 -15 -20 -3 C -20 8 0 22 0 28 C 0 22 20 8 20 -3 C 20 -15 0 -8 0 10 Z" fill="#fff" opacity="0.2"/>
+  </g>
+  <!-- Sun rays -->
+  <g stroke="#fff" stroke-width="1.5" opacity="0.3">
+    <line x1="100" y1="15" x2="100" y2="25"/>
+    <line x1="125" y1="20" x2="120" y2="30"/>
+    <line x1="140" y1="40" x2="132" y2="47"/>
+    <line x1="60" y1="40" x2="68" y2="47"/>
+    <line x1="75" y1="20" x2="80" y2="30"/>
+  </g>
+  <!-- Text -->
+  <text x="100" y="148" text-anchor="middle" font-family="Arial" font-size="9" fill="#8b4513" letter-spacing="2">BOB SINCLAR</text>
+  <text x="100" y="168" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="white">Love Generation</text>
+  <text x="100" y="186" text-anchor="middle" font-family="Arial" font-size="8" fill="#8b4513" letter-spacing="1">WESTERN DREAM</text>
+</svg>

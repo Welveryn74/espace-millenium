@@ -3,6 +3,7 @@ const C4=262,D4=294,E4=330,F4=349,G4=392,A4=440,B4=494;
 const C5=523,D5=587,E5=659,F5=698,G5=784,A5=880,B5=988;
 const C3=131,D3=147,E3=165,F3=175,G3=196,A3=220,B3=247;
 const Ab4=415,Bb4=466,Eb4=311,Eb5=622,Gb4=370,Ab5=831,Bb5=932;
+const Db5=554,Bb3=233,Ab3=208;
 const R=0; // silence
 
 export const TRACKS = [
@@ -117,6 +118,157 @@ export const TRACKS = [
       [E4,1.5,0.5],[D4,1,0.4],[C4,2,0.5],[R,0.5],
     ], bass: [
       [C3,2,0.4],[G3,2,0.3],[A3,2,0.4],[E3,2,0.4],[C3,1,0.3],
+    ] }
+  },
+  // ── Ajouts années 2000 ──────────────────────────────
+  {
+    title: "Alizée — Moi… Lolita", duration: "4:28", genre: "Pop FR",
+    cover: "/images/mp3/alizee-lolita.svg", previewUrl: null,
+    melody: { bpm: 116, wave: "square", notes: [
+      [A4,0.5,0.5],[A4,0.5,0.4],[A4,0.5,0.4],[G4,0.5,0.4],[A4,1,0.5],[C5,1,0.5],[B4,0.5,0.4],[A4,0.5,0.4],[G4,1,0.4],[E4,1.5,0.5],[R,0.5],
+      [A4,0.5,0.4],[A4,0.5,0.4],[G4,0.5,0.4],[A4,1,0.5],[C5,0.5,0.4],[B4,1,0.5],[A4,1.5,0.5],[R,0.5],
+    ], bass: [
+      [A3,2,0.4],[E3,2,0.4],[F3,2,0.4],[G3,2,0.4],
+    ] }
+  },
+  {
+    title: "Linkin Park — In The End", duration: "3:36", genre: "Rock",
+    cover: "/images/mp3/linkin-park-in-the-end.svg", previewUrl: null,
+    melody: { bpm: 105, wave: "triangle", notes: [
+      [Bb4,0.5,0.5],[Eb5,0.5,0.5],[Bb4,0.5,0.4],[Ab4,0.5,0.4],[Bb4,0.5,0.5],[Eb5,0.5,0.5],[G4,0.5,0.4],[Ab4,0.5,0.4],
+      [Bb4,0.5,0.5],[Eb5,0.5,0.5],[Bb4,0.5,0.4],[Ab4,0.5,0.4],[G4,1,0.4],[Ab4,1,0.5],[R,0.5],
+    ], bass: [
+      [C3,2,0.5],[G3,2,0.4],[A3,2,0.4],[B3,2,0.4],
+    ] }
+  },
+  {
+    title: "The White Stripes — Seven Nation Army", duration: "3:52", genre: "Rock",
+    cover: "/images/mp3/white-stripes-seven-nation.svg", previewUrl: null,
+    melody: { bpm: 124, wave: "sawtooth", notes: [
+      [E4,1,0.5],[E4,0.5,0.5],[G4,1,0.5],[E4,0.5,0.5],[D4,1,0.5],[C4,1.5,0.5],[B3,2,0.5],[R,1],
+      [E4,1,0.5],[E4,0.5,0.5],[G4,1,0.5],[E4,0.5,0.5],[D4,1,0.5],[C4,1,0.5],[D4,0.5,0.4],[C4,2,0.5],[R,1],
+    ], bass: [
+      [E3,1,0.5],[E3,0.5,0.5],[G3,1,0.5],[E3,0.5,0.4],[D3,1,0.5],[C3,1.5,0.5],[B3,2,0.5],[R,1],
+    ] }
+  },
+  {
+    title: "Outkast — Hey Ya!", duration: "3:55", genre: "Pop",
+    cover: "/images/mp3/outkast-hey-ya.svg", previewUrl: null,
+    melody: { bpm: 160, wave: "square", notes: [
+      [G4,0.5,0.5],[G4,0.5,0.4],[A4,0.5,0.5],[G4,0.5,0.4],[E4,1,0.5],[R,0.5],[E4,0.5,0.4],[G4,0.5,0.4],[A4,0.5,0.5],[G4,1,0.5],[R,0.5],
+      [E4,0.5,0.4],[D4,0.5,0.4],[E4,0.5,0.4],[G4,1,0.5],[A4,1,0.5],[G4,1.5,0.5],[R,0.5],
+    ], bass: [
+      [G3,2,0.4],[C3,2,0.4],[D3,2,0.4],[E3,2,0.4],
+    ] }
+  },
+  {
+    title: "Avril Lavigne — Complicated", duration: "4:04", genre: "Pop Rock",
+    cover: "/images/mp3/avril-lavigne-complicated.svg", previewUrl: null,
+    melody: { bpm: 78, wave: "sawtooth", notes: [
+      [D4,0.5,0.5],[D4,0.5,0.4],[D4,0.5,0.4],[C4,0.5,0.4],[D4,1,0.5],[F4,1,0.5],[E4,0.5,0.4],[D4,0.5,0.4],[C4,1.5,0.5],[R,0.5],
+      [A4,0.5,0.5],[A4,0.5,0.4],[G4,0.5,0.4],[F4,0.5,0.4],[G4,1,0.5],[A4,1,0.5],[G4,1,0.4],[F4,1.5,0.5],[R,0.5],
+    ], bass: [
+      [D3,2,0.4],[A3,2,0.4],[F3,2,0.4],[C3,2,0.4],
+    ] }
+  },
+  {
+    title: "Shakira — Whenever, Wherever", duration: "3:16", genre: "Pop",
+    cover: "/images/mp3/shakira-whenever.svg", previewUrl: null,
+    melody: { bpm: 100, wave: "triangle", notes: [
+      [A4,1,0.5],[A4,0.5,0.4],[B4,0.5,0.4],[C5,1.5,0.5],[B4,0.5,0.4],[A4,1,0.5],[G4,1,0.4],[R,0.5],
+      [A4,0.5,0.4],[B4,0.5,0.4],[C5,1,0.5],[D5,1,0.5],[C5,0.5,0.4],[B4,0.5,0.4],[A4,1.5,0.5],[R,0.5],
+    ], bass: [
+      [A3,2,0.4],[E3,2,0.4],[F3,2,0.4],[G3,2,0.4],[A3,1,0.3],
+    ] }
+  },
+  {
+    title: "Gorillaz — Feel Good Inc.", duration: "3:41", genre: "Electro",
+    cover: "/images/mp3/gorillaz-feel-good.svg", previewUrl: null,
+    melody: { bpm: 139, wave: "square", notes: [
+      [E4,0.5,0.5],[E4,0.5,0.4],[G4,0.5,0.5],[E4,0.5,0.4],[D4,0.5,0.4],[E4,1,0.5],[R,0.25],
+      [E4,0.5,0.5],[E4,0.5,0.4],[G4,0.5,0.5],[E4,0.5,0.4],[D4,0.5,0.4],[C4,1,0.5],[R,0.5],
+    ], bass: [
+      [E3,2,0.5],[G3,2,0.4],[D3,2,0.4],[E3,2,0.5],
+    ] }
+  },
+  {
+    title: "Usher — Yeah!", duration: "4:09", genre: "R&B",
+    cover: "/images/mp3/usher-yeah.svg", previewUrl: null,
+    melody: { bpm: 105, wave: "square", notes: [
+      [D4,0.5,0.5],[D4,0.5,0.4],[F4,0.5,0.5],[D4,0.5,0.4],[G4,1,0.5],[F4,0.5,0.4],[D4,0.5,0.4],[R,0.5],
+      [D4,0.5,0.4],[F4,0.5,0.5],[G4,1,0.5],[A4,1,0.5],[G4,0.5,0.4],[F4,0.5,0.4],[D4,1.5,0.5],[R,0.5],
+    ], bass: [
+      [D3,2,0.5],[G3,2,0.4],[A3,2,0.4],[D3,2,0.5],
+    ] }
+  },
+  {
+    title: "K-Maro — Femme Like U", duration: "3:44", genre: "Pop FR",
+    cover: "/images/mp3/k-maro-femme-like-u.svg", previewUrl: null,
+    melody: { bpm: 96, wave: "square", notes: [
+      [A4,0.5,0.5],[C5,0.5,0.5],[B4,0.5,0.4],[A4,0.5,0.4],[G4,1,0.5],[E4,1,0.4],[R,0.5],
+      [G4,0.5,0.4],[A4,0.5,0.4],[G4,0.5,0.4],[E4,0.5,0.4],[D4,1,0.5],[E4,1.5,0.5],[R,0.5],
+    ], bass: [
+      [A3,2,0.4],[E3,2,0.4],[G3,2,0.4],[D3,2,0.4],
+    ] }
+  },
+  {
+    title: "Blink-182 — All The Small Things", duration: "2:48", genre: "Rock",
+    cover: "/images/mp3/blink-182-small-things.svg", previewUrl: null,
+    melody: { bpm: 148, wave: "sawtooth", notes: [
+      [C5,0.5,0.5],[D5,0.5,0.5],[F5,0.5,0.5],[D5,0.5,0.4],[C5,1,0.5],[R,0.25],
+      [C5,0.5,0.5],[D5,0.5,0.5],[F5,0.5,0.5],[D5,1,0.5],[C5,0.5,0.4],[A4,1,0.5],[R,0.5],
+    ], bass: [
+      [C3,2,0.5],[F3,2,0.4],[G3,2,0.4],[C3,2,0.5],
+    ] }
+  },
+  {
+    title: "Bob Sinclar — Love Generation", duration: "3:01", genre: "Electro",
+    cover: "/images/mp3/bob-sinclar-love-generation.svg", previewUrl: null,
+    melody: { bpm: 128, wave: "triangle", notes: [
+      [E5,0.5,0.5],[D5,0.5,0.4],[C5,0.5,0.4],[D5,0.5,0.4],[E5,1,0.5],[E5,0.5,0.5],[D5,0.5,0.4],
+      [C5,0.5,0.4],[D5,0.5,0.4],[E5,0.5,0.5],[D5,0.5,0.4],[C5,1.5,0.5],[R,0.5],
+    ], bass: [
+      [C3,1,0.4],[C3,1,0.4],[F3,1,0.4],[F3,1,0.4],[G3,1,0.4],[G3,1,0.4],[C3,1,0.4],[C3,1,0.4],
+    ] }
+  },
+  {
+    title: "Destiny's Child — Survivor", duration: "4:01", genre: "R&B",
+    cover: "/images/mp3/destinys-child-survivor.svg", previewUrl: null,
+    melody: { bpm: 92, wave: "square", notes: [
+      [E4,0.5,0.5],[E4,0.5,0.4],[G4,0.5,0.5],[A4,1,0.5],[G4,0.5,0.4],[E4,0.5,0.4],[D4,1,0.5],[R,0.5],
+      [E4,0.5,0.4],[E4,0.5,0.4],[G4,0.5,0.5],[A4,1,0.5],[C5,1,0.5],[A4,0.5,0.4],[G4,1.5,0.5],[R,0.5],
+    ], bass: [
+      [A3,2,0.4],[E3,2,0.4],[G3,2,0.4],[D3,2,0.4],[A3,1,0.3],
+    ] }
+  },
+  {
+    title: "Nelly — Hot in Herre", duration: "3:50", genre: "Rap",
+    cover: "/images/mp3/nelly-hot-in-herre.svg", previewUrl: null,
+    melody: { bpm: 80, wave: "square", notes: [
+      [E4,0.5,0.5],[G4,0.5,0.5],[A4,0.5,0.5],[G4,0.5,0.4],[E4,1,0.5],[D4,0.5,0.4],[E4,1,0.5],[R,0.5],
+      [E4,0.5,0.4],[G4,0.5,0.5],[A4,0.5,0.5],[B4,0.5,0.5],[A4,0.5,0.4],[G4,0.5,0.4],[E4,1.5,0.5],[R,0.5],
+    ], bass: [
+      [E3,2,0.5],[G3,2,0.4],[A3,2,0.4],[E3,2,0.5],
+    ] }
+  },
+  {
+    title: "Jenifer — Au Soleil", duration: "3:58", genre: "Pop FR",
+    cover: "/images/mp3/jenifer-au-soleil.svg", previewUrl: null,
+    melody: { bpm: 108, wave: "triangle", notes: [
+      [G4,1,0.5],[A4,0.5,0.4],[B4,1,0.5],[D5,1,0.5],[B4,0.5,0.4],[A4,0.5,0.4],[G4,1.5,0.5],[R,0.5],
+      [G4,0.5,0.4],[A4,0.5,0.4],[B4,1,0.5],[A4,1,0.5],[G4,0.5,0.4],[E4,1,0.5],[D4,1.5,0.5],[R,0.5],
+    ], bass: [
+      [G3,2,0.4],[D3,2,0.4],[E3,2,0.4],[C3,2,0.4],
+    ] }
+  },
+  {
+    title: "Benny Benassi — Satisfaction", duration: "2:52", genre: "Electro",
+    cover: "/images/mp3/benny-benassi-satisfaction.svg", previewUrl: null,
+    melody: { bpm: 130, wave: "square", notes: [
+      [E4,0.5,0.5],[E4,0.5,0.5],[G4,0.5,0.5],[A4,0.5,0.5],[G4,0.5,0.4],[E4,0.5,0.4],[E4,0.5,0.5],[R,0.25],
+      [E4,0.5,0.5],[G4,0.5,0.5],[A4,0.5,0.5],[B4,0.5,0.5],[A4,0.5,0.4],[G4,0.5,0.4],[E4,1,0.5],[R,0.5],
+    ], bass: [
+      [E3,2,0.5],[E3,2,0.5],[A3,2,0.4],[E3,2,0.5],
     ] }
   },
 ];

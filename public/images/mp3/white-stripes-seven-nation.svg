@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="#fff"/>
+  <!-- Red and white stripes -->
+  <rect x="0" y="0" width="28" height="200" fill="#dc143c"/>
+  <rect x="57" y="0" width="28" height="200" fill="#dc143c"/>
+  <rect x="114" y="0" width="28" height="200" fill="#dc143c"/>
+  <rect x="171" y="0" width="28" height="200" fill="#dc143c"/>
+  <!-- Central circle -->
+  <circle cx="100" cy="85" r="40" fill="#dc143c"/>
+  <circle cx="100" cy="85" r="30" fill="#fff"/>
+  <circle cx="100" cy="85" r="20" fill="#dc143c"/>
+  <circle cx="100" cy="85" r="10" fill="#fff"/>
+  <!-- Text -->
+  <rect x="20" y="140" width="160" height="50" fill="#fff" opacity="0.9"/>
+  <text x="100" y="158" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="9" fill="#dc143c" letter-spacing="1">THE WHITE STRIPES</text>
+  <text x="100" y="177" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#1a1a1a">Seven Nation Army</text>
+</svg>

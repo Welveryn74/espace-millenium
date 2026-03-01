@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#006400"/>
+      <stop offset="100%" stop-color="#228b22"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg)"/>
+  <!-- Polaroid camera flash burst -->
+  <g transform="translate(100,80)">
+    <polygon points="0,-35 8,-12 35,-12 14,3 22,28 0,14 -22,28 -14,3 -35,-12 -8,-12" fill="#ffd700" opacity="0.8"/>
+    <polygon points="0,-22 5,-8 22,-8 9,2 14,18 0,9 -14,18 -9,2 -22,-8 -5,-8" fill="#fff" opacity="0.4"/>
+  </g>
+  <!-- Text -->
+  <text x="100" y="138" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="11" fill="#ffd700" letter-spacing="2">OUTKAST</text>
+  <text x="100" y="160" text-anchor="middle" font-family="Georgia,serif" font-size="16" fill="white" font-weight="bold">Hey Ya!</text>
+  <text x="100" y="180" text-anchor="middle" font-family="Arial" font-size="8" fill="#90ee90" letter-spacing="1">SPEAKERBOXXX</text>
+</svg>

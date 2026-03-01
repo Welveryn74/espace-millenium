@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b6914"/>
+      <stop offset="100%" stop-color="#daa520"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg)"/>
+  <!-- Crown -->
+  <g transform="translate(100,65)" fill="#ffd700">
+    <polygon points="-30,10 -30,-15 -15,0 0,-20 15,0 30,-15 30,10" stroke="#fff" stroke-width="1.5"/>
+    <rect x="-30" y="10" width="60" height="8" rx="2"/>
+    <!-- Jewels -->
+    <circle cx="-15" cy="-2" r="3" fill="#ff1493"/>
+    <circle cx="0" cy="-10" r="3" fill="#ff1493"/>
+    <circle cx="15" cy="-2" r="3" fill="#ff1493"/>
+  </g>
+  <!-- Three silhouette circles (trio) -->
+  <g opacity="0.3">
+    <circle cx="72" cy="108" r="12" fill="#fff"/>
+    <circle cx="100" cy="105" r="12" fill="#fff"/>
+    <circle cx="128" cy="108" r="12" fill="#fff"/>
+  </g>
+  <!-- Text -->
+  <text x="100" y="148" text-anchor="middle" font-family="Arial" font-size="8" fill="#fff3cd" letter-spacing="2">DESTINY'S CHILD</text>
+  <text x="100" y="168" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="white" font-weight="bold">Survivor</text>
+</svg>

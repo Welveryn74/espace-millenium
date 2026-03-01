@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a1a"/>
+      <stop offset="100%" stop-color="#333"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg)"/>
+  <!-- Punk star -->
+  <g transform="translate(100,78)">
+    <polygon points="0,-38 10,-12 38,-12 16,5 24,32 0,16 -24,32 -16,5 -38,-12 -10,-12" fill="none" stroke="#ff1493" stroke-width="2.5"/>
+    <polygon points="0,-24 6,-8 24,-8 10,3 15,20 0,10 -15,20 -10,3 -24,-8 -6,-8" fill="#ff1493" opacity="0.3"/>
+  </g>
+  <!-- Tie -->
+  <polygon points="95,50 105,50 108,70 100,75 92,70" fill="#ff1493" opacity="0.5"/>
+  <!-- Text -->
+  <text x="100" y="145" text-anchor="middle" font-family="Arial" font-size="9" fill="#ff69b4" letter-spacing="2">AVRIL LAVIGNE</text>
+  <text x="100" y="165" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="white" font-style="italic">Complicated</text>
+  <text x="100" y="183" text-anchor="middle" font-family="Arial" font-size="8" fill="#555" letter-spacing="1">LET GO</text>
+</svg>
