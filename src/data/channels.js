@@ -7,7 +7,7 @@ export const PUBS_2000 = [
   { platform: "dailymotion", id: "xceuw4" },   // Free \u2014 r\u00e9trospective 10 ans
   { platform: "dailymotion", id: "x6b3igf" },  // AOL \u2014 pub 1996
   { platform: "dailymotion", id: "xiibih" },   // Lycos \u2014 "Exigez le chien" 2001
-  { platform: "dailymotion", id: "xqzdp" },    // Lycos \u2014 entretien d'embauche
+  { platform: "dailymotion", id: "xn7xnf" },   // Lycos \u2014 pub 2001
   { platform: "dailymotion", id: "x382iv7" },  // Nokia 3210
   { platform: "dailymotion", id: "x494skf" },  // Compilation pubs an 2000
 ];
@@ -46,7 +46,8 @@ export const CHANNELS = [
     bg: "#0a1628", img: "/images/tv/france2.png",
     type: "kd2a",
     videos: [
-      { platform: "dailymotion", id: "x2uk5i" },   // Habillage KD2A 2007
+      { platform: "dailymotion", id: "x3ug7a" },   // KD2A France 2
+      { platform: "dailymotion", id: "x5croa" },   // G\u00e9n\u00e9rique KD2A Tecktonik
     ],
     content: {
       programme: [

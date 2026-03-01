@@ -298,11 +298,25 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
     }, 350);
   };
 
+  const goToChannel = (idx) => {
+    if (idx === channel) return;
+    setStaticEffect(true);
+    destroyPlayer();
+    setVideoReady(false);
+    setVideoError(false);
+    playTVStatic();
+    setTimeout(() => {
+      setChannel(idx);
+      saveState("tv_channel", idx);
+      setStaticEffect(false);
+    }, 350);
+  };
+
   const hasVideo = CHANNELS[channel]?.videos?.length > 0;
   const showFallbackText = !hasVideo || videoError || !videoReady;
 
   return (
-    <Win title="Ma T\u00e9l\u00e9vision Cathodique \u2014 Thomson 36cm" onClose={onClose} onMinimize={onMinimize} width={640} height={560} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 180, y: 40 }} color="#444">
+    <Win title="Ma T\u00e9l\u00e9vision Cathodique \u2014 Thomson 36cm" onClose={onClose} onMinimize={onMinimize} width={640} height={590} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 180, y: 40 }} color="#444">
       <div style={{ padding: 16, background: "#1a1a1a", height: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
         {/* TV Frame */}
         <div className="tv-screen" style={{
@@ -425,6 +439,27 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
           }}>{"\u23FB"}</button>
           <BtnTV onClick={() => setVolume(v => { const nv = Math.min(100, v + 15); saveState("tv_volume", nv); return nv; })}>{"\u{1F50A}"} Vol+</BtnTV>
           <BtnTV onClick={() => changeChannel(1)}>CH+ {"\u25B6"}</BtnTV>
+        </div>
+
+        {/* Channel selector */}
+        <div style={{ display: "flex", gap: 4, marginTop: 8, flexWrap: "wrap", justifyContent: "center", maxWidth: 460 }}>
+          {CHANNELS.map((ch, i) => (
+            <button key={i} onClick={() => goToChannel(i)} style={{
+              padding: "3px 8px", fontSize: 10, border: "1px solid",
+              borderColor: i === channel ? ch.color : "#555",
+              background: i === channel
+                ? `linear-gradient(180deg, ${ch.color}30 0%, ${ch.color}10 100%)`
+                : "linear-gradient(180deg, #3a3a3a 0%, #2a2a2a 100%)",
+              color: i === channel ? ch.color : "#999",
+              borderRadius: 3, cursor: "pointer",
+              fontFamily: "'Tahoma', sans-serif", fontWeight: i === channel ? "bold" : "normal",
+              transition: "all 0.2s",
+              textShadow: i === channel ? `0 0 6px ${ch.color}60` : "none",
+            }}>
+              <NostalImg src={ch.img} fallback={ch.emoji} size={12} style={{ verticalAlign: "middle", marginRight: 3 }} />
+              {ch.name.split(" \u2014 ")[0]}
+            </button>
+          ))}
         </div>
       </div>
     </Win>
