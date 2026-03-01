@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 200">
+  <defs>
+    <radialGradient id="df" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#D2B48C"/>
+      <stop offset="100%" stop-color="#8B7355"/>
+    </radialGradient>
+  </defs>
+  <!-- Ears (floppy) -->
+  <ellipse cx="48" cy="55" rx="20" ry="30" fill="#A0522D" stroke="#8B4513" stroke-width="1.5" transform="rotate(-15 48 55)"/>
+  <ellipse cx="132" cy="55" rx="20" ry="30" fill="#A0522D" stroke="#8B4513" stroke-width="1.5" transform="rotate(15 132 55)"/>
+  <!-- Head -->
+  <ellipse cx="90" cy="60" rx="40" ry="35" fill="url(#df)" stroke="#8B7355" stroke-width="1.5"/>
+  <!-- Body -->
+  <ellipse cx="90" cy="130" rx="45" ry="50" fill="url(#df)" stroke="#8B7355" stroke-width="1.5"/>
+  <!-- Belly -->
+  <ellipse cx="90" cy="138" rx="30" ry="32" fill="#FAEBD7"/>
+  <!-- Arms -->
+  <ellipse cx="40" cy="125" rx="16" ry="24" fill="url(#df)" stroke="#8B7355" stroke-width="1.5" transform="rotate(-10 40 125)"/>
+  <ellipse cx="140" cy="125" rx="16" ry="24" fill="url(#df)" stroke="#8B7355" stroke-width="1.5" transform="rotate(10 140 125)"/>
+  <!-- Feet -->
+  <ellipse cx="68" cy="178" rx="18" ry="14" fill="url(#df)" stroke="#8B7355" stroke-width="1.5"/>
+  <ellipse cx="112" cy="178" rx="18" ry="14" fill="url(#df)" stroke="#8B7355" stroke-width="1.5"/>
+  <!-- Muzzle -->
+  <ellipse cx="90" cy="72" rx="18" ry="14" fill="#FAEBD7"/>
+  <!-- Eyes -->
+  <circle cx="75" cy="55" r="6" fill="#2C1810"/>
+  <circle cx="105" cy="55" r="6" fill="#2C1810"/>
+  <circle cx="77" cy="53" r="2.5" fill="white"/>
+  <circle cx="107" cy="53" r="2.5" fill="white"/>
+  <!-- Nose -->
+  <ellipse cx="90" cy="68" rx="7" ry="5" fill="#2C1810"/>
+  <ellipse cx="90" cy="66" rx="3" ry="2" fill="#5C4033" opacity="0.4"/>
+  <!-- Mouth -->
+  <path d="M 83 74 Q 90 80 97 74" fill="none" stroke="#8B7355" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Tongue -->
+  <ellipse cx="90" cy="80" rx="5" ry="6" fill="#FF6B6B"/>
+  <!-- Spot on eye -->
+  <circle cx="75" cy="50" r="12" fill="#A0522D" opacity="0.4"/>
+  <!-- Collar -->
+  <path d="M 55 95 Q 90 105 125 95" fill="none" stroke="#E63946" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="90" cy="102" r="5" fill="#FFD700"/>
+</svg>

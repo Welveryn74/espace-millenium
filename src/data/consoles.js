@@ -51,8 +51,8 @@ export const CONSOLES = [
       { name: "GTA San Andreas", emoji: "🌴", img: "/images/consoles/games/gta-san-andreas.png", desc: "\"Ah shit, here we go again.\" Grove Street, les missions de CJ, le cheat code de l'hélicoptère. Tu faisais semblant de jouer à autre chose quand ta mère rentrait.", year: "2004" },
       { name: "Kingdom Hearts", emoji: "🗝️", img: "/images/consoles/games/kingdom-hearts.png", desc: "Disney + Final Fantasy = ton cerveau de 10 ans qui explose. Sora, Donald, Dingo contre les Sans-Cœur. T'as pleuré à la fin, avoue.", year: "2002" },
       { name: "Jak & Daxter", emoji: "🦎", img: "/images/consoles/games/jak-daxter.png", desc: "Le duo le plus cool du jeu vidéo. Un monde ouvert coloré, zéro temps de chargement. La belette orange te faisait mourir de rire.", year: "2001" },
-      { name: "Ratchet & Clank", emoji: "🔧", img: "/images/consoles/games/ratchet-clank.png", desc: "Des armes complètement dingues, un lombax mécanicien et un petit robot. Le Groovitron qui fait danser les ennemis, c'était du génie.", year: "2002" },
-      { name: "Final Fantasy X", emoji: "⚔️", img: "/images/consoles/games/final-fantasy-x.png", desc: "Tidus et Yuna, Zanarkand, le Blitzball. Le premier doublé en voix. La scène du rire forcé, on en parle encore. T'as versé ta larme à la fin.", year: "2001" },
+      { name: "Ratchet & Clank", emoji: "🔧", img: "/images/consoles/games/ratchet-clank.svg", desc: "Des armes complètement dingues, un lombax mécanicien et un petit robot. Le Groovitron qui fait danser les ennemis, c'était du génie.", year: "2002" },
+      { name: "Final Fantasy X", emoji: "⚔️", img: "/images/consoles/games/final-fantasy-x.svg", desc: "Tidus et Yuna, Zanarkand, le Blitzball. Le premier doublé en voix. La scène du rire forcé, on en parle encore. T'as versé ta larme à la fin.", year: "2001" },
     ],
   },
   {

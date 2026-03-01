@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200">
+  <!-- Scoubidou rond — section circulaire, vert et jaune -->
+  <circle cx="50" cy="15" r="10" fill="none" stroke="#C0C0C0" stroke-width="3"/>
+  <!-- Round braid -->
+  <g transform="translate(35, 25)">
+    <ellipse cx="15" cy="8" rx="12" ry="8" fill="#32CD32"/>
+    <ellipse cx="15" cy="22" rx="12" ry="8" fill="#FFD700"/>
+    <ellipse cx="15" cy="36" rx="12" ry="8" fill="#32CD32"/>
+    <ellipse cx="15" cy="50" rx="12" ry="8" fill="#FFD700"/>
+    <ellipse cx="15" cy="64" rx="12" ry="8" fill="#32CD32"/>
+    <ellipse cx="15" cy="78" rx="12" ry="8" fill="#FFD700"/>
+    <ellipse cx="15" cy="92" rx="12" ry="8" fill="#32CD32"/>
+    <ellipse cx="15" cy="106" rx="12" ry="8" fill="#FFD700"/>
+  </g>
+  <path d="M 42 135 Q 38 155 36 175" fill="none" stroke="#32CD32" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 46 135 Q 44 160 43 180" fill="none" stroke="#FFD700" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 54 135 Q 56 160 57 180" fill="none" stroke="#32CD32" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 58 135 Q 62 155 64 175" fill="none" stroke="#FFD700" stroke-width="3" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="tf1bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F0F0F0"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="200" height="200" rx="20" fill="url(#tf1bg)"/>
+  <!-- TF1 logo — style années 2000 -->
+  <g transform="translate(25, 40)">
+    <!-- Le "T" et "F" -->
+    <text x="0" y="80" font-family="Arial Black, Impact, sans-serif" font-size="90" font-weight="900" fill="#003DA5">TF</text>
+    <!-- Le "1" en rouge/orange -->
+    <text x="115" y="80" font-family="Arial Black, Impact, sans-serif" font-size="90" font-weight="900" fill="#E63946">1</text>
+  </g>
+  <!-- Horizontal bars (style 2000s TF1) -->
+  <rect x="25" y="135" width="150" height="4" fill="#003DA5" rx="2"/>
+  <rect x="25" y="143" width="150" height="4" fill="#E63946" rx="2"/>
+  <rect x="25" y="151" width="150" height="4" fill="#FFD700" rx="2"/>
+</svg>

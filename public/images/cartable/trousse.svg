@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 120">
+  <defs>
+    <linearGradient id="tr" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4169E1"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+  </defs>
+  <!-- Trousse body -->
+  <rect x="10" y="20" width="200" height="80" rx="15" fill="url(#tr)" stroke="#1E3A8A" stroke-width="2"/>
+  <!-- Zipper -->
+  <line x1="20" y1="22" x2="200" y2="22" stroke="#C0C0C0" stroke-width="3"/>
+  <!-- Zipper pull -->
+  <rect x="140" y="15" width="15" height="10" rx="3" fill="#C0C0C0" stroke="#A0A0A0" stroke-width="1"/>
+  <!-- Zipper teeth -->
+  <g stroke="#A0A0A0" stroke-width="1">
+    <line x1="30" y1="20" x2="30" y2="24"/>
+    <line x1="40" y1="20" x2="40" y2="24"/>
+    <line x1="50" y1="20" x2="50" y2="24"/>
+    <line x1="60" y1="20" x2="60" y2="24"/>
+    <line x1="70" y1="20" x2="70" y2="24"/>
+    <line x1="80" y1="20" x2="80" y2="24"/>
+    <line x1="90" y1="20" x2="90" y2="24"/>
+    <line x1="100" y1="20" x2="100" y2="24"/>
+    <line x1="110" y1="20" x2="110" y2="24"/>
+    <line x1="120" y1="20" x2="120" y2="24"/>
+    <line x1="130" y1="20" x2="130" y2="24"/>
+  </g>
+  <!-- Decoration: star patch -->
+  <polygon points="110,55 114,67 127,67 117,75 121,87 110,79 99,87 103,75 93,67 106,67" fill="#FFD700" stroke="#DAA520" stroke-width="1"/>
+  <!-- Brand tag -->
+  <rect x="30" y="50" width="45" height="20" rx="3" fill="#E63946"/>
+  <text x="52" y="64" text-anchor="middle" font-family="Arial" font-size="9" fill="white" font-weight="bold">EASTPAK</text>
+  <!-- Stitching detail -->
+  <path d="M 15 95 Q 110 100 205 95" fill="none" stroke="#1E3A8A" stroke-width="1" stroke-dasharray="4,3"/>
+</svg>

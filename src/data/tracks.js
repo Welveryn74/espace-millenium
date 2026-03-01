@@ -99,7 +99,7 @@ export const TRACKS = [
   },
   {
     title: "Daft Punk — One More Time", duration: "5:20", genre: "Electro",
-    cover: "/images/mp3/daft-punk-one-more-time.jpg",
+    cover: "/images/mp3/daft-punk-one-more-time.svg",
     previewUrl: "https://p.scdn.co/mp3-preview/06e44e119531d1117c007e2e1cb0c268f613f8b4",
     melody: { bpm: 122, wave: "triangle", notes: [
       [A4,1,0.5],[A4,0.5,0.4],[G4,0.5,0.4],[A4,1,0.5],[C5,1,0.5],[R,0.5],

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150">
+  <!-- Tong gauche -->
+  <g transform="translate(10, 10) rotate(-10 50 65)">
+    <ellipse cx="50" cy="65" rx="35" ry="55" fill="#FF6347"/>
+    <!-- Bride -->
+    <path d="M 50 20 L 25 60" fill="none" stroke="#C0392B" stroke-width="5" stroke-linecap="round"/>
+    <path d="M 50 20 L 75 60" fill="none" stroke="#C0392B" stroke-width="5" stroke-linecap="round"/>
+    <!-- Empreinte pied -->
+    <ellipse cx="45" cy="40" rx="8" ry="4" fill="#E74C3C" opacity="0.3"/>
+    <ellipse cx="55" cy="42" rx="7" ry="4" fill="#E74C3C" opacity="0.3"/>
+    <ellipse cx="50" cy="70" rx="20" ry="25" fill="#E74C3C" opacity="0.2"/>
+  </g>
+  <!-- Tong droite -->
+  <g transform="translate(90, 15) rotate(10 50 65)">
+    <ellipse cx="50" cy="65" rx="35" ry="55" fill="#FF6347"/>
+    <path d="M 50 20 L 25 60" fill="none" stroke="#C0392B" stroke-width="5" stroke-linecap="round"/>
+    <path d="M 50 20 L 75 60" fill="none" stroke="#C0392B" stroke-width="5" stroke-linecap="round"/>
+    <ellipse cx="45" cy="40" rx="8" ry="4" fill="#E74C3C" opacity="0.3"/>
+    <ellipse cx="55" cy="42" rx="7" ry="4" fill="#E74C3C" opacity="0.3"/>
+    <ellipse cx="50" cy="70" rx="20" ry="25" fill="#E74C3C" opacity="0.2"/>
+  </g>
+</svg>

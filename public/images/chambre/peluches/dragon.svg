@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 200">
+  <defs>
+    <radialGradient id="dg" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#50C878"/>
+      <stop offset="100%" stop-color="#228B22"/>
+    </radialGradient>
+  </defs>
+  <!-- Wings -->
+  <path d="M 30 80 L 5 50 L 15 70 L 0 40 L 20 65 L 10 30 L 30 60 Q 35 75 40 90 Z" fill="#90EE90" stroke="#228B22" stroke-width="1"/>
+  <path d="M 150 80 L 175 50 L 165 70 L 180 40 L 160 65 L 170 30 L 150 60 Q 145 75 140 90 Z" fill="#90EE90" stroke="#228B22" stroke-width="1"/>
+  <!-- Horns -->
+  <path d="M 65 25 L 55 5 L 70 20 Z" fill="#FFD700"/>
+  <path d="M 115 25 L 125 5 L 110 20 Z" fill="#FFD700"/>
+  <!-- Head -->
+  <ellipse cx="90" cy="50" rx="35" ry="30" fill="url(#dg)" stroke="#228B22" stroke-width="1.5"/>
+  <!-- Snout -->
+  <ellipse cx="90" cy="65" rx="18" ry="12" fill="#90EE90"/>
+  <!-- Body -->
+  <ellipse cx="90" cy="120" rx="42" ry="48" fill="url(#dg)" stroke="#228B22" stroke-width="1.5"/>
+  <!-- Belly -->
+  <ellipse cx="90" cy="125" rx="28" ry="35" fill="#FFFACD"/>
+  <!-- Belly scales -->
+  <path d="M 70 105 Q 90 110 110 105" fill="none" stroke="#F0E68C" stroke-width="1"/>
+  <path d="M 68 118 Q 90 123 112 118" fill="none" stroke="#F0E68C" stroke-width="1"/>
+  <path d="M 70 131 Q 90 136 110 131" fill="none" stroke="#F0E68C" stroke-width="1"/>
+  <!-- Arms -->
+  <ellipse cx="42" cy="115" rx="14" ry="20" fill="url(#dg)" stroke="#228B22" stroke-width="1.5" transform="rotate(-10 42 115)"/>
+  <ellipse cx="138" cy="115" rx="14" ry="20" fill="url(#dg)" stroke="#228B22" stroke-width="1.5" transform="rotate(10 138 115)"/>
+  <!-- Feet -->
+  <ellipse cx="68" cy="168" rx="18" ry="14" fill="url(#dg)" stroke="#228B22" stroke-width="1.5"/>
+  <ellipse cx="112" cy="168" rx="18" ry="14" fill="url(#dg)" stroke="#228B22" stroke-width="1.5"/>
+  <!-- Eyes -->
+  <ellipse cx="76" cy="44" rx="7" ry="8" fill="#FFFACD"/>
+  <ellipse cx="104" cy="44" rx="7" ry="8" fill="#FFFACD"/>
+  <ellipse cx="76" cy="44" rx="4" ry="6" fill="#FF6347"/>
+  <ellipse cx="104" cy="44" rx="4" ry="6" fill="#FF6347"/>
+  <ellipse cx="76" cy="44" rx="2" ry="5" fill="#2C1810"/>
+  <ellipse cx="104" cy="44" rx="2" ry="5" fill="#2C1810"/>
+  <!-- Nostrils -->
+  <circle cx="83" cy="62" r="3" fill="#228B22"/>
+  <circle cx="97" cy="62" r="3" fill="#228B22"/>
+  <!-- Smile -->
+  <path d="M 78 70 Q 90 78 102 70" fill="none" stroke="#228B22" stroke-width="2" stroke-linecap="round"/>
+  <!-- Spikes on head -->
+  <path d="M 78 22 L 80 12 L 84 22" fill="#90EE90"/>
+  <path d="M 88 20 L 90 8 L 92 20" fill="#90EE90"/>
+  <path d="M 96 22 L 100 12 L 102 22" fill="#90EE90"/>
+  <!-- Tail -->
+  <path d="M 130 155 Q 155 160 165 145 Q 170 135 168 125" fill="none" stroke="#228B22" stroke-width="8" stroke-linecap="round"/>
+  <path d="M 168 125 L 175 118 L 165 120 L 170 110 L 163 122" fill="#228B22"/>
+</svg>

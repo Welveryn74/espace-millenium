@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150">
+  <defs>
+    <linearGradient id="shoe" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F5F5F5"/>
+      <stop offset="100%" stop-color="#E0E0E0"/>
+    </linearGradient>
+  </defs>
+  <!-- Sole -->
+  <path d="M 20 120 Q 10 120 10 115 L 10 110 Q 10 105 20 105 L 170 100 Q 185 100 190 105 L 190 115 Q 190 120 180 120 Z" fill="#333"/>
+  <!-- Shoe body -->
+  <path d="M 25 105 L 30 55 Q 35 40 60 35 L 100 30 Q 130 28 150 35 Q 170 42 175 60 L 180 100 Z" fill="url(#shoe)" stroke="#CCC" stroke-width="1"/>
+  <!-- Nike-style swoosh -->
+  <path d="M 40 85 Q 80 70 120 75 Q 150 78 170 65" fill="none" stroke="#E63946" stroke-width="5" stroke-linecap="round"/>
+  <!-- Tongue -->
+  <path d="M 80 30 L 78 15 Q 90 8 102 15 L 100 30" fill="#E8E8E8" stroke="#CCC" stroke-width="1"/>
+  <!-- Laces -->
+  <g stroke="#333" stroke-width="1.5" fill="none">
+    <line x1="78" y1="35" x2="102" y2="35"/>
+    <line x1="76" y1="45" x2="104" y2="45"/>
+    <line x1="74" y1="55" x2="106" y2="55"/>
+    <line x1="72" y1="65" x2="108" y2="65"/>
+  </g>
+  <!-- Toe cap -->
+  <path d="M 25 105 Q 20 90 30 80 Q 40 72 55 70" fill="none" stroke="#CCC" stroke-width="1.5"/>
+  <!-- Air sole detail -->
+  <ellipse cx="50" cy="113" rx="20" ry="5" fill="none" stroke="#E63946" stroke-width="1" opacity="0.5"/>
+  <ellipse cx="150" cy="110" rx="25" ry="5" fill="none" stroke="#E63946" stroke-width="1" opacity="0.5"/>
+</svg>

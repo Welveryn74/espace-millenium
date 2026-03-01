@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="dpbg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="50%" stop-color="#16213e"/>
+      <stop offset="100%" stop-color="#0f3460"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e94560" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+    <linearGradient id="visor1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="50%" stop-color="#FF6347"/>
+      <stop offset="100%" stop-color="#FF1493"/>
+    </linearGradient>
+    <linearGradient id="visor2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00CED1"/>
+      <stop offset="50%" stop-color="#4169E1"/>
+      <stop offset="100%" stop-color="#8A2BE2"/>
+    </linearGradient>
+  </defs>
+  <!-- Album background -->
+  <rect width="200" height="200" fill="url(#dpbg)"/>
+  <circle cx="100" cy="85" r="60" fill="url(#glow)"/>
+  <!-- Robot helmet 1 (Guy-Manuel — gold) -->
+  <g transform="translate(30, 40)">
+    <path d="M 20 50 Q 20 15 40 15 Q 60 15 60 50 L 60 65 Q 60 75 40 75 Q 20 75 20 65 Z" fill="#C0C0C0" stroke="#808080" stroke-width="1.5"/>
+    <rect x="22" y="35" width="36" height="15" rx="5" fill="url(#visor1)"/>
+    <!-- Reflection -->
+    <rect x="25" y="38" width="10" height="4" rx="2" fill="white" opacity="0.4"/>
+  </g>
+  <!-- Robot helmet 2 (Thomas — silver) -->
+  <g transform="translate(110, 40)">
+    <path d="M 15 50 Q 15 10 35 10 Q 55 10 55 50 L 55 65 Q 55 78 35 78 Q 15 78 15 65 Z" fill="#A0A0A0" stroke="#666" stroke-width="1.5"/>
+    <rect x="18" y="32" width="34" height="18" rx="3" fill="url(#visor2)"/>
+    <!-- LED dots -->
+    <g fill="#00FF00" opacity="0.8">
+      <circle cx="24" cy="40" r="1.5"/>
+      <circle cx="30" cy="40" r="1.5"/>
+      <circle cx="36" cy="40" r="1.5"/>
+      <circle cx="42" cy="40" r="1.5"/>
+      <circle cx="48" cy="40" r="1.5"/>
+    </g>
+  </g>
+  <!-- Title -->
+  <text x="100" y="145" text-anchor="middle" font-family="Arial" font-size="9" fill="#888" letter-spacing="3">DAFT PUNK</text>
+  <text x="100" y="165" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="white" font-style="italic">One More Time</text>
+  <!-- Discovery text -->
+  <text x="100" y="185" text-anchor="middle" font-family="Arial" font-size="8" fill="#555" letter-spacing="2">DISCOVERY</text>
+</svg>

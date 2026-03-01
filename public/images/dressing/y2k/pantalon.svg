@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 220">
+  <defs>
+    <linearGradient id="cargo" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6B8E23"/>
+      <stop offset="50%" stop-color="#808000"/>
+      <stop offset="100%" stop-color="#6B8E23"/>
+    </linearGradient>
+  </defs>
+  <!-- Waistband -->
+  <rect x="25" y="5" width="110" height="15" rx="3" fill="#556B2F" stroke="#4A5D23" stroke-width="1"/>
+  <!-- Belt -->
+  <rect x="30" y="8" width="100" height="8" rx="2" fill="#8B7355"/>
+  <rect x="72" y="6" width="16" height="12" rx="2" fill="#C0C0C0" stroke="#A0A0A0" stroke-width="1"/>
+  <!-- Main body -->
+  <path d="M 25 20 L 20 90 L 15 210 Q 15 218 25 218 L 65 218 Q 72 218 72 210 L 78 95 L 82 95 L 88 210 Q 88 218 95 218 L 135 218 Q 145 218 145 210 L 140 90 L 135 20 Z" fill="url(#cargo)" stroke="#556B2F" stroke-width="1.5"/>
+  <!-- Cargo pockets -->
+  <rect x="22" y="100" width="35" height="30" rx="3" fill="none" stroke="#556B2F" stroke-width="2"/>
+  <rect x="25" y="100" width="29" height="8" rx="2" fill="#556B2F"/>
+  <rect x="103" y="100" width="35" height="30" rx="3" fill="none" stroke="#556B2F" stroke-width="2"/>
+  <rect x="106" y="100" width="29" height="8" rx="2" fill="#556B2F"/>
+  <!-- Front pockets -->
+  <path d="M 30 25 Q 40 35 55 28" fill="none" stroke="#556B2F" stroke-width="1.5"/>
+  <path d="M 130 25 Q 120 35 105 28" fill="none" stroke="#556B2F" stroke-width="1.5"/>
+  <!-- Stitching -->
+  <line x1="78" y1="20" x2="78" y2="95" stroke="#4A5D23" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="82" y1="20" x2="82" y2="95" stroke="#4A5D23" stroke-width="1" stroke-dasharray="3,3"/>
+  <!-- Bottom hem -->
+  <line x1="15" y1="212" x2="72" y2="212" stroke="#556B2F" stroke-width="2"/>
+  <line x1="88" y1="212" x2="145" y2="212" stroke="#556B2F" stroke-width="2"/>
+</svg>

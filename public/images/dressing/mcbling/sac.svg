@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
+  <defs>
+    <linearGradient id="bling" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="50%" stop-color="#FFA500"/>
+      <stop offset="100%" stop-color="#FFD700"/>
+    </linearGradient>
+    <linearGradient id="bpink" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FF69B4"/>
+      <stop offset="100%" stop-color="#DB7093"/>
+    </linearGradient>
+  </defs>
+  <!-- Bag handle -->
+  <path d="M 50 50 Q 50 15 90 15 Q 130 15 130 50" fill="none" stroke="url(#bling)" stroke-width="8" stroke-linecap="round"/>
+  <!-- Bag body -->
+  <rect x="25" y="50" width="130" height="100" rx="10" fill="url(#bpink)" stroke="#C71585" stroke-width="2"/>
+  <!-- Clasp -->
+  <rect x="75" y="45" width="30" height="15" rx="5" fill="url(#bling)" stroke="#DAA520" stroke-width="1"/>
+  <!-- Bling decorations -->
+  <circle cx="55" cy="85" r="5" fill="#FFD700" opacity="0.8"/>
+  <circle cx="90" cy="80" r="6" fill="#FFD700" opacity="0.9"/>
+  <circle cx="125" cy="85" r="5" fill="#FFD700" opacity="0.8"/>
+  <circle cx="70" cy="110" r="4" fill="#FFD700" opacity="0.7"/>
+  <circle cx="110" cy="110" r="4" fill="#FFD700" opacity="0.7"/>
+  <!-- Sparkles -->
+  <path d="M 60 70 L 62 65 L 64 70 L 69 72 L 64 74 L 62 79 L 60 74 L 55 72 Z" fill="white" opacity="0.6"/>
+  <path d="M 130 75 L 131 72 L 132 75 L 135 76 L 132 77 L 131 80 L 130 77 L 127 76 Z" fill="white" opacity="0.5"/>
+  <path d="M 90 120 L 92 115 L 94 120 L 99 122 L 94 124 L 92 129 L 90 124 L 85 122 Z" fill="white" opacity="0.5"/>
+  <!-- Chain strap detail -->
+  <g fill="none" stroke="#FFD700" stroke-width="2">
+    <ellipse cx="35" cy="55" rx="4" ry="3"/>
+    <ellipse cx="145" cy="55" rx="4" ry="3"/>
+  </g>
+  <!-- Brand text -->
+  <text x="90" y="100" text-anchor="middle" font-family="Arial" font-size="12" fill="url(#bling)" font-weight="bold" letter-spacing="3">BLING</text>
+</svg>

@@ -1592,7 +1592,7 @@ function PeluchesView() {
   return (
     <div style={{ animation: "fadeIn 0.3s ease-out" }}>
       <div style={{ textAlign: "center", marginBottom: 16 }}>
-        <NostalImg src="/images/chambre/peluches/ours.png" fallback="🧸" size={36} />
+        <NostalImg src="/images/chambre/peluches/ours.svg" fallback="🧸" size={36} />
         <div style={{ color: "#C8B0E8", fontSize: 15, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif", marginTop: 4 }}>
           Mes Peluches
         </div>

@@ -37,7 +37,7 @@ export const CHANNELS = [
   },
   {
     name: "TF1 — Star Academy", color: "#FF4444", emoji: "\u2B50",
-    bg: "#1a0a0a", img: "/images/tv/tf1.png",
+    bg: "#1a0a0a", img: "/images/tv/tf1.svg",
     type: "starac",
     content: {
       lyrics: [
