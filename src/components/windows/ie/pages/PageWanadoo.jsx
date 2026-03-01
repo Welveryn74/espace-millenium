@@ -1,8 +1,24 @@
+import { useState } from "react";
 import IELink from "../IELink";
 import { ieBtnStyle } from "../../../../styles/windowStyles";
 import { WANADOO_NEWS, WANADOO_HOROSCOPE } from "../../../../data/webPages";
 
-export default function PageWanadoo({ navigateTo }) {
+export default function PageWanadoo({ navigateTo, setSearchQuery }) {
+  const [voilaQuery, setVoilaQuery] = useState("");
+
+  const handleVoilaSearch = () => {
+    const q = voilaQuery.trim();
+    if (!q) return;
+    if (setSearchQuery) setSearchQuery(q);
+    navigateTo("google.fr");
+  };
+
+  const handleNewsClick = (news) => {
+    if (!news.url) return;
+    if (news.searchQuery && setSearchQuery) setSearchQuery(news.searchQuery);
+    navigateTo(news.url);
+  };
+
   return (
     <div style={{ fontFamily: "Tahoma, sans-serif", fontSize: 12, color: "#333" }}>
       {/* Bandeau orange */}
@@ -19,10 +35,12 @@ export default function PageWanadoo({ navigateTo }) {
         <span style={{ fontSize: 11, fontWeight: "bold", color: "#E65100" }}>Voila.fr</span>
         <input
           type="text" placeholder="Rechercher sur le Web..."
+          value={voilaQuery}
+          onChange={e => setVoilaQuery(e.target.value)}
+          onKeyDown={e => e.key === "Enter" && handleVoilaSearch()}
           style={{ flex: 1, padding: "3px 8px", border: "1px solid #ccc", borderRadius: 2, fontSize: 11 }}
-          readOnly
         />
-        <button style={{ ...ieBtnStyle, background: "#FF8C00", color: "#fff", border: "1px solid #E65100" }}>OK</button>
+        <button onClick={handleVoilaSearch} style={{ ...ieBtnStyle, background: "#FF8C00", color: "#fff", border: "1px solid #E65100" }}>OK</button>
       </div>
 
       <div style={{ display: "flex", gap: 12, padding: 16 }}>
@@ -33,7 +51,12 @@ export default function PageWanadoo({ navigateTo }) {
           </div>
           {WANADOO_NEWS.map((n, i) => (
             <div key={i} style={{ marginBottom: 10, paddingBottom: 8, borderBottom: "1px solid #eee" }}>
-              <div style={{ fontWeight: "bold", fontSize: 12, color: "#1a0dab" }}>{n.title}</div>
+              <div
+                onClick={() => handleNewsClick(n)}
+                style={{ fontWeight: "bold", fontSize: 12, color: "#1a0dab", cursor: n.url ? "pointer" : "default" }}
+              >
+                {n.title}
+              </div>
               <div style={{ fontSize: 11, color: "#555", marginTop: 2 }}>{n.desc}</div>
             </div>
           ))}

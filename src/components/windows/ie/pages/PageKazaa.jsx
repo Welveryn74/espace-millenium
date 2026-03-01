@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { playError } from "../../../../utils/uiSounds";
 import { KAZAA_DOWNLOADS } from "../../../../data/webPages";
+import IELink from "../IELink";
 
 function formatETA(remaining, speed) {
   if (speed <= 0 || remaining <= 0) return "";
@@ -10,7 +11,7 @@ function formatETA(remaining, speed) {
   return `${Math.floor(secs)}s restantes`;
 }
 
-export default function PageKazaa({ onBSOD }) {
+export default function PageKazaa({ onBSOD, navigateTo }) {
   const [downloads, setDownloads] = useState(() =>
     KAZAA_DOWNLOADS.map(dl => ({ ...dl }))
   );
@@ -134,6 +135,18 @@ export default function PageKazaa({ onBSOD }) {
       }}>
         ⚠️ Attention : "photo_vacances_2004.jpg.exe" — Fichier suspect détecté. Téléchargement non recommandé.
       </div>
+
+      {/* Liens sortants */}
+      {navigateTo && (
+        <div style={{
+          marginTop: 12, padding: 10, display: "flex", justifyContent: "center",
+          gap: 16, flexWrap: "wrap",
+        }}>
+          <IELink url="google.fr" navigateTo={navigateTo} style={{ color: "#88CCFF", fontSize: 11 }}>🔍 Chercher sur Google</IELink>
+          <IELink url="forum.jeuxvideo.com" navigateTo={navigateTo} style={{ color: "#88CCFF", fontSize: 11 }}>🎮 Forum JeuxVideo.com</IELink>
+          <IELink url="wanadoo.fr" navigateTo={navigateTo} style={{ color: "#88CCFF", fontSize: 11 }}>🏠 Retour Wanadoo</IELink>
+        </div>
+      )}
 
       {/* Virus Norton popup */}
       {virusPopup && (

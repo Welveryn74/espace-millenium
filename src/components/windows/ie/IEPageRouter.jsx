@@ -32,7 +32,7 @@ export default function IEPageRouter({
   const resolved = resolveUrl(currentUrl);
   switch (resolved) {
     case "wanadoo.fr":
-      return <PageWanadoo navigateTo={navigateTo} />;
+      return <PageWanadoo navigateTo={navigateTo} setSearchQuery={setSearchQuery} />;
     case "google.fr":
       return <PageGoogle navigateTo={navigateTo} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />;
     case "perso.wanadoo.fr/~darkangel":
@@ -42,7 +42,7 @@ export default function IEPageRouter({
     case "forum.jeuxvideo.com":
       return <PageJVC navigateTo={navigateTo} />;
     case "kazaa.com":
-      return <PageKazaa onBSOD={onBSOD} />;
+      return <PageKazaa onBSOD={onBSOD} navigateTo={navigateTo} />;
     case "dollz.fr":
       return <PageDollz navigateTo={navigateTo} />;
     case "about:blank":
