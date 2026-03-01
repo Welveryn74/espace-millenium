@@ -3,7 +3,7 @@ import Win from "../../Win";
 import { ROOM_ITEMS } from "../../../data/chambreItems";
 import useChambreState from "./hooks/useChambreState";
 import ChambreDoorAnimation from "./ChambreDoorAnimation";
-import ChambreRoomSVG from "./ChambreRoomSVG";
+import ChambreRoom3D from "./ChambreRoom3D";
 import ChambreDetailRouter from "./ChambreDetailRouter";
 
 export default function ChambreWindow({ onClose, onMinimize, zIndex, onFocus }) {
@@ -36,7 +36,7 @@ export default function ChambreWindow({ onClose, onMinimize, zIndex, onFocus }) 
         {doorPhase === "done" && (
           <>
             {activeItem === null ? (
-              <ChambreRoomSVG
+              <ChambreRoom3D
                 lampOn={lampOn}
                 couetteColor={currentCouette.color}
                 onToggleLamp={toggleLamp}
