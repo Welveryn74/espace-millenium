@@ -6,7 +6,7 @@ import { HITBOXES } from "./roomLayout";
 // Single interactive hitbox — invisible plane with hover/click events
 function Hitbox({ item, hitbox, isHovered, onHover, onClick }) {
   const meshRef = useRef();
-  const isFloor = hitbox.position[1] < 0.05;
+  const isFloor = !!hitbox.isFloor;
 
   const handlePointerOver = useCallback(
     (e) => {
