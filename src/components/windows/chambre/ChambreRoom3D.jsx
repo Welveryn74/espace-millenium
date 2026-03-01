@@ -31,7 +31,7 @@ export default function ChambreRoom3D({
       style={{ position: "absolute", inset: 0, outline: "none" }}
     >
       <Canvas
-        dpr={0.5}
+        dpr={0.6}
         gl={{ antialias: false, alpha: false }}
         camera={{ fov: 60, position: [0, 1.5, 1.5], near: 0.1, far: 20 }}
         style={CANVAS_STYLE}

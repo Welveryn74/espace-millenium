@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { ROOM_BOUNDS, FURNITURE_COLLIDERS } from "./roomColliders";
 
@@ -48,10 +48,12 @@ export default function FirstPersonController({ enabled = true }) {
     return () => el.removeEventListener("mousemove", handler);
   }, [gl]);
 
-  // Keyboard — on canvas parent div (with tabIndex, managed by ChambreRoom3D)
+  // Keyboard — on window (enabled prop handles isolation)
   useEffect(() => {
-    const el = gl.domElement.parentElement;
-    if (!el) return;
+    if (!enabled) {
+      keys.current.clear();
+      return;
+    }
     const onDown = (e) => {
       if (ALL_KEYS.has(e.code)) {
         e.preventDefault();
@@ -64,15 +66,16 @@ export default function FirstPersonController({ enabled = true }) {
     const onBlur = () => {
       keys.current.clear();
     };
-    el.addEventListener("keydown", onDown);
-    el.addEventListener("keyup", onUp);
-    el.addEventListener("blur", onBlur);
+    window.addEventListener("keydown", onDown);
+    window.addEventListener("keyup", onUp);
+    window.addEventListener("blur", onBlur);
     return () => {
-      el.removeEventListener("keydown", onDown);
-      el.removeEventListener("keyup", onUp);
-      el.removeEventListener("blur", onBlur);
+      window.removeEventListener("keydown", onDown);
+      window.removeEventListener("keyup", onUp);
+      window.removeEventListener("blur", onBlur);
+      keys.current.clear();
     };
-  }, [gl]);
+  }, [enabled]);
 
   useFrame((_, rawDelta) => {
     if (!enabled) return;
