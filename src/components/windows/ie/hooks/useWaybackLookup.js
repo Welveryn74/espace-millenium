@@ -11,10 +11,15 @@ const PRECACHED_URLS = new Set([
   "neopets.com",
   "miniclip.com",
   "newgrounds.com",
+  "google.fr",
+  "google.com",
 ]);
 
 export function isPrecached(url) {
-  return PRECACHED_URLS.has(url);
+  if (PRECACHED_URLS.has(url)) return true;
+  // Match subpaths: google.fr/search?q=... → domain google.fr is precached
+  const domain = url.split("/")[0];
+  return PRECACHED_URLS.has(domain);
 }
 
 function buildTheOldNetUrl(url) {
@@ -28,7 +33,7 @@ export function useWaybackLookup() {
 
   const checkWayback = useCallback(async (url) => {
     // Pre-cached favorites — instant, no API call needed
-    if (PRECACHED_URLS.has(url)) {
+    if (isPrecached(url)) {
       const iframeUrl = buildTheOldNetUrl(url);
       setArchiveUrl(iframeUrl);
       setState("found");
