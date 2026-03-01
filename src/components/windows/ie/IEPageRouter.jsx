@@ -15,7 +15,7 @@ export default function IEPageRouter({
   loading, currentUrl, navigateTo, onBSOD,
   searchQuery, setSearchQuery,
   selectedArticle, setSelectedArticle,
-  waybackState, waybackUrl, onWaybackLoad,
+  waybackState, waybackUrl, waybackFallbackUrl, onWaybackLoad,
 }) {
   if (loading) {
     return (
@@ -54,7 +54,7 @@ export default function IEPageRouter({
       }
       // Wayback Machine flow
       if (waybackState === "found" && waybackUrl) {
-        return <WaybackFrame url={waybackUrl} onLoad={onWaybackLoad} />;
+        return <WaybackFrame url={waybackUrl} fallbackUrl={waybackFallbackUrl} onLoad={onWaybackLoad} />;
       }
       if (waybackState === "not_found") {
         return <Page404 url={currentUrl} waybackChecked />;

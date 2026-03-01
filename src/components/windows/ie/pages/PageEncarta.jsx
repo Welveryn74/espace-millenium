@@ -49,6 +49,7 @@ export default function PageEncarta({ navigateTo, selectedArticle, setSelectedAr
         <div style={{ padding: "10px 12px", borderTop: "1px solid rgba(255,255,255,0.2)", marginTop: 8, display: "flex", flexDirection: "column", gap: 6 }}>
           <IELink url="wanadoo.fr" navigateTo={navigateTo} style={{ color: "#AED6FF", fontSize: 10 }}>← Retour Wanadoo</IELink>
           <IELink url="google.fr" navigateTo={navigateTo} style={{ color: "#AED6FF", fontSize: 10 }}>🔍 Rechercher sur Google</IELink>
+          <IELink url="wikipedia.org" navigateTo={navigateTo} style={{ color: "#AED6FF", fontSize: 10 }}>📖 Wikipedia</IELink>
         </div>
       </div>
 

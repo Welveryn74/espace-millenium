@@ -123,6 +123,7 @@ export default function IEWindow({ onClose, onMinimize, zIndex, onFocus, onBSOD,
             setSelectedArticle={setSelectedArticle}
             waybackState={wayback.state}
             waybackUrl={wayback.archiveUrl}
+            waybackFallbackUrl={wayback.fallbackUrl}
             onWaybackLoad={handleWaybackLoad}
           />
         </div>

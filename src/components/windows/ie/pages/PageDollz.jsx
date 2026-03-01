@@ -45,6 +45,7 @@ export default function PageDollz({ navigateTo }) {
         <IELink url="perso.wanadoo.fr/~darkangel" navigateTo={navigateTo} style={{ color: "#8B008B", fontSize: 11 }}>🌙 Page perso</IELink>
         <IELink url="google.fr" navigateTo={navigateTo} style={{ color: "#8B008B", fontSize: 11 }}>🔍 Google</IELink>
         <IELink url="kazaa.com" navigateTo={navigateTo} style={{ color: "#8B008B", fontSize: 11 }}>💾 Télécharger des dollz</IELink>
+        <IELink url="caramail.com" navigateTo={navigateTo} style={{ color: "#8B008B", fontSize: 11 }}>✉️ Caramail</IELink>
         <IELink url="forum.jeuxvideo.com" navigateTo={navigateTo} style={{ color: "#8B008B", fontSize: 11 }}>🎮 Forum JVC</IELink>
       </div>
     </div>

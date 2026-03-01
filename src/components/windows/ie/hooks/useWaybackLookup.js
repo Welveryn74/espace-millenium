@@ -13,6 +13,33 @@ const PRECACHED_URLS = new Set([
   "newgrounds.com",
   "google.fr",
   "google.com",
+  // Médias & info FR
+  "tf1.fr",
+  "lequipe.fr",
+  "lemonde.fr",
+  "allocine.fr",
+  "meteofrance.com",
+  // Référence & encyclopédies
+  "wikipedia.org",
+  "nasa.gov",
+  "imdb.com",
+  // E-commerce
+  "amazon.com",
+  "ebay.com",
+  "apple.com",
+  // Gaming
+  "gamefaqs.com",
+  "ign.com",
+  "gamespot.com",
+  // Portails & services
+  "mtv.com",
+  "msn.com",
+  "download.com",
+  "caramail.com",
+  // Dev
+  "w3.org",
+  "php.net",
+  "mysql.com",
 ]);
 
 export function isPrecached(url) {
@@ -26,9 +53,15 @@ function buildTheOldNetUrl(url) {
   return `https://theoldnet.com/get?url=${encodeURIComponent(url)}&year=2005&scripts=false&decode=false`;
 }
 
+function buildWaybackDirectUrl(url) {
+  // if_ supprime la toolbar Wayback — rendu propre en iframe
+  return `https://web.archive.org/web/2005if_/http://${url}`;
+}
+
 export function useWaybackLookup() {
   const [state, setState] = useState("idle"); // idle | checking | found | not_found
   const [archiveUrl, setArchiveUrl] = useState(null);
+  const [fallbackUrl, setFallbackUrl] = useState(null);
   const cacheRef = useRef({});
 
   const checkWayback = useCallback(async (url) => {
@@ -36,6 +69,7 @@ export function useWaybackLookup() {
     if (isPrecached(url)) {
       const iframeUrl = buildTheOldNetUrl(url);
       setArchiveUrl(iframeUrl);
+      setFallbackUrl(buildWaybackDirectUrl(url));
       setState("found");
       return;
     }
@@ -57,9 +91,11 @@ export function useWaybackLookup() {
     if (cached) {
       if (cached.available) {
         setArchiveUrl(cached.archiveUrl);
+        setFallbackUrl(cached.fallbackUrl);
         setState("found");
       } else {
         setArchiveUrl(null);
+        setFallbackUrl(null);
         setState("not_found");
       }
       return;
@@ -67,6 +103,7 @@ export function useWaybackLookup() {
 
     setState("checking");
     setArchiveUrl(null);
+    setFallbackUrl(null);
 
     try {
       const res = await fetch(
@@ -78,20 +115,24 @@ export function useWaybackLookup() {
       if (snapshot?.available) {
         // Use TheOldNet for cleaner, faster rendering (strips broken JS)
         const iframeUrl = buildTheOldNetUrl(url);
-        const entry = { available: true, archiveUrl: iframeUrl };
+        const wbUrl = buildWaybackDirectUrl(url);
+        const entry = { available: true, archiveUrl: iframeUrl, fallbackUrl: wbUrl };
         cacheRef.current[cacheKey] = entry;
         try { sessionStorage.setItem(cacheKey, JSON.stringify(entry)); } catch {}
         setArchiveUrl(iframeUrl);
+        setFallbackUrl(wbUrl);
         setState("found");
       } else {
         const entry = { available: false };
         cacheRef.current[cacheKey] = entry;
         try { sessionStorage.setItem(cacheKey, JSON.stringify(entry)); } catch {}
         setArchiveUrl(null);
+        setFallbackUrl(null);
         setState("not_found");
       }
     } catch {
       setArchiveUrl(null);
+      setFallbackUrl(null);
       setState("not_found");
     }
   }, []);
@@ -99,7 +140,8 @@ export function useWaybackLookup() {
   const reset = useCallback(() => {
     setState("idle");
     setArchiveUrl(null);
+    setFallbackUrl(null);
   }, []);
 
-  return { state, archiveUrl, checkWayback, reset };
+  return { state, archiveUrl, fallbackUrl, checkWayback, reset };
 }

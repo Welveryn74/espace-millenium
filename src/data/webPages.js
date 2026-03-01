@@ -16,6 +16,16 @@ export const IE_FAVORITES = [
   { label: "Neopets", url: "neopets.com" },
   { label: "Miniclip", url: "miniclip.com" },
   { label: "Newgrounds", url: "newgrounds.com" },
+  { label: "Wikipedia", url: "wikipedia.org" },
+  { label: "Amazon", url: "amazon.com" },
+  { label: "eBay", url: "ebay.com" },
+  { label: "IMDb", url: "imdb.com" },
+  { label: "NASA", url: "nasa.gov" },
+  { label: "GameFAQs", url: "gamefaqs.com" },
+  { label: "IGN", url: "ign.com" },
+  { label: "MTV", url: "mtv.com" },
+  { label: "Allociné", url: "allocine.fr" },
+  { label: "Caramail", url: "caramail.com" },
 ];
 
 export const WANADOO_NEWS = [
