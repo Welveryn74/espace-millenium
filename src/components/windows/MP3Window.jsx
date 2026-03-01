@@ -329,19 +329,9 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
           </div>
         </div>
 
-        {/* ── Volume ─────────────────────────── */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8, width: 200 }}>
-          <span style={{ fontSize: 10, color: '#888' }}>🔈</span>
-          <input type="range" min="0" max="0.3" step="0.005" value={volume}
-            onChange={handleVolume}
-            style={{ flex: 1, height: 4, accentColor: '#888', cursor: 'pointer' }}
-          />
-          <span style={{ fontSize: 10, color: '#888' }}>🔊</span>
-        </div>
-
         {/* ── Click Wheel ────────────────────── */}
         <div style={{
-          width: 170, height: 170, borderRadius: "50%", marginTop: 8,
+          width: 170, height: 170, borderRadius: "50%", marginTop: 20,
           background: "linear-gradient(145deg, #eee, #ccc)",
           boxShadow: "0 4px 14px rgba(0,0,0,0.3), inset 0 1px 3px rgba(255,255,255,0.8), inset 0 -1px 3px rgba(0,0,0,0.1)",
           display: "flex", alignItems: "center", justifyContent: "center", position: "relative",
