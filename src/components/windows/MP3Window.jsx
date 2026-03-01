@@ -11,6 +11,8 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
   const [progress, setProgress] = useState(0);
   const [elapsed, setElapsed] = useState("0:00");
   const [showPlaylist, setShowPlaylist] = useState(false);
+  const [shuffle, setShuffle] = useState(false);
+  const [repeat, setRepeat] = useState(false);
   const [bars, setBars] = useState(() => new Array(16).fill(15));
   const rafRef = useRef(null);
   const frameCount = useRef(0);
@@ -62,6 +64,22 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
     }
   }, [track, playing]);
 
+  // Auto-next or repeat when track ends
+  const endedRef = useRef(false);
+  useEffect(() => {
+    if (playing && progress >= 99 && !endedRef.current) {
+      endedRef.current = true;
+      if (repeat) {
+        setProgress(0);
+        setElapsed("0:00");
+        if (TRACKS[track].melody) chiptune.play(TRACKS[track].melody);
+      } else {
+        nextTrack();
+      }
+    }
+    if (progress < 50) endedRef.current = false;
+  }, [progress, playing]);
+
   // Cleanup on unmount
   useEffect(() => () => chiptune.destroy(), []);
 
@@ -78,7 +96,9 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
   };
 
   const nextTrack = () => {
-    const next = (track + 1) % TRACKS.length;
+    const next = shuffle
+      ? Math.floor(Math.random() * TRACKS.length)
+      : (track + 1) % TRACKS.length;
     setTrack(next);
     setProgress(0);
     setElapsed("0:00");
@@ -181,9 +201,12 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
           }}>{playing ? "⏸" : "▶️"}</button>
           {/* Wheel labels */}
           <div onClick={() => setShowPlaylist(!showPlaylist)} style={{ position: "absolute", top: 10, cursor: "pointer", fontSize: 10, color: "#555", fontWeight: "bold" }}>MENU</div>
-          <div onClick={nextTrack} style={{ position: "absolute", bottom: 10, cursor: "pointer", fontSize: 14, color: "#555" }}>⏭</div>
+          <div style={{ position: "absolute", bottom: 10, display: "flex", alignItems: "center", gap: 12 }}>
+            <span onClick={() => setRepeat(r => !r)} style={{ cursor: "pointer", fontSize: 12, color: repeat ? "#0FF" : "#555" }} title={repeat ? "Repeat: ON" : "Repeat: OFF"}>🔁</span>
+            <span onClick={nextTrack} style={{ cursor: "pointer", fontSize: 14, color: "#555" }}>⏭</span>
+          </div>
           <div onClick={prevTrack} style={{ position: "absolute", left: 14, cursor: "pointer", fontSize: 14, color: "#555" }}>⏮</div>
-          <div style={{ position: "absolute", right: 14, cursor: "pointer", fontSize: 14, color: "#555" }}>⏩</div>
+          <div onClick={() => setShuffle(s => !s)} style={{ position: "absolute", right: 14, cursor: "pointer", fontSize: 14, color: shuffle ? "#0FF" : "#555" }} title={shuffle ? "Shuffle: ON" : "Shuffle: OFF"}>🔀</div>
         </div>
       </div>
     </Win>

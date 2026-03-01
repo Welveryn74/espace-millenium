@@ -9,7 +9,7 @@ export default function StartMenu({ openWindow, onShutdown }) {
       position: "absolute", bottom: 44, left: 2, width: 340,
       background: "#ECE9D8", border: "2px solid #0055E5",
       borderRadius: "8px 8px 0 0", boxShadow: "4px -4px 20px rgba(0,0,0,0.45)",
-      zIndex: 101, overflow: "hidden", animation: "fadeIn 0.15s ease-out",
+      zIndex: 101, overflow: "hidden", animation: "menuSlideUp 0.2s ease-out",
     }}>
       <div style={{
         background: "linear-gradient(180deg, #2A66D3 0%, #1941A5 100%)",

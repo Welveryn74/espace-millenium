@@ -146,6 +146,28 @@ export function playPaperSound() {
   source.start();
 }
 
+/** Bruit blanc TV — changement de chaîne */
+export function playTVStatic() {
+  const ctx = getCtx();
+  if (!ctx) return;
+  const bufferSize = ctx.sampleRate * 0.3;
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) {
+    data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+  }
+  const source = ctx.createBufferSource();
+  source.buffer = buffer;
+  const filter = ctx.createBiquadFilter();
+  filter.type = 'highpass';
+  filter.frequency.value = 3000;
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(0.04, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+  source.connect(filter).connect(gain).connect(ctx.destination);
+  source.start();
+}
+
 /** Son de zip — cartable */
 export function playZipSound() {
   const ctx = getCtx();

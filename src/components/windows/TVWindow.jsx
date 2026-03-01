@@ -3,6 +3,7 @@ import Win from "../Win";
 import NostalImg from "../NostalImg";
 import { CHANNELS } from "../../data/channels";
 import { tvBtnBase } from "../../styles/windowStyles";
+import { playTVStatic } from "../../utils/uiSounds";
 
 function BtnTV({ onClick, children }) {
   return <button onClick={onClick} style={tvBtnBase}>{children}</button>;
@@ -204,6 +205,7 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
 
   const changeChannel = (dir) => {
     setStaticEffect(true);
+    playTVStatic();
     setTimeout(() => {
       setChannel(prev => (prev + dir + CHANNELS.length) % CHANNELS.length);
       setStaticEffect(false);

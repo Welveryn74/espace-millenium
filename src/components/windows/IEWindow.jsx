@@ -755,6 +755,13 @@ export default function IEWindow({ onClose, onMinimize, zIndex, onFocus }) {
               </div>
             )}
           </div>
+
+          {/* Loading bar */}
+          {loading && (
+            <div style={{ height: 3, background: "#ddd", overflow: "hidden" }}>
+              <div style={{ height: "100%", background: "linear-gradient(90deg, #0055E5, #00AAFF)", animation: "loadbar 0.8s ease-out" }} />
+            </div>
+          )}
         </div>
 
         {/* ── Page content ── */}

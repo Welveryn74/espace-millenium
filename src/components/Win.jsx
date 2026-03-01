@@ -17,6 +17,7 @@ export default function Win({ title, onClose, onMinimize, children, width = 480,
   const [dragging, setDragging] = useState(false);
   const [maximized, setMaximized] = useState(false);
   const [isOpening, setIsOpening] = useState(true);
+  const [justFocused, setJustFocused] = useState(false);
   const [resizeDir, setResizeDir] = useState(null);
   const dragOffset = useRef({ x: 0, y: 0 });
   const prevPos = useRef(null);
@@ -90,11 +91,18 @@ export default function Win({ title, onClose, onMinimize, children, width = 480,
     return () => { window.removeEventListener("mousemove", onMove); window.removeEventListener("mouseup", onUp); };
   }, [resizeDir]);
 
+  const handleFocus = () => {
+    onFocus?.();
+    setJustFocused(true);
+    setTimeout(() => setJustFocused(false), 200);
+  };
+
   const btnHandlers = [
     () => { playMinimize(); onMinimize(); },
     () => { playClick(); handleMaximize(); },
     () => { playWindowClose(); onClose(); },
   ];
+  const btnTitles = ["Réduire", maximized ? "Restaurer" : "Agrandir", "Fermer"];
   const isInteracting = dragging || resizeDir;
 
   // Resize handle positions
@@ -112,7 +120,7 @@ export default function Win({ title, onClose, onMinimize, children, width = 480,
   return (
     <div
       data-nocontext=""
-      onClick={onFocus}
+      onClick={handleFocus}
       style={{
         position: "absolute",
         left: maximized ? 0 : pos.x,
@@ -121,7 +129,10 @@ export default function Win({ title, onClose, onMinimize, children, width = 480,
         zIndex,
         border: "3px solid #0055E5",
         borderRadius: maximized ? 0 : "8px 8px 0 0",
-        boxShadow: "4px 6px 24px rgba(0,0,50,0.55), inset 0 0 0 1px rgba(255,255,255,0.15)",
+        boxShadow: justFocused
+          ? "6px 8px 32px rgba(0,0,50,0.7), inset 0 0 0 1px rgba(255,255,255,0.15)"
+          : "4px 6px 24px rgba(0,0,50,0.55), inset 0 0 0 1px rgba(255,255,255,0.15)",
+        transition: "box-shadow 0.15s ease",
         background: "#ECE9D8", fontFamily: "'Tahoma', 'Segoe UI', sans-serif",
         overflow: "hidden", userSelect: isInteracting ? "none" : "auto",
         animation: isOpening ? "popIn 0.2s ease-out" : "none",
@@ -150,7 +161,7 @@ export default function Win({ title, onClose, onMinimize, children, width = 480,
         <span style={{ color: "white", fontWeight: "bold", fontSize: 13, textShadow: "1px 1px 2px rgba(0,0,0,0.5)", letterSpacing: 0.2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1 }}>{title}</span>
         <div style={{ display: "flex", gap: 2, flexShrink: 0 }}>
           {["─", maximized ? "❐" : "□", "✕"].map((sym, i) => (
-            <button key={i} onClick={btnHandlers[i]} style={{
+            <button key={i} onClick={btnHandlers[i]} title={btnTitles[i]} style={{
               width: 24, height: 24, border: "1px solid rgba(0,0,0,0.3)", borderRadius: 3,
               background: i === 2 ? "linear-gradient(180deg, #E97 0%, #C44 100%)" : "linear-gradient(180deg, #D8D8D8 0%, #B8B8B8 100%)",
               color: i === 2 ? "#fff" : "#333", fontWeight: "bold", fontSize: i === 1 ? 8 : 12,

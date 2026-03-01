@@ -11,6 +11,7 @@ import StartMenu from "./components/StartMenu";
 import Screensaver from "./components/Screensaver";
 import MSNNotification from "./components/MSNNotification";
 import { startAmbient, stopAmbient, setAmbientMuted } from "./utils/ambientSounds";
+import { playClick } from "./utils/uiSounds";
 import { loadState, saveState } from "./utils/storage";
 
 const WALLPAPERS = {
@@ -145,6 +146,7 @@ export default function EspaceMillenium() {
       style={{
         width: "100vw", height: "100vh", overflow: "hidden", position: "relative",
         background: WALLPAPERS[wallpaper] || WALLPAPERS.colline,
+        transition: "background 0.5s ease",
         fontFamily: "'Tahoma', 'Segoe UI', sans-serif",
         animation: shaking ? "wizz 0.06s 7 alternate" : "none",
         cursor: "default",
@@ -154,6 +156,7 @@ export default function EspaceMillenium() {
         if (e.target.closest("[data-nocontext]")) return;
         e.preventDefault();
         setCtxMenu({ x: e.clientX, y: e.clientY });
+        playClick();
       }}
     >
       <div style={{ opacity: refreshAnim ? 0 : 1, transition: "opacity 0.15s" }}>
@@ -278,6 +281,7 @@ export default function EspaceMillenium() {
             position: "absolute", left: ctxMenu.x, top: ctxMenu.y, zIndex: 9999,
             background: "#fff", border: "1px solid #888", boxShadow: "2px 2px 6px rgba(0,0,0,0.25)",
             padding: "2px 0", minWidth: 180, fontFamily: "'Tahoma', sans-serif", fontSize: 11,
+            animation: "fadeIn 0.15s ease-out",
           }}
         >
           {[
@@ -286,10 +290,10 @@ export default function EspaceMillenium() {
             { sep: true },
             { label: "Fond d'écran ▸", action: () => setCtxMenu(prev => ({ ...prev, showWp: !prev?.showWp })) },
             ...(ctxMenu?.showWp ? [
-              { label: `  ${wallpaper === 'colline' ? "●" : "○"} Colline verte`, action: () => { setWallpaper('colline'); saveState('wallpaper', 'colline'); setCtxMenu(null); } },
-              { label: `  ${wallpaper === 'espace' ? "●" : "○"} Espace`, action: () => { setWallpaper('espace'); saveState('wallpaper', 'espace'); setCtxMenu(null); } },
-              { label: `  ${wallpaper === 'matrix' ? "●" : "○"} Matrix`, action: () => { setWallpaper('matrix'); saveState('wallpaper', 'matrix'); setCtxMenu(null); } },
-              { label: `  ${wallpaper === 'aquarium' ? "●" : "○"} Aquarium`, action: () => { setWallpaper('aquarium'); saveState('wallpaper', 'aquarium'); setCtxMenu(null); } },
+              { label: `  ${wallpaper === 'colline' ? "●" : "○"} Colline verte`, action: () => { setWallpaper('colline'); saveState('wallpaper', 'colline'); setCtxMenu(null); }, wp: true },
+              { label: `  ${wallpaper === 'espace' ? "●" : "○"} Espace`, action: () => { setWallpaper('espace'); saveState('wallpaper', 'espace'); setCtxMenu(null); }, wp: true },
+              { label: `  ${wallpaper === 'matrix' ? "●" : "○"} Matrix`, action: () => { setWallpaper('matrix'); saveState('wallpaper', 'matrix'); setCtxMenu(null); }, wp: true },
+              { label: `  ${wallpaper === 'aquarium' ? "●" : "○"} Aquarium`, action: () => { setWallpaper('aquarium'); saveState('wallpaper', 'aquarium'); setCtxMenu(null); }, wp: true },
             ] : []),
             { sep: true },
             { label: "Propriétés", action: () => { setCtxMenu(null); setShowAbout(true); } },
@@ -300,7 +304,7 @@ export default function EspaceMillenium() {
               <div
                 key={i}
                 onClick={item.action}
-                style={{ padding: "5px 28px", cursor: "pointer", color: "#000" }}
+                style={{ padding: "5px 28px", cursor: "pointer", color: "#000", ...(item.wp ? { animation: "fadeIn 0.12s ease-out" } : {}) }}
                 onMouseEnter={e => { e.currentTarget.style.background = "#316AC5"; e.currentTarget.style.color = "#fff"; }}
                 onMouseLeave={e => { e.currentTarget.style.background = ""; e.currentTarget.style.color = "#000"; }}
               >

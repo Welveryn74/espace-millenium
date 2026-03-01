@@ -124,8 +124,11 @@ export default function MSNWindow({ onClose, onMinimize, zIndex, onFocus, onWizz
             </div>
           ))}
           {typing && (
-            <div style={{ color: "#999", fontSize: 11, fontStyle: "italic", animation: "pulse 1s infinite" }}>
-              {botName} est en train d'écrire...
+            <div style={{ color: "#999", fontSize: 11, fontStyle: "italic" }}>
+              {botName} est en train d'écrire
+              {[0, 1, 2].map(i => (
+                <span key={i} style={{ animation: "dotPulse 1.2s infinite", animationDelay: `${i * 0.4}s` }}>.</span>
+              ))}
             </div>
           )}
         </div>
