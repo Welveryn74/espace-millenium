@@ -3,19 +3,17 @@ import { ENCARTA_ARTICLES } from "../../../../data/webPages";
 
 const ARTICLE_LINKS = {
   volcan: [
-    { label: "📖 Wikipedia", url: "wikipedia.org" },
     { label: "🔍 Rechercher sur Google", url: "google.fr" },
   ],
   internet: [
-    { label: "📖 Wikipedia", url: "wikipedia.org" },
-    { label: "💾 Download.com", url: "download.com" },
+    { label: "💾 Télécharger sur Kazaa", url: "kazaa.com" },
+    { label: "🎮 Forum JeuxVideo.com", url: "forum.jeuxvideo.com" },
   ],
   dinosaure: [
-    { label: "📖 Wikipedia", url: "wikipedia.org" },
+    { label: "🔍 En savoir plus sur Google", url: "google.fr" },
   ],
   lune: [
-    { label: "🚀 NASA", url: "nasa.gov" },
-    { label: "📖 Wikipedia", url: "wikipedia.org" },
+    { label: "🔍 Rechercher sur Google", url: "google.fr" },
   ],
 };
 
@@ -50,7 +48,6 @@ export default function PageEncarta({ navigateTo, selectedArticle, setSelectedAr
         </div>
         <div style={{ padding: "10px 12px", borderTop: "1px solid rgba(255,255,255,0.2)", marginTop: 8, display: "flex", flexDirection: "column", gap: 6 }}>
           <IELink url="wanadoo.fr" navigateTo={navigateTo} style={{ color: "#AED6FF", fontSize: 10 }}>← Retour Wanadoo</IELink>
-          <IELink url="wikipedia.org" navigateTo={navigateTo} style={{ color: "#AED6FF", fontSize: 10 }}>📖 Wikipedia</IELink>
           <IELink url="google.fr" navigateTo={navigateTo} style={{ color: "#AED6FF", fontSize: 10 }}>🔍 Rechercher sur Google</IELink>
         </div>
       </div>

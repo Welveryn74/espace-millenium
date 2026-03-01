@@ -143,7 +143,7 @@ export default function PageKazaa({ onBSOD, navigateTo }) {
           gap: 16, flexWrap: "wrap",
         }}>
           <IELink url="google.fr" navigateTo={navigateTo} style={{ color: "#88CCFF", fontSize: 11 }}>🔍 Chercher sur Google</IELink>
-          <IELink url="download.com" navigateTo={navigateTo} style={{ color: "#88CCFF", fontSize: 11 }}>📀 Download.com</IELink>
+          <IELink url="forum.jeuxvideo.com" navigateTo={navigateTo} style={{ color: "#88CCFF", fontSize: 11 }}>🎮 Forum JeuxVideo.com</IELink>
           <IELink url="wanadoo.fr" navigateTo={navigateTo} style={{ color: "#88CCFF", fontSize: 11 }}>🏠 Retour Wanadoo</IELink>
         </div>
       )}

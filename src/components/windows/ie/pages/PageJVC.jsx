@@ -34,8 +34,8 @@ export default function PageJVC({ navigateTo }) {
         <div style={{ display: "flex", gap: 10 }}>
           <IELink url="wanadoo.fr" navigateTo={navigateTo} style={{ color: "#FFF", fontSize: 10, textDecoration: "none" }}>Accueil</IELink>
           <IELink url="google.fr" navigateTo={navigateTo} style={{ color: "#FFF", fontSize: 10, textDecoration: "none" }}>Recherche</IELink>
-          <IELink url="gamefaqs.com" navigateTo={navigateTo} style={{ color: "#FFF", fontSize: 10, textDecoration: "none" }}>💾 GameFAQs</IELink>
-          <IELink url="ign.com" navigateTo={navigateTo} style={{ color: "#FFF", fontSize: 10, textDecoration: "none" }}>📰 IGN</IELink>
+          <IELink url="kazaa.com" navigateTo={navigateTo} style={{ color: "#FFF", fontSize: 10, textDecoration: "none" }}>💾 Kazaa</IELink>
+          <IELink url="encarta.msn.com" navigateTo={navigateTo} style={{ color: "#FFF", fontSize: 10, textDecoration: "none" }}>📚 Encarta</IELink>
         </div>
       </div>
 

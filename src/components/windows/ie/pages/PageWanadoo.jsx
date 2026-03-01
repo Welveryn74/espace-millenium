@@ -15,6 +15,7 @@ export default function PageWanadoo({ navigateTo, setSearchQuery }) {
 
   const handleNewsClick = (news) => {
     if (!news.url) return;
+    if (news.searchQuery && setSearchQuery) setSearchQuery(news.searchQuery);
     navigateTo(news.url);
   };
 
