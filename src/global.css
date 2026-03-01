@@ -192,3 +192,6 @@ html, body, #root {
   0%, 60%, 100% { opacity: 0.3; }
   30% { opacity: 1; }
 }
+
+/* TV screen — iframe styling */
+.tv-screen iframe { border: none; pointer-events: none; }

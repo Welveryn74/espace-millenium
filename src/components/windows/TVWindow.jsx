@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useId } from "react";
 import Win from "../Win";
 import NostalImg from "../NostalImg";
-import { CHANNELS } from "../../data/channels";
+import { CHANNELS, PUBS_2000 } from "../../data/channels";
 import { tvBtnBase } from "../../styles/windowStyles";
 import { playTVStatic } from "../../utils/uiSounds";
 import { loadState, saveState } from "../../utils/storage";
+import { createVideoPlayer } from "../../utils/videoPlayer";
 
 function BtnTV({ onClick, children }) {
   return <button onClick={onClick} style={tvBtnBase}>{children}</button>;
@@ -61,13 +62,13 @@ function StarAcContent({ content, tick }) {
     <div style={{ textAlign: "center", width: "100%" }}>
       <div style={{ display: "flex", justifyContent: "space-between", width: "100%", marginBottom: 10 }}>
         <span style={{ color: "#F44", fontSize: 9, animation: "blink 1s infinite", fontWeight: "bold" }}>EN DIRECT</span>
-        <span style={{ color: "#F44", fontSize: 9 }}>PRIME N°{7 + (tick % 5)}</span>
+        <span style={{ color: "#F44", fontSize: 9 }}>PRIME N\u00b0{7 + (tick % 5)}</span>
       </div>
       <div key={tick} style={{ color: "#FF4", fontSize: 14, fontStyle: "italic", animation: "fadeIn 0.5s ease-out", marginBottom: 12, textShadow: "0 0 10px rgba(255,255,0,0.3)" }}>
         {lyric}
       </div>
       <div style={{ color: "#F88", fontSize: 10, borderTop: "1px solid #333", paddingTop: 6 }}>
-        Nominé(e) : <span style={{ fontWeight: "bold", color: "#FF4444" }}>{nominee}</span> — Votez au 3672 !
+        Nomin\u00e9(e) : <span style={{ fontWeight: "bold", color: "#FF4444" }}>{nominee}</span> \u2014 Votez au 3672 !
       </div>
     </div>
   );
@@ -112,7 +113,7 @@ function MangaContent({ content, tick }) {
   return (
     <div style={{ textAlign: "center", width: "100%" }}>
       <div style={{ color: "#44FF88", fontSize: 9, marginBottom: 8, fontWeight: "bold" }}>
-        CANAL J — CLUB MANGA
+        CANAL J \u2014 CLUB MANGA
       </div>
       <div key={tick} style={{ ...styles[panel.style], animation: panel.style === "impact" ? "pulse 0.5s ease-out" : "fadeIn 0.4s ease-out" }}>
         {panel.text}
@@ -195,8 +196,61 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
   const [power, setPower] = useState(true);
   const [volume, setVolume] = useState(() => loadState("tv_volume", 75));
   const [tick, setTick] = useState(0);
+  const [videoReady, setVideoReady] = useState(false);
+  const [videoError, setVideoError] = useState(false);
 
-  // Tick every 2s, reset on channel change
+  const playerRef = useRef(null);
+  const containerId = useId().replace(/:/g, "_") + "_tv_video";
+  const pubCountRef = useRef(0);
+
+  // Pick a random video from the channel's list (or a pub every 3rd video)
+  const pickVideo = (ch) => {
+    const videos = CHANNELS[ch]?.videos;
+    if (!videos || videos.length === 0) return null;
+    pubCountRef.current++;
+    // Every 3rd video switch, play a pub instead
+    if (pubCountRef.current % 3 === 0 && PUBS_2000.length > 0) {
+      return PUBS_2000[Math.floor(Math.random() * PUBS_2000.length)];
+    }
+    return videos[Math.floor(Math.random() * videos.length)];
+  };
+
+  // Destroy current player
+  const destroyPlayer = () => {
+    playerRef.current?.destroy?.();
+    playerRef.current = null;
+  };
+
+  // Start a video for the current channel
+  const startVideo = (ch) => {
+    destroyPlayer();
+    setVideoReady(false);
+    setVideoError(false);
+    const video = pickVideo(ch);
+    if (!video) { setVideoError(true); return; }
+    // Small delay to ensure DOM container is rendered
+    requestAnimationFrame(() => {
+      const container = document.getElementById(containerId);
+      if (!container) { setVideoError(true); return; }
+      playerRef.current = createVideoPlayer(containerId, {
+        platform: video.platform,
+        videoId: video.id,
+        start: video.start || 0,
+        onReady: () => {
+          setVideoReady(true);
+          // Sync volume on ready (muted by default, user unmutes via Vol+)
+          playerRef.current?.setVolume?.(volume);
+        },
+        onError: () => { setVideoError(true); },
+        onEnded: () => {
+          // Play next video (random from same channel, or a pub)
+          startVideo(ch);
+        },
+      });
+    });
+  };
+
+  // Tick every 2s (for fallback text content), reset on channel change
   useEffect(() => {
     if (!power) return;
     setTick(0);
@@ -204,8 +258,37 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
     return () => clearInterval(iv);
   }, [channel, power]);
 
+  // Init video on channel change
+  useEffect(() => {
+    if (!power || staticEffect) return;
+    startVideo(channel);
+    return () => destroyPlayer();
+  }, [channel, power]);
+
+  // Sync volume to player
+  useEffect(() => {
+    playerRef.current?.setVolume?.(volume);
+  }, [volume]);
+
+  // Power on/off
+  useEffect(() => {
+    if (power) {
+      playerRef.current?.play?.();
+    } else {
+      playerRef.current?.pause?.();
+    }
+  }, [power]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => destroyPlayer();
+  }, []);
+
   const changeChannel = (dir) => {
     setStaticEffect(true);
+    destroyPlayer();
+    setVideoReady(false);
+    setVideoError(false);
     playTVStatic();
     setTimeout(() => {
       setChannel(prev => {
@@ -217,11 +300,14 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
     }, 350);
   };
 
+  const hasVideo = CHANNELS[channel]?.videos?.length > 0;
+  const showFallbackText = !hasVideo || videoError || !videoReady;
+
   return (
-    <Win title="Ma Télévision Cathodique — Thomson 36cm" onClose={onClose} onMinimize={onMinimize} width={640} height={560} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 180, y: 40 }} color="#444">
+    <Win title="Ma T\u00e9l\u00e9vision Cathodique \u2014 Thomson 36cm" onClose={onClose} onMinimize={onMinimize} width={640} height={560} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 180, y: 40 }} color="#444">
       <div style={{ padding: 16, background: "#1a1a1a", height: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
         {/* TV Frame */}
-        <div style={{
+        <div className="tv-screen" style={{
           width: 460, height: 310, background: "#0a0a0a", borderRadius: "20px",
           border: "14px solid #4a4a4a",
           borderImage: "linear-gradient(145deg, #666 0%, #3a3a3a 30%, #555 70%, #444 100%) 14",
@@ -242,13 +328,11 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
               animation: "tvStatic 0.08s steps(4) infinite",
               position: "relative",
             }}>
-              {/* White flash overlay */}
               <div style={{
                 position: "absolute", inset: 0,
                 background: "white",
                 animation: "fadeOut 0.3s ease-out forwards",
               }} />
-              {/* Noise grain */}
               <div style={{
                 position: "absolute", inset: 0,
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.7'/%3E%3C/svg%3E")`,
@@ -259,45 +343,69 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
             </div>
           ) : (
             <div style={{
-              width: "100%", height: "100%", padding: 20,
+              width: "100%", height: "100%",
               background: `radial-gradient(ellipse at center, ${CHANNELS[channel].bg} 0%, #000 120%)`,
               display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
               position: "relative", animation: "crtFlicker 4s infinite",
             }}>
-              {/* Scanlines overlay */}
+              {/* z-0: Video layer */}
+              {hasVideo && (
+                <div
+                  id={containerId}
+                  style={{
+                    position: "absolute", inset: 0, zIndex: 0,
+                    pointerEvents: "none",
+                    transform: "scale(1.15)",
+                    transformOrigin: "center",
+                    opacity: videoReady && !videoError ? 1 : 0,
+                    transition: "opacity 0.6s ease-in",
+                  }}
+                />
+              )}
+              {/* z-1: Fallback text content */}
               <div style={{
-                position: "absolute", inset: 0, pointerEvents: "none",
+                position: "relative", zIndex: 1,
+                width: "100%", height: "100%", padding: 20,
+                display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
+                opacity: showFallbackText ? 1 : 0,
+                transition: "opacity 0.4s",
+                pointerEvents: showFallbackText ? "auto" : "none",
+              }}>
+                {/* Channel logo */}
+                <div style={{ marginBottom: 6, textShadow: "0 0 20px rgba(255,255,255,0.2)" }}>
+                  <NostalImg src={CHANNELS[channel].img} fallback={CHANNELS[channel].emoji} size={36} />
+                </div>
+                <div style={{ color: CHANNELS[channel].color, fontSize: 12, fontWeight: "bold", textAlign: "center", textShadow: `0 0 12px ${CHANNELS[channel].color}50`, marginBottom: 8 }}>
+                  {CHANNELS[channel].name}
+                </div>
+                {/* Animated content */}
+                <div style={{ width: "100%", maxWidth: 360, flex: 1, display: "flex", alignItems: "center", justifyContent: "center", minHeight: 0 }}>
+                  <ChannelContent channel={CHANNELS[channel]} tick={tick} />
+                </div>
+              </div>
+              {/* z-10: Scanlines overlay */}
+              <div style={{
+                position: "absolute", inset: 0, pointerEvents: "none", zIndex: 10,
                 background: "repeating-linear-gradient(transparent 0px, transparent 1px, rgba(0,0,0,0.18) 1px, rgba(0,0,0,0.18) 2px)",
               }} />
-              {/* Screen curvature effect */}
+              {/* z-11: Screen curvature/vignette */}
               <div style={{
-                position: "absolute", inset: 0, pointerEvents: "none",
+                position: "absolute", inset: 0, pointerEvents: "none", zIndex: 11,
                 boxShadow: "inset 0 0 80px 20px rgba(0,0,0,0.4)",
                 borderRadius: 8,
               }} />
-              {/* Channel indicator */}
+              {/* z-12: Channel indicator */}
               <div style={{
-                position: "absolute", top: 10, right: 14,
+                position: "absolute", top: 10, right: 14, zIndex: 12,
                 color: CHANNELS[channel].color, fontSize: 20, fontFamily: "monospace", fontWeight: "bold",
                 textShadow: `0 0 8px ${CHANNELS[channel].color}80`,
               }}>CH {channel + 1}</div>
-              {/* Volume indicator */}
-              <div style={{ position: "absolute", top: 10, left: 14, display: "flex", gap: 2, alignItems: "center" }}>
-                <NostalImg src="/images/ui/volume.svg" fallback="🔊" size={10} />
+              {/* z-12: Volume indicator */}
+              <div style={{ position: "absolute", top: 10, left: 14, display: "flex", gap: 2, alignItems: "center", zIndex: 12 }}>
+                <NostalImg src="/images/ui/volume.svg" fallback="\u{1F50A}" size={10} />
                 <div style={{ width: 50, height: 4, background: "#333", borderRadius: 2, overflow: "hidden" }}>
                   <div style={{ width: `${volume}%`, height: "100%", background: CHANNELS[channel].color, transition: "width 0.2s" }} />
                 </div>
-              </div>
-              {/* Channel logo */}
-              <div style={{ marginBottom: 6, textShadow: "0 0 20px rgba(255,255,255,0.2)" }}>
-                <NostalImg src={CHANNELS[channel].img} fallback={CHANNELS[channel].emoji} size={36} />
-              </div>
-              <div style={{ color: CHANNELS[channel].color, fontSize: 12, fontWeight: "bold", textAlign: "center", textShadow: `0 0 12px ${CHANNELS[channel].color}50`, marginBottom: 8 }}>
-                {CHANNELS[channel].name}
-              </div>
-              {/* Animated content */}
-              <div style={{ width: "100%", maxWidth: 360, flex: 1, display: "flex", alignItems: "center", justifyContent: "center", minHeight: 0 }}>
-                <ChannelContent channel={CHANNELS[channel]} tick={tick} />
               </div>
             </div>
           )}
@@ -312,13 +420,13 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
 
         {/* Controls */}
         <div style={{ display: "flex", gap: 10, marginTop: 14, alignItems: "center" }}>
-          <BtnTV onClick={() => changeChannel(-1)}>◀ CH-</BtnTV>
-          <BtnTV onClick={() => setVolume(v => { const nv = Math.max(0, v - 15); saveState("tv_volume", nv); return nv; })}>🔉 Vol-</BtnTV>
+          <BtnTV onClick={() => changeChannel(-1)}>{"\u25C0"} CH-</BtnTV>
+          <BtnTV onClick={() => setVolume(v => { const nv = Math.max(0, v - 15); saveState("tv_volume", nv); return nv; })}>{"\u{1F509}"} Vol-</BtnTV>
           <button onClick={() => setPower(!power)} style={{
             ...tvBtnBase, width: 50, background: power ? "linear-gradient(180deg, #F77 0%, #C33 100%)" : "linear-gradient(180deg, #7F7 0%, #3C3 100%)",
-          }}>{power ? "⏻" : "⏻"}</button>
-          <BtnTV onClick={() => setVolume(v => { const nv = Math.min(100, v + 15); saveState("tv_volume", nv); return nv; })}>🔊 Vol+</BtnTV>
-          <BtnTV onClick={() => changeChannel(1)}>CH+ ▶</BtnTV>
+          }}>{"\u23FB"}</button>
+          <BtnTV onClick={() => setVolume(v => { const nv = Math.min(100, v + 15); saveState("tv_volume", nv); return nv; })}>{"\u{1F50A}"} Vol+</BtnTV>
+          <BtnTV onClick={() => changeChannel(1)}>CH+ {"\u25B6"}</BtnTV>
         </div>
       </div>
     </Win>
