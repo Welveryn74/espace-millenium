@@ -16,6 +16,10 @@ export function cleanUrl(raw) {
   return raw.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/\/+$/, "");
 }
 
+export function isSkyblogUrl(url) {
+  return /^[\w-]+\.skyblog\.com$/.test(url);
+}
+
 export function useIENavigation(initialUrl = "wanadoo.fr") {
   const [currentUrl, setCurrentUrl] = useState(initialUrl);
   const [history, setHistory] = useState([initialUrl]);

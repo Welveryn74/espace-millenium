@@ -7,8 +7,9 @@ import PageKazaa from "./pages/PageKazaa";
 import PageDollz from "./pages/PageDollz";
 import PageAboutBlank from "./pages/PageAboutBlank";
 import Page404 from "./pages/Page404";
+import PageSkyblog from "./pages/PageSkyblog";
 import WaybackFrame from "./WaybackFrame";
-import { resolveUrl } from "./hooks/useIENavigation";
+import { resolveUrl, isSkyblogUrl } from "./hooks/useIENavigation";
 
 export default function IEPageRouter({
   loading, currentUrl, navigateTo, onBSOD,
@@ -47,6 +48,10 @@ export default function IEPageRouter({
     case "about:blank":
       return <PageAboutBlank />;
     default:
+      // Skyblog URLs — page nostalgique sans appel API
+      if (isSkyblogUrl(currentUrl)) {
+        return <PageSkyblog url={currentUrl} navigateTo={navigateTo} />;
+      }
       // Wayback Machine flow
       if (waybackState === "found" && waybackUrl) {
         return <WaybackFrame url={waybackUrl} onLoad={onWaybackLoad} />;

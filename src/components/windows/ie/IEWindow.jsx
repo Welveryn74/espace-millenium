@@ -3,7 +3,7 @@ import Win from "../../Win";
 import IEToolbar from "./IEToolbar";
 import IEStatusBar from "./IEStatusBar";
 import IEPageRouter from "./IEPageRouter";
-import { useIENavigation, resolveUrl, cleanUrl } from "./hooks/useIENavigation";
+import { useIENavigation, resolveUrl, cleanUrl, isSkyblogUrl } from "./hooks/useIENavigation";
 import { useWaybackLookup, isPrecached } from "./hooks/useWaybackLookup";
 import { playModemSound } from "../../../utils/playModemSound";
 
@@ -27,7 +27,7 @@ export default function IEWindow({ onClose, onMinimize, zIndex, onFocus, onBSOD,
   // Wrap navigateTo to start wayback lookup IMMEDIATELY (parallel to simulated delay)
   const navigateTo = useCallback((url) => {
     const clean = url.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/\/+$/, "");
-    if (!resolveUrl(clean)) {
+    if (!resolveUrl(clean) && !isSkyblogUrl(clean)) {
       // Unknown URL — start wayback check NOW, don't wait for loading to finish
       wayback.checkWayback(clean);
       // Modem sound only for real lookups (not pre-cached favorites)
@@ -57,7 +57,7 @@ export default function IEWindow({ onClose, onMinimize, zIndex, onFocus, onBSOD,
   // Handle back/forward to unknown URLs (these bypass navigateTo wrapper)
   useEffect(() => {
     if (!nav.loading && nav.currentUrl) {
-      if (!resolveUrl(nav.currentUrl)) {
+      if (!resolveUrl(nav.currentUrl) && !isSkyblogUrl(nav.currentUrl)) {
         // Only trigger if wayback isn't already checking/found for this URL
         if (wayback.state === "idle") {
           wayback.checkWayback(nav.currentUrl);
