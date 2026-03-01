@@ -1,20 +1,21 @@
-// Pubs années 2000 (intercalées entre les programmes, comme à la vraie télé)
+// Pubs ann\u00e9es 2000 (intercal\u00e9es entre les programmes, comme \u00e0 la vraie t\u00e9l\u00e9)
 export const PUBS_2000 = [
-  { platform: "youtube", id: "3D0xlJeBcGs" },  // Club Internet
-  { platform: "youtube", id: "o2AfXHCdzl0" },  // Liberty Surf
-  { platform: "youtube", id: "wnjSjBDwejI" },  // Free
-  { platform: "youtube", id: "gT2cZE4VQhI" },  // Caramail
-  { platform: "youtube", id: "DB17VDhmkao" },  // AOL
-  { platform: "youtube", id: "ddDAgQCgi80" },  // Yahoo
-  { platform: "youtube", id: "glBkc8t21e8" },  // Lycos
-  { platform: "youtube", id: "X277qOHBoDU" },  // Nokia 3210
-  { platform: "youtube", id: "F8tMxQF96Gk" },  // Windows
+  { platform: "dailymotion", id: "x64id" },    // Club Internet \u2014 le fou
+  { platform: "dailymotion", id: "xlsh3" },    // Club Internet \u2014 Bogdanov & Magn\u00e9to
+  { platform: "dailymotion", id: "x1fxob" },   // Club Internet \u2014 Jeanne d'Arc
+  { platform: "dailymotion", id: "xibsjq" },   // Liberty Surf \u2014 Che/Gandhi/L\u00e9nine
+  { platform: "dailymotion", id: "xceuw4" },   // Free \u2014 r\u00e9trospective 10 ans
+  { platform: "dailymotion", id: "x6b3igf" },  // AOL \u2014 pub 1996
+  { platform: "dailymotion", id: "xiibih" },   // Lycos \u2014 "Exigez le chien" 2001
+  { platform: "dailymotion", id: "xqzdp" },    // Lycos \u2014 entretien d'embauche
+  { platform: "dailymotion", id: "x382iv7" },  // Nokia 3210
+  { platform: "dailymotion", id: "x494skf" },  // Compilation pubs an 2000
 ];
 
 // Mires TV (pas de signal)
 export const MIRES_TV = [
-  { platform: "youtube", id: "X5oklPpCyMI" },
-  { platform: "youtube", id: "AYsh5xNYhl4" },
+  { platform: "dailymotion", id: "xn2av0" },   // ORTF \u2014 mire 2\u00e8me cha\u00eene couleur
+  { platform: "dailymotion", id: "xn2fcd" },   // RTF \u2014 mire cheval de Marly
 ];
 
 export const CHANNELS = [
@@ -23,7 +24,9 @@ export const CHANNELS = [
     bg: "#1a0533", img: "/images/tv/france3.png",
     type: "minikeums",
     videos: [
-      { platform: "youtube", id: "xTX6yVOmSQo" },  // G\u00e9n\u00e9rique Minikeums
+      { platform: "dailymotion", id: "xf1d1s" },   // G\u00e9n\u00e9rique Minikeums 1995
+      { platform: "dailymotion", id: "x2c3at" },   // G\u00e9n\u00e9rique Minikeums 1998
+      { platform: "dailymotion", id: "x89t1kp" },  // G\u00e9n\u00e9rique Minikeums
     ],
     content: {
       dialogues: [
@@ -43,7 +46,7 @@ export const CHANNELS = [
     bg: "#0a1628", img: "/images/tv/france2.png",
     type: "kd2a",
     videos: [
-      { platform: "dailymotion", id: "x2uk5i" },  // Habillage KD2A 2007
+      { platform: "dailymotion", id: "x2uk5i" },   // Habillage KD2A 2007
     ],
     content: {
       programme: [
@@ -65,7 +68,8 @@ export const CHANNELS = [
     bg: "#1a0a0a", img: "/images/tv/tf1.svg",
     type: "starac",
     videos: [
-      { platform: "youtube", id: "-dquSZWVa6o", start: 120 },  // Premier prime S1
+      { platform: "dailymotion", id: "x812jke" },  // G\u00e9n\u00e9rique Star Academy S1
+      { platform: "dailymotion", id: "x8f6chv" },  // G\u00e9n\u00e9rique Star Academy
     ],
     content: {
       lyrics: [
@@ -84,7 +88,9 @@ export const CHANNELS = [
     bg: "#0a1a2a", img: "/images/tv/m6.png",
     type: "loft",
     videos: [
-      { platform: "youtube", id: "p7bfOZek9t4" },  // Loft Story g\u00e9n\u00e9rique/best of
+      { platform: "dailymotion", id: "x6tg4i" },   // G\u00e9n\u00e9rique Loft Story 1 (2001)
+      { platform: "dailymotion", id: "x5gvg6r" },  // G\u00e9n\u00e9rique Loft Story 1
+      { platform: "dailymotion", id: "x88uvcd" },  // G\u00e9n\u00e9rique Loft Story
     ],
     content: {
       day: 34,
@@ -105,7 +111,8 @@ export const CHANNELS = [
     bg: "#0a1a10", img: "/images/tv/canalj.png",
     type: "manga",
     videos: [
-      { platform: "youtube", id: "pHNLtZh3g1A" },  // G\u00e9n\u00e9rique DBZ fran\u00e7ais
+      { platform: "dailymotion", id: "x4xeefy" },  // G\u00e9n\u00e9rique DBZ \u2014 Ariane Carletti (clip officiel)
+      { platform: "dailymotion", id: "x3lx6xd" },  // DBZ V1 son remast\u00e9ris\u00e9
     ],
     content: {
       panels: [
@@ -125,7 +132,8 @@ export const CHANNELS = [
     bg: "#1a1500", img: "/images/tv/gulli.png",
     type: "pokemon",
     videos: [
-      { platform: "youtube", id: "lQOEhxTZbz8" },  // G\u00e9n\u00e9rique Pok\u00e9mon S1 VF
+      { platform: "dailymotion", id: "x83cp03" },  // G\u00e9n\u00e9rique Pok\u00e9mon S1 VF
+      { platform: "dailymotion", id: "x2ay318" },  // G\u00e9n\u00e9rique Pok\u00e9mon S1
     ],
     content: {
       scenes: [

@@ -245,9 +245,7 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
       const container = document.getElementById(containerId);
       if (!container) { setVideoError(true); return; }
       playerRef.current = createVideoPlayer(containerId, {
-        platform: video.platform,
         videoId: video.id,
-        start: video.start || 0,
         onReady: () => {
           setVideoReady(true);
           // Sync volume on ready (muted by default, user unmutes via Vol+)
