@@ -18,12 +18,13 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
   const rafRef = useRef(null);
   const frameCount = useRef(0);
 
-  // Callback quand un preview audio se termine
-  const handleTrackEnded = useCallback(() => {
+  // Callback quand un preview audio se termine — ref pour toujours avoir la version courante
+  const endedCbRef = useRef(null);
+  endedCbRef.current = () => {
     if (repeat) {
       setProgress(0);
       setElapsed("0:00");
-      chiptune.play(TRACKS[track], handleTrackEnded);
+      chiptune.play(TRACKS[track], () => endedCbRef.current?.());
     } else {
       const next = shuffle
         ? Math.floor(Math.random() * TRACKS.length)
@@ -31,8 +32,10 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
       setTrack(next);
       setProgress(0);
       setElapsed("0:00");
+      chiptune.play(TRACKS[next], () => endedCbRef.current?.());
     }
-  }, [track, repeat, shuffle]);
+  };
+  const fireEnded = useCallback(() => endedCbRef.current?.(), []);
 
   const formatSecs = (s) => {
     const m = Math.floor(s / 60);
@@ -85,25 +88,12 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
     setDisplayDuration(TRACKS[track].duration);
   }, [track]);
 
-  // Play track when track changes while playing
-  useEffect(() => {
-    if (playing && (TRACKS[track].previewUrl || TRACKS[track].melody)) {
-      chiptune.play(TRACKS[track], handleTrackEnded);
-    }
-  }, [track, playing]);
-
-  // Auto-next or repeat when track ends (chiptune loop detection)
+  // Auto-next or repeat when chiptune loop ends (preview uses onEnded callback)
   const endedRef = useRef(false);
   useEffect(() => {
     if (chiptune.getPlaybackMode() === 'chiptune' && playing && progress >= 99 && !endedRef.current) {
       endedRef.current = true;
-      if (repeat) {
-        setProgress(0);
-        setElapsed("0:00");
-        chiptune.play(TRACKS[track], handleTrackEnded);
-      } else {
-        nextTrack();
-      }
+      endedCbRef.current?.();
     }
     if (progress < 50) endedRef.current = false;
   }, [progress, playing]);
@@ -113,7 +103,7 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
 
   const togglePlay = () => {
     if (!playing) {
-      chiptune.play(TRACKS[track], handleTrackEnded);
+      chiptune.play(TRACKS[track], fireEnded);
       setPlaying(true);
     } else {
       chiptune.stop();
@@ -130,6 +120,7 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
     setTrack(next);
     setProgress(0);
     setElapsed("0:00");
+    if (playing) chiptune.play(TRACKS[next], fireEnded);
   };
 
   const prevTrack = () => {
@@ -137,13 +128,14 @@ export default function MP3Window({ onClose, onMinimize, zIndex, onFocus }) {
     setTrack(prev);
     setProgress(0);
     setElapsed("0:00");
+    if (playing) chiptune.play(TRACKS[prev], fireEnded);
   };
 
   const selectTrack = (i) => {
     setTrack(i);
     setProgress(0);
     setElapsed("0:00");
-    chiptune.play(TRACKS[i], handleTrackEnded);
+    chiptune.play(TRACKS[i], fireEnded);
     setPlaying(true);
     setShowPlaylist(false);
   };
