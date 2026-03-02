@@ -159,6 +159,11 @@ html, body, #root {
   100% { transform: translateX(0); opacity: 1; }
 }
 
+@keyframes slideOutRight {
+  0% { transform: translateX(0); opacity: 1; }
+  100% { transform: translateX(120%); opacity: 0; }
+}
+
 @keyframes konamiSpin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }

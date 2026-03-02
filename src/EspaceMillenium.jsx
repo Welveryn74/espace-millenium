@@ -12,10 +12,20 @@ import Screensaver from "./components/Screensaver";
 import MSNNotification from "./components/MSNNotification";
 import XPNotifications from "./components/XPNotifications";
 import { syncGlobalVolume as syncChiptuneVolume } from "./utils/chiptunePlayer";
-import { playClick } from "./utils/uiSounds";
+import { playClick, playError } from "./utils/uiSounds";
+import CrashDialog from "./components/CrashDialog";
 import { loadState, saveState } from "./utils/storage";
 
+// ── Curseur Windows XP (flèche blanche, contour noir, ombre) ──
+const _XP_ARROW = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="28"><path d="M4,3 L4,23 L9,18 L13,26 L16,25 L12,17 L19,17 Z" fill="rgba(0,0,0,0.22)"/><path d="M3,1 L3,21 L8,16 L12,24 L15,23 L11,15 L18,15 Z" fill="#000"/><path d="M4,2 L4,20 L8,16 L12,22 L14,21 L10,14 L16.5,14 Z" fill="#fff"/></svg>';
+const XP_CURSOR = `url("data:image/svg+xml,${encodeURIComponent(_XP_ARROW)}") 3 1, default`;
+
+// ── Wallpaper Bliss SVG ──
+const _BLISS = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900"><defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#72AACC"/><stop offset="40%" stop-color="#98C6E0"/><stop offset="62%" stop-color="#BEDDEE"/></linearGradient><linearGradient id="gr" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5DB83C"/><stop offset="45%" stop-color="#44A028"/><stop offset="100%" stop-color="#2C7A14"/></linearGradient></defs><rect width="1600" height="900" fill="url(#sk)"/><ellipse cx="290" cy="208" rx="255" ry="78" fill="rgba(255,255,255,0.92)"/><ellipse cx="210" cy="232" rx="185" ry="60" fill="rgba(255,255,255,0.86)"/><ellipse cx="390" cy="190" rx="200" ry="65" fill="rgba(255,255,255,0.82)"/><ellipse cx="145" cy="252" rx="145" ry="46" fill="rgba(255,255,255,0.76)"/><ellipse cx="1230" cy="182" rx="235" ry="70" fill="rgba(255,255,255,0.88)"/><ellipse cx="1130" cy="206" rx="175" ry="56" fill="rgba(255,255,255,0.82)"/><ellipse cx="1370" cy="194" rx="175" ry="55" fill="rgba(255,255,255,0.74)"/><ellipse cx="1490" cy="218" rx="128" ry="42" fill="rgba(255,255,255,0.65)"/><ellipse cx="780" cy="142" rx="155" ry="47" fill="rgba(255,255,255,0.66)"/><ellipse cx="648" cy="166" rx="118" ry="37" fill="rgba(255,255,255,0.58)"/><ellipse cx="988" cy="158" rx="118" ry="37" fill="rgba(255,255,255,0.54)"/><path d="M-80,900 C50,480 150,555 300,595 C430,628 510,590 600,558 C672,530 744,524 840,506 C928,490 998,500 1080,528 C1168,558 1228,555 1328,525 C1428,495 1528,548 1680,572 L1680,900 Z" fill="url(#gr)"/><path d="M-80,900 C80,712 280,750 480,792 C680,834 880,798 1080,828 C1280,858 1480,818 1680,846 L1680,900 Z" fill="#3A8E20" opacity="0.52"/><path d="M-80,900 C160,862 420,872 720,882 C1020,892 1320,864 1680,878 L1680,900 Z" fill="#28700E" opacity="0.38"/></svg>`;
+const _BLISS_URL = `url("data:image/svg+xml,${encodeURIComponent(_BLISS)}") center / cover no-repeat`;
+
 const WALLPAPERS = {
+  bliss: _BLISS_URL,
   colline: `
     radial-gradient(ellipse at 30% 20%, rgba(0,80,180,0.4) 0%, transparent 50%),
     radial-gradient(ellipse at 70% 80%, rgba(0,40,120,0.3) 0%, transparent 50%),
@@ -57,6 +67,7 @@ export default function EspaceMillenium() {
   const [msnNotification, setMsnNotification] = useState(false);
   const [konamiActive, setKonamiActive] = useState(false);
   const [showBSOD, setShowBSOD] = useState(false);
+  const [showCrash, setShowCrash] = useState(false);
   const [iconKey, setIconKey] = useState(0);
   const idleTimerRef = useRef(null);
   const konamiRef = useRef([]);
@@ -119,6 +130,14 @@ export default function EspaceMillenium() {
     };
   }, [booted]);
 
+  // Crash dialog : une fois par session, entre 5 et 10 minutes après le démarrage
+  useEffect(() => {
+    if (!booted) return;
+    const delay = 300000 + Math.random() * 300000; // 5-10 min
+    const t = setTimeout(() => { playError(); setShowCrash(true); }, delay);
+    return () => clearTimeout(t);
+  }, [booted]);
+
   // Konami code: ↑↑↓↓←→←→BA
   useEffect(() => {
     if (!booted) return;
@@ -170,7 +189,7 @@ export default function EspaceMillenium() {
         transition: "background 0.5s ease",
         fontFamily: "'Tahoma', 'Segoe UI', sans-serif",
         animation: shaking ? "wizz 0.06s 7 alternate" : "none",
-        cursor: "default",
+        cursor: XP_CURSOR,
       }}
       onClick={() => { iconsRef.current?.clearSelection(); setCtxMenu(null); }}
       onContextMenu={(e) => {
@@ -226,7 +245,7 @@ export default function EspaceMillenium() {
 
       {showClippy && <Clippy message={clippyMsg} onClose={() => setShowClippy(false)} />}
 
-      <XPNotifications muted={muted} />
+      <XPNotifications />
 
       {msnNotification && (
         <MSNNotification
@@ -317,6 +336,7 @@ export default function EspaceMillenium() {
             { sep: true },
             { label: "Fond d'écran ▸", action: () => setCtxMenu(prev => ({ ...prev, showWp: !prev?.showWp })) },
             ...(ctxMenu?.showWp ? [
+              { label: `  ${!customWallpaper && wallpaper === 'bliss' ? "●" : "○"} Bliss (XP classique)`, action: () => { setWallpaper('bliss'); setCustomWallpaper(null); saveState('wallpaper', 'bliss'); saveState('custom_wallpaper', null); setCtxMenu(null); }, wp: true },
               { label: `  ${!customWallpaper && wallpaper === 'colline' ? "●" : "○"} Colline verte`, action: () => { setWallpaper('colline'); setCustomWallpaper(null); saveState('wallpaper', 'colline'); saveState('custom_wallpaper', null); setCtxMenu(null); }, wp: true },
               { label: `  ${!customWallpaper && wallpaper === 'espace' ? "●" : "○"} Espace`, action: () => { setWallpaper('espace'); setCustomWallpaper(null); saveState('wallpaper', 'espace'); saveState('custom_wallpaper', null); setCtxMenu(null); }, wp: true },
               { label: `  ${!customWallpaper && wallpaper === 'matrix' ? "●" : "○"} Matrix`, action: () => { setWallpaper('matrix'); setCustomWallpaper(null); saveState('wallpaper', 'matrix'); saveState('custom_wallpaper', null); setCtxMenu(null); }, wp: true },
@@ -363,6 +383,8 @@ export default function EspaceMillenium() {
           </div>
         </div>
       )}
+
+      {showCrash && <CrashDialog onClose={() => setShowCrash(false)} />}
 
       {/* BSOD comedy */}
       {showBSOD && (

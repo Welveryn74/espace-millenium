@@ -325,6 +325,12 @@ export function playMismatch() {
   playTone(200, 0.08, 'sine', 0.05);
 }
 
+/** Ding notification — bulle système Windows XP (2 notes douces) */
+export function playNotifBalloon() {
+  playTone(1047, 0.09, 'sine', 0.045, 0);    // C6
+  playTone(1319, 0.25, 'sine', 0.040, 0.09); // E6
+}
+
 /** Tir bille — sweep montant court */
 export function playShoot() {
   const ctx = getCtx();

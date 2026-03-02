@@ -121,33 +121,55 @@ export default function BootScreen({ onComplete }) {
     return () => timers.forEach(clearTimeout);
   }, [phase]);
 
-  // XP boot chime on phase 3
+  // XP boot chime on phase 3 — accord harmonique multi-couches avec reverb simulé
   useEffect(() => {
     if (phase !== 3) return;
     if (localStorage.getItem('em_muted') === 'true') return;
     try {
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      // 4 notes sinus ascendantes en accord majeur
-      const notes = [
-        { freq: 523, start: 0, dur: 0.4 },   // C5
-        { freq: 659, start: 0.3, dur: 0.4 },  // E5
-        { freq: 784, start: 0.6, dur: 0.4 },  // G5
-        { freq: 1047, start: 0.9, dur: 0.6 },  // C6
-      ];
       const now = ctx.currentTime;
-      notes.forEach(({ freq, start, dur }) => {
+
+      // Reverb simulé : delay avec feedback
+      const delay = ctx.createDelay(0.5);
+      delay.delayTime.value = 0.065;
+      const fbGain = ctx.createGain();
+      fbGain.gain.value = 0.32;
+      const wetGain = ctx.createGain();
+      wetGain.gain.value = 0.18;
+      delay.connect(fbGain);
+      fbGain.connect(delay);
+      delay.connect(wetGain);
+      wetGain.connect(ctx.destination);
+
+      // Accord XP : arpège montant E4→Ab4→B4→E5→Ab5→B5
+      // Chaque note entre progressivement, se chevauche avec les suivantes
+      const notes = [
+        { freq: 330, start: 0.00, attack: 0.55, hold: 2.0, release: 1.6, vol: 0.055 }, // E4
+        { freq: 415, start: 0.38, attack: 0.45, hold: 1.8, release: 1.5, vol: 0.055 }, // Ab4
+        { freq: 494, start: 0.72, attack: 0.40, hold: 1.6, release: 1.5, vol: 0.060 }, // B4
+        { freq: 660, start: 1.08, attack: 0.32, hold: 1.4, release: 1.2, vol: 0.055 }, // E5
+        { freq: 831, start: 1.44, attack: 0.28, hold: 1.0, release: 1.2, vol: 0.045 }, // Ab5
+        { freq: 988, start: 1.80, attack: 0.35, hold: 0.8, release: 1.0, vol: 0.035 }, // B5
+      ];
+
+      notes.forEach(({ freq, start, attack, hold, release, vol }) => {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
-        osc.type = "sine";
+        osc.type = 'sine';
         osc.frequency.value = freq;
-        gain.gain.setValueAtTime(0.06, now + start);
-        gain.gain.setValueAtTime(0.06, now + start + dur * 0.6);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + start + dur);
-        osc.connect(gain).connect(ctx.destination);
-        osc.start(now + start);
-        osc.stop(now + start + dur + 0.01);
+        const t = now + start;
+        gain.gain.setValueAtTime(0.001, t);
+        gain.gain.linearRampToValueAtTime(vol, t + attack);
+        gain.gain.setValueAtTime(vol, t + attack + hold);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + attack + hold + release);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        gain.connect(delay);
+        osc.start(t);
+        osc.stop(t + attack + hold + release + 0.1);
       });
-      setTimeout(() => ctx.close().catch(() => {}), 3000);
+
+      setTimeout(() => ctx.close().catch(() => {}), 6000);
     } catch (e) { /* audio not supported */ }
   }, [phase]);
 
