@@ -114,7 +114,7 @@ export default function FirstPersonController({ enabled = true }) {
     const yaw = camera.rotation.y;
     const sinY = Math.sin(yaw);
     const cosY = Math.cos(yaw);
-    const moveX = -fwd * sinY * SPEED * delta;
+    const moveX = fwd * sinY * SPEED * delta;
     const moveZ = fwd * cosY * SPEED * delta;
 
     const pos = posRef.current;
