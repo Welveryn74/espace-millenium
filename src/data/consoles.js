@@ -32,7 +32,7 @@ export const CONSOLES = [
       { name: "Pokémon Émeraude", emoji: "💎", img: "/images/consoles/games/pokemon-emeraude.png", desc: "La Battle Frontier, les concours Pokémon, la base secrète que tu décorais pendant des heures. 200h au compteur minimum. Tu cherches encore Latias.", year: "2004" },
       { name: "Advance Wars", emoji: "🎖️", img: "/images/consoles/games/advance-wars.png", desc: "Le jeu de stratégie qui t'a appris à réfléchir. Chaque tour prenait 20 minutes parce que tu voulais le S-Rank. Andy vs Sturm, la guerre totale.", year: "2001" },
       { name: "Mario Kart: Super Circuit", emoji: "🏎️", desc: "Mario Kart dans ta poche. Les circuits SNES en bonus, le mode multijoueur avec le câble link. Les dérapages n'avaient pas de secret pour toi.", year: "2001" },
-      { name: "Metroid Fusion", emoji: "🔬", img: "/images/consoles/games/metroid-fusion.png", desc: "Samus dans un vaisseau spatial infesté de parasites X. L'ambiance flippante, le SA-X qui te pourchasse... T'avais la chair de poule sur un écran de 6cm.", year: "2002" },
+      { name: "Metroid Fusion", emoji: "🔬", desc: "Samus dans un vaisseau spatial infesté de parasites X. L'ambiance flippante, le SA-X qui te pourchasse... T'avais la chair de poule sur un écran de 6cm.", year: "2002" },
       { name: "Casse-briques", emoji: "🧱", img: "/images/consoles/games/casse-briques.svg", desc: "La raquette, la balle, les briques colorées. Simple comme bonjour mais impossible de s'arrêter. \"Encore un level !\" jusqu'à ce que maman éteigne la lumière.", year: "2001", playable: true, miniGame: "cassebriques" },
     ],
   },
@@ -49,7 +49,7 @@ export const CONSOLES = [
     bootText: "Sony Computer Entertainment\n\nPlayStation®2",
     games: [
       { name: "GTA San Andreas", emoji: "🌴", img: "/images/consoles/games/gta-san-andreas.png", desc: "\"Ah shit, here we go again.\" Grove Street, les missions de CJ, le cheat code de l'hélicoptère. Tu faisais semblant de jouer à autre chose quand ta mère rentrait.", year: "2004" },
-      { name: "Kingdom Hearts", emoji: "🗝️", img: "/images/consoles/games/kingdom-hearts.png", desc: "Disney + Final Fantasy = ton cerveau de 10 ans qui explose. Sora, Donald, Dingo contre les Sans-Cœur. T'as pleuré à la fin, avoue.", year: "2002" },
+      { name: "Kingdom Hearts", emoji: "🗝️", desc: "Disney + Final Fantasy = ton cerveau de 10 ans qui explose. Sora, Donald, Dingo contre les Sans-Cœur. T'as pleuré à la fin, avoue.", year: "2002" },
       { name: "Jak & Daxter", emoji: "🦎", img: "/images/consoles/games/jak-daxter.png", desc: "Le duo le plus cool du jeu vidéo. Un monde ouvert coloré, zéro temps de chargement. La belette orange te faisait mourir de rire.", year: "2001" },
       { name: "Ratchet & Clank", emoji: "🔧", img: "/images/consoles/games/ratchet-clank.svg", desc: "Des armes complètement dingues, un lombax mécanicien et un petit robot. Le Groovitron qui fait danser les ennemis, c'était du génie.", year: "2002" },
       { name: "Final Fantasy X", emoji: "⚔️", img: "/images/consoles/games/final-fantasy-x.svg", desc: "Tidus et Yuna, Zanarkand, le Blitzball. Le premier doublé en voix. La scène du rire forcé, on en parle encore. T'as versé ta larme à la fin.", year: "2001" },
@@ -68,7 +68,7 @@ export const CONSOLES = [
     bootText: "Sony Computer Entertainment\n\nPSP™",
     games: [
       { name: "GTA Liberty City Stories", emoji: "🏙️", img: "/images/consoles/games/gta-liberty-city.png", desc: "GTA. Dans ta poche. Dans le bus scolaire. Le prof de maths n'y a vu que du feu. Liberty City version portable, c'était la révolution.", year: "2005" },
-      { name: "Monster Hunter Freedom Unite", emoji: "🐉", img: "/images/consoles/games/monster-hunter.png", desc: "Des heures à farmer le Rathalos avec tes potes en ad-hoc. Chaque quête était une épopée. Ton pouce gauche s'en souvient encore (le fameux \"claw grip\").", year: "2008" },
+      { name: "Monster Hunter Freedom Unite", emoji: "🐉", desc: "Des heures à farmer le Rathalos avec tes potes en ad-hoc. Chaque quête était une épopée. Ton pouce gauche s'en souvient encore (le fameux \"claw grip\").", year: "2008" },
       { name: "Lumines", emoji: "🎵", img: "/images/consoles/games/lumines.svg", desc: "Tetris rencontre la musique électro. Les blocs tombent au rythme du beat. Le genre de jeu où tu lèves la tête et il est 4h du matin.", year: "2004" },
       { name: "Tekken: Dark Resurrection", emoji: "👊", desc: "Les combos de Jin, les tournois au fond du bus, l'écran qui se passait de main en main. Le meilleur jeu de baston portable, point final.", year: "2006" },
     ],

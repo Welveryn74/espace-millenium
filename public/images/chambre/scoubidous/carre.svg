@@ -1,20 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200">
-  <!-- Scoubidou carré — 4 fils tressés en section carrée -->
+  <!-- Scoubidou carré — 4 fils tressés en section carrée, bleu et vert -->
   <defs>
     <linearGradient id="sc1" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#FF1493"/>
-      <stop offset="100%" stop-color="#FF69B4"/>
+      <stop offset="0%" stop-color="#4488FF"/>
+      <stop offset="100%" stop-color="#66AAFF"/>
     </linearGradient>
     <linearGradient id="sc2" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#00BFFF"/>
-      <stop offset="100%" stop-color="#87CEEB"/>
+      <stop offset="0%" stop-color="#44FF88"/>
+      <stop offset="100%" stop-color="#66FFAA"/>
     </linearGradient>
   </defs>
   <!-- Keyring -->
   <circle cx="50" cy="15" r="10" fill="none" stroke="#C0C0C0" stroke-width="3"/>
   <!-- Square braid segments -->
   <g transform="translate(30, 25)">
-    <!-- Alternating pink and blue in square pattern -->
+    <!-- Alternating blue and green in square pattern -->
     <rect x="8" y="0" width="12" height="18" rx="2" fill="url(#sc1)"/>
     <rect x="20" y="0" width="12" height="18" rx="2" fill="url(#sc2)"/>
     <rect x="14" y="16" width="12" height="18" rx="2" fill="url(#sc2)"/>
@@ -31,8 +31,8 @@
     <rect x="20" y="96" width="12" height="18" rx="2" fill="url(#sc2)"/>
   </g>
   <!-- Dangling ends -->
-  <path d="M 40 140 Q 38 160 35 175" fill="none" stroke="#FF1493" stroke-width="3" stroke-linecap="round"/>
-  <path d="M 45 140 Q 42 165 40 180" fill="none" stroke="#00BFFF" stroke-width="3" stroke-linecap="round"/>
-  <path d="M 55 140 Q 58 165 60 180" fill="none" stroke="#FF1493" stroke-width="3" stroke-linecap="round"/>
-  <path d="M 60 140 Q 62 160 65 175" fill="none" stroke="#00BFFF" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 40 140 Q 38 160 35 175" fill="none" stroke="#4488FF" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 45 140 Q 42 165 40 180" fill="none" stroke="#44FF88" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 55 140 Q 58 165 60 180" fill="none" stroke="#4488FF" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 60 140 Q 62 160 65 175" fill="none" stroke="#44FF88" stroke-width="3" stroke-linecap="round"/>
 </svg>
