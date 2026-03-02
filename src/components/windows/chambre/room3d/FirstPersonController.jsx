@@ -3,18 +3,19 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { ROOM_BOUNDS, FURNITURE_COLLIDERS } from "./roomColliders";
 
 const SPEED = 2.0;
+const TURN_SPEED = 2.0; // rad/s for A/D keyboard rotation
 const MAX_DELTA = 0.05; // clamp to 50ms
 const LERP = 0.08;
-const MAX_YAW = (50 * Math.PI) / 180;
+const MAX_MOUSE_YAW = (50 * Math.PI) / 180; // ±50° mouse look offset
 const MAX_PITCH = (25 * Math.PI) / 180;
 const PLAYER_RADIUS = 0.25;
 
 // AZERTY + QWERTY + arrows combined
 const FORWARD = new Set(["KeyW", "KeyZ", "ArrowUp"]);
 const BACK = new Set(["KeyS", "ArrowDown"]);
-const LEFT = new Set(["KeyA", "KeyQ", "ArrowLeft"]);
-const RIGHT = new Set(["KeyD", "ArrowRight"]);
-const ALL_KEYS = new Set([...FORWARD, ...BACK, ...LEFT, ...RIGHT]);
+const TURN_LEFT = new Set(["KeyA", "KeyQ", "ArrowLeft"]);
+const TURN_RIGHT = new Set(["KeyD", "ArrowRight"]);
+const ALL_KEYS = new Set([...FORWARD, ...BACK, ...TURN_LEFT, ...TURN_RIGHT]);
 
 function circleVsAABB(cx, cz, r, box) {
   const nearX = Math.max(box.minX, Math.min(cx, box.maxX));
@@ -30,6 +31,7 @@ export default function FirstPersonController({ enabled = true }) {
   const target = useRef({ x: 0, y: 0 });
   const keys = useRef(new Set());
   const posRef = useRef([0, 1.5, 1.5]);
+  const yawRef = useRef(0); // accumulated keyboard yaw (body orientation)
 
   // Init camera position
   useEffect(() => {
@@ -81,35 +83,39 @@ export default function FirstPersonController({ enabled = true }) {
     if (!enabled) return;
     const delta = Math.min(rawDelta, MAX_DELTA);
 
-    // --- Mouse look (lerp) ---
+    // --- Keyboard rotation (A/D turn the body yaw) ---
+    const k = keys.current;
+    let turn = 0;
+    for (const code of k) {
+      if (TURN_LEFT.has(code)) turn += 1;
+      if (TURN_RIGHT.has(code)) turn -= 1;
+    }
+    if (turn !== 0) {
+      yawRef.current += turn * TURN_SPEED * delta;
+    }
+
+    // --- Mouse look offset (lerp) ---
     target.current.x += (mouse.current.x - target.current.x) * LERP;
     target.current.y += (mouse.current.y - target.current.y) * LERP;
+
+    // Final camera rotation: body yaw + mouse offset
     camera.rotation.order = "YXZ";
-    camera.rotation.y = -target.current.x * MAX_YAW;
+    camera.rotation.y = yawRef.current + (-target.current.x * MAX_MOUSE_YAW);
     camera.rotation.x = target.current.y * MAX_PITCH;
 
-    // --- WASD movement ---
-    const k = keys.current;
+    // --- W/S forward/back movement (follows final yaw, no strafe) ---
     let fwd = 0;
-    let strafe = 0;
     for (const code of k) {
       if (FORWARD.has(code)) fwd -= 1;
       if (BACK.has(code)) fwd += 1;
-      if (LEFT.has(code)) strafe -= 1;
-      if (RIGHT.has(code)) strafe += 1;
     }
-    if (fwd === 0 && strafe === 0) return;
-
-    // Normalize diagonal
-    const len = Math.sqrt(fwd * fwd + strafe * strafe);
-    fwd /= len;
-    strafe /= len;
+    if (fwd === 0) return;
 
     const yaw = camera.rotation.y;
     const sinY = Math.sin(yaw);
     const cosY = Math.cos(yaw);
-    const moveX = (strafe * cosY - fwd * sinY) * SPEED * delta;
-    const moveZ = (strafe * sinY + fwd * cosY) * SPEED * delta;
+    const moveX = -fwd * sinY * SPEED * delta;
+    const moveZ = fwd * cosY * SPEED * delta;
 
     const pos = posRef.current;
     // Try X independently (wall-sliding)

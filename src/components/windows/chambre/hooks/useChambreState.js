@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { COUETTES } from "../../../../data/chambreItems";
+import { logActivity } from "../../../../utils/storage";
 import { startChambreAmbient, stopChambreAmbient, setChambreNightMode, playLampClick } from "../../../../utils/chambreSounds";
 import useTamagotchi from "./useTamagotchi";
 import usePanini from "./usePanini";
@@ -55,6 +56,11 @@ export default function useChambreState() {
       osc.stop(ctx.currentTime + 0.5);
     } catch (_) { /* silent fallback */ }
   }, []);
+
+  // Log item views
+  useEffect(() => {
+    if (activeItem) logActivity(`chambre_view_${activeItem}`);
+  }, [activeItem]);
 
   const goBack = () => setActiveItem(null);
   const currentCouette = COUETTES.find((c) => c.id === couette);

@@ -1,10 +1,10 @@
 import MSNWindow from "../components/windows/MSNWindow";
 import TVWindow from "../components/windows/TVWindow";
 import MP3Window from "../components/windows/MP3Window";
-import SkyblogWindow from "../components/windows/SkyblogWindow";
+import SkyblogWindow from "../components/windows/skyblog/SkyblogWindow";
 
-import CartableWindow from "../components/windows/CartableWindow";
-import SalleJeuxWindow from "../components/windows/SalleJeuxWindow";
+import CartableWindow from "../components/windows/cartable/CartableWindow";
+import SalleJeuxWindow from "../components/windows/salleJeux/SalleJeuxWindow";
 import ChambreWindow from "../components/windows/chambre/ChambreWindow";
 import DemineurWindow from "../components/windows/DemineurWindow";
 import PaintWindow from "../components/windows/PaintWindow";

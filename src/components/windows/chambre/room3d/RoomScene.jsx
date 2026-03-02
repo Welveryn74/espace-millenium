@@ -407,6 +407,50 @@ function Objects3D({ items }) {
 }
 
 // ---------------------------------------------------------------------------
+// Lava lamp — cylinder with glow
+// ---------------------------------------------------------------------------
+function LavaLamp3D({ lampOn }) {
+  const blobRef = useRef();
+  useFrame(({ clock }) => {
+    if (blobRef.current) {
+      const t = clock.getElapsedTime();
+      blobRef.current.position.y = -0.9 + 0.75 + Math.sin(t * 0.8) * 0.04;
+    }
+  });
+  return (
+    <group position={[-0.9, 0.58, -1.85]}>
+      {/* Base */}
+      <mesh position={[0, 0, 0]}>
+        <cylinderGeometry args={[0.03, 0.035, 0.04, 6]} />
+        <meshLambertMaterial color="#666" flatShading />
+      </mesh>
+      {/* Glass body */}
+      <mesh position={[0, 0.12, 0]}>
+        <cylinderGeometry args={[0.025, 0.03, 0.2, 6]} />
+        <meshLambertMaterial color="#331133" transparent opacity={0.6} flatShading />
+      </mesh>
+      {/* Blob inside */}
+      <mesh ref={blobRef} position={[0, 0.1, 0]}>
+        <sphereGeometry args={[0.018, 5, 4]} />
+        <meshBasicMaterial color="#FF3366" transparent opacity={0.8} />
+      </mesh>
+      {/* Cap */}
+      <mesh position={[0, 0.23, 0]}>
+        <cylinderGeometry args={[0.02, 0.025, 0.02, 6]} />
+        <meshLambertMaterial color="#666" flatShading />
+      </mesh>
+      {/* Glow */}
+      {lampOn && (
+        <mesh position={[0, 0.12, 0]}>
+          <sphereGeometry args={[0.04, 6, 4]} />
+          <meshBasicMaterial color="#FF3366" transparent opacity={0.08} />
+        </mesh>
+      )}
+    </group>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Dynamic lighting — smooth lerp between lamp on/off
 // ---------------------------------------------------------------------------
 function RoomLighting({ lampOn }) {
@@ -487,6 +531,9 @@ export default function RoomScene({ lampOn, couetteColor, fpsEnabled }) {
 
       {/* Peluches on bed */}
       <Peluches />
+
+      {/* Lava lamp on nightstand */}
+      <LavaLamp3D lampOn={lampOn} />
 
       {/* Items on nightstand */}
       <Objects3D items={NIGHTSTAND_ITEMS} />

@@ -2,22 +2,31 @@ import { useState } from "react";
 import NostalImg from "../../../NostalImg";
 import { JEUX_SOCIETE } from "../../../../data/chambreItems";
 import PetitsChevauxGame from "../../minigames/PetitsChevauxGame";
+import MilleBornesGame from "../../minigames/MilleBornesGame";
+import MonopolySpeedGame from "../../minigames/MonopolySpeedGame";
 import { viewTitle, viewSubtitle, viewFlavor, C } from "../../../../styles/chambreStyles";
+
+const PLAYABLE = {
+  petitsChevaux: { label: "Jouer !", component: PetitsChevauxGame },
+  unMille: { label: "Jouer !", component: MilleBornesGame },
+  monopoly: { label: "Jouer !", component: MonopolySpeedGame },
+};
 
 export default function JeuxSocieteView() {
   const [open, setOpen] = useState(null);
-  const [playingChevaux, setPlayingChevaux] = useState(false);
+  const [playing, setPlaying] = useState(null); // game id
   const [hovered, setHovered] = useState(null);
 
-  if (playingChevaux) {
+  if (playing && PLAYABLE[playing]) {
+    const GameComp = PLAYABLE[playing].component;
     return (
       <div style={{ animation: "fadeIn 0.3s ease-out" }}>
-        <button onClick={() => setPlayingChevaux(false)} style={{
+        <button onClick={() => setPlaying(null)} style={{
           background: "none", border: `1px solid ${C.primary}60`,
           color: C.primary, padding: "4px 12px", borderRadius: 4, cursor: "pointer",
           fontSize: 11, fontFamily: "'Tahoma', sans-serif", marginBottom: 10,
-        }}>← Retour aux jeux</button>
-        <PetitsChevauxGame onBack={() => setPlayingChevaux(false)} />
+        }}>Retour aux jeux</button>
+        <GameComp onBack={() => setPlaying(null)} />
       </div>
     );
   }
@@ -34,6 +43,7 @@ export default function JeuxSocieteView() {
         {JEUX_SOCIETE.map((g) => {
           const isOpen = open === g.id;
           const isHovered = hovered === g.id;
+          const playable = PLAYABLE[g.id];
           return (
             <div
               key={g.id}
@@ -61,15 +71,16 @@ export default function JeuxSocieteView() {
                   <NostalImg src={g.img} fallback={g.emoji} size={isOpen ? 36 : 26} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ color: C.text, fontSize: 13, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif" }}>
+                  <div style={{ color: C.text, fontSize: 13, fontWeight: "bold", fontFamily: "'Tahoma', sans-serif", display: "flex", alignItems: "center", gap: 6 }}>
                     {g.name}
+                    {playable && <span style={{ fontSize: 8, padding: "1px 4px", borderRadius: 3, background: "#4CAF5030", color: "#4CAF50" }}>JOUABLE</span>}
                   </div>
                   <span style={{
                     fontSize: 9, padding: "1px 6px", borderRadius: 4,
                     background: `${g.color}25`, color: g.color, fontWeight: "bold",
                     display: "inline-block", marginTop: 2,
                   }}>
-                    👥 {g.players} joueurs
+                    {g.players} joueurs
                   </span>
                 </div>
                 <span style={{
@@ -88,10 +99,10 @@ export default function JeuxSocieteView() {
                     <NostalImg src={g.img} fallback={g.emoji} size={80} style={{ borderRadius: 6, flexShrink: 0 }} />
                     <div style={{ color: C.textDim, fontSize: 11, lineHeight: 1.6 }}>{g.desc}</div>
                   </div>
-                  {g.id === "petitsChevaux" && (
+                  {playable && (
                     <div style={{ padding: "0 14px 12px 14px" }}>
                       <button
-                        onClick={(e) => { e.stopPropagation(); setPlayingChevaux(true); }}
+                        onClick={(e) => { e.stopPropagation(); setPlaying(g.id); }}
                         style={{
                           width: "100%", background: `${g.color}25`, color: C.text,
                           border: `1px solid ${g.color}50`, padding: "6px 0",

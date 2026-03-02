@@ -115,6 +115,7 @@ export default function RoomInteraction({
   onToggleLamp,
   hoveredItem,
   setHoveredItem,
+  disabled,
 }) {
   const handleHover = useCallback(
     (id, entering) => {
@@ -135,6 +136,8 @@ export default function RoomInteraction({
     },
     [onToggleLamp, setActiveItem]
   );
+
+  if (disabled) return null;
 
   return (
     <group>

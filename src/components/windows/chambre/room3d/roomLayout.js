@@ -111,6 +111,9 @@ export const NIGHTSTAND_ITEMS = [
   // Journal intime
   { type: "box", size: [0.06, 0.08, 0.015], color: "#8B4513",
     position: [-0.55, 0.62, -1.85], rotation: [0, 0.2, 0] },
+  // Nokia phone — small dark block
+  { type: "box", size: [0.04, 0.015, 0.08], color: "#1a1a2e",
+    position: [-0.55, 0.59, -1.68] },
 ];
 
 // Objects on shelves
@@ -134,6 +137,16 @@ export const SHELF_ITEMS = [
     color: "#44FF44", position: [1.95, 2.25, -2.2], rotation: [0, 0, -0.15] },
   { type: "cylinder", radius: 0.01, height: 0.2, segments: 5,
     color: "#4488FF", position: [2.0, 2.27, -2.2], rotation: [0, 0, 0.1] },
+  // Card binder on middle shelf
+  { type: "box", size: [0.14, 0.1, 0.18], color: "#1565C0",
+    position: [1.55, 1.82, -2.25] },
+  // Dino figurines on middle shelf (far right)
+  { type: "sphere", radius: 0.04, segments: 5, color: "#4CAF50",
+    position: [2.45, 1.82, -2.2] },
+  { type: "sphere", radius: 0.035, segments: 5, color: "#FF9800",
+    position: [2.55, 1.81, -2.2] },
+  { type: "sphere", radius: 0.03, segments: 5, color: "#F44336",
+    position: [2.5, 1.8, -2.25] },
   // Middle shelf — books
   { type: "box", size: [0.06, 0.15, 0.12], color: "#C62828",
     position: [1.5, 1.85, -2.3] },
@@ -182,6 +195,14 @@ export const FLOOR_OBJECTS = [
   // Sous le lit indicator — small dark zone
   { type: "box", size: [0.6, 0.005, 0.2], color: "#0a0612",
     position: [0.6, 0.005, -0.2] },
+
+  // Diddl sheets scattered on floor
+  { type: "box", size: [0.12, 0.003, 0.16], color: "#FFB3B3",
+    position: [-1.15, 0.003, 0.25], rotation: [0, 0.3, 0] },
+  { type: "box", size: [0.12, 0.003, 0.16], color: "#B3FFB3",
+    position: [-1.25, 0.003, 0.35], rotation: [0, -0.2, 0] },
+  { type: "box", size: [0.12, 0.003, 0.16], color: "#FFE082",
+    position: [-1.18, 0.006, 0.3], rotation: [0, 0.5, 0] },
 ];
 
 // Interactive hitbox zones — match ROOM_ITEMS ids from chambreItems.js
@@ -202,6 +223,13 @@ export const HITBOXES = [
   { id: "billes",      position: [-1.42, 0.06, 0.5],  size: [0.45, 0.35], isFloor: true },
   { id: "beyblade",    position: [-2.0, 0.03, 0.82],  size: [0.45, 0.35], isFloor: true },
   { id: "sousLelit",   position: [0.6, 0.01, -0.2],   size: [0.65, 0.25], isFloor: true },
+  // New items — Sprint 1.2 / 1.3
+  { id: "cartes",      position: [1.55, 1.85, -2.2], size: [0.3, 0.2] },
+  { id: "lampeALave",  position: [-0.9, 0.75, -1.85],size: [0.12, 0.3] },
+  { id: "telephone",   position: [-0.55, 0.6, -1.68],size: [0.1, 0.08] },
+  { id: "dinos",       position: [2.5, 1.85, -2.2],  size: [0.4, 0.25] },
+  { id: "posters",     position: [0.2, 2.2, -2.40],  size: [1.6, 0.9] },
+  { id: "diddl",       position: [-1.2, 0.01, 0.3],  size: [0.3, 0.25], isFloor: true },
 ];
 
 // Lighting presets

@@ -12,6 +12,12 @@ import SousLeLitView from "./details/SousLeLitView";
 import JournalView from "./details/JournalView";
 import RadioView from "./details/RadioView";
 import BeybladeArena from "../BeybladeArena";
+import CartesCollectionView from "./details/CartesCollectionView";
+import LampeALaveView from "./details/LampeALaveView";
+import TelephoneView from "./details/TelephoneView";
+import DinosView from "./details/DinosView";
+import PostersView from "./details/PostersView";
+import DiddlView from "./details/DiddlView";
 
 const backBtnStyle = {
   background: "none",
@@ -97,6 +103,13 @@ export default function ChambreDetailRouter({ activeItem, goBack, state }) {
             changeStation={radio.changeStation}
           />
         )}
+        {/* New views — Sprint 1.2 & 1.3 */}
+        {activeItem === "cartes" && <CartesCollectionView />}
+        {activeItem === "lampeALave" && <LampeALaveView />}
+        {activeItem === "telephone" && <TelephoneView />}
+        {activeItem === "dinos" && <DinosView />}
+        {activeItem === "posters" && <PostersView />}
+        {activeItem === "diddl" && <DiddlView />}
       </div>
     </div>
   );
