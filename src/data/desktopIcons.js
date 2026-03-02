@@ -8,6 +8,7 @@ export const DESKTOP_ICONS = [
   { id: "cartable", label: "Mon\nCartable", emoji: "\u{1F392}", img: "/images/desktop/cartable.svg" },
   { id: "salleJeux", label: "Salle\nde Jeux", emoji: "\u{1F579}\uFE0F", img: "/images/desktop/sallejeux.png" },
   { id: "chambre", label: "Ma\nChambre", emoji: "\u{1F6CF}\uFE0F", img: "/images/desktop/chambre.svg" },
+  { id: "mondeReel", label: "Le Monde\nRéel", emoji: "\u{1F3A5}" },
   { id: "dehors", label: "Dehors !", emoji: "\u{1F333}" },
   { id: "demineur", label: "Démineur", emoji: "\u{1F4A3}", img: "/images/desktop/demineur.png" },
   { id: "paint", label: "Paint", emoji: "\u{1F3A8}", img: "/images/desktop/paint.png" },

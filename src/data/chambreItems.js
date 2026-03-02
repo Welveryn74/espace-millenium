@@ -80,6 +80,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "38%", left: "35%" },
     hint: "Choisis ta housse !",
+    vhsSubtitle: "On dormait toujours du côté du mur...",
   },
   {
     id: "peluches",
@@ -89,6 +90,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "30%", left: "55%" },
     hint: "Fais un câlin !",
+    vhsSubtitle: "Celui-là, c'était le préféré...",
   },
 
   // --- Table de nuit (left) ---
@@ -100,6 +102,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "42%", left: "12%" },
     hint: "Il a faim !",
+    vhsSubtitle: "Faut pas oublier de le nourrir !",
   },
   {
     id: "lampe",
@@ -110,6 +113,7 @@ export const ROOM_ITEMS = [
     toggle: true,
     position: { top: "28%", left: "8%" },
     hint: "Clic pour allumer/éteindre",
+    vhsSubtitle: "Clic.",
   },
 
   // --- Étagère (top/back wall) ---
@@ -121,6 +125,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "8%", left: "70%" },
     hint: "Ouvre le catalogue !",
+    vhsSubtitle: "Il a passé tout le week-end à monter ça...",
   },
   {
     id: "jeuxSociete",
@@ -130,6 +135,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "8%", left: "85%" },
     hint: "Soirée jeux en famille !",
+    vhsSubtitle: "Soirée jeux du dimanche soir !",
   },
   {
     id: "scoubidous",
@@ -139,6 +145,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "14%", left: "78%" },
     hint: "Dessus, dessous, dessus...",
+    vhsSubtitle: "Dessus, dessous, dessus, dessous...",
   },
 
   // --- Par terre (bottom) ---
@@ -150,6 +157,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "72%", left: "65%" },
     hint: "Il manque des stickers...",
+    vhsSubtitle: "T'as des doubles ? Je t'échange !",
   },
   {
     id: "pateAProut",
@@ -159,6 +167,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "78%", left: "25%" },
     hint: "Ose appuyer.",
+    vhsSubtitle: "Non mais c'est dégoûtant !",
   },
   {
     id: "billes",
@@ -168,6 +177,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "75%", left: "45%" },
     hint: "Ouvre ta pochette !",
+    vhsSubtitle: "Montre-nous ta collection !",
   },
   {
     id: "beyblade",
@@ -177,6 +187,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "82%", left: "82%" },
     hint: "3, 2, 1... LET IT RIP !",
+    vhsSubtitle: "3, 2, 1... LET IT RIP !",
   },
 
   // --- Table de nuit (new items) ---
@@ -188,6 +199,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "44%", left: "4%" },
     hint: "Quelle heure il est ?",
+    vhsSubtitle: "Déjà cette heure-là ?!",
   },
   {
     id: "journal",
@@ -197,6 +209,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "36%", left: "16%" },
     hint: "Cher journal...",
+    vhsSubtitle: "Chut, c'est secret !",
   },
   {
     id: "radio",
@@ -206,6 +219,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "38%", left: "2%" },
     hint: "Écoute la radio !",
+    vhsSubtitle: "Écoute ce qu'y a à la radio...",
   },
 
   // --- Sous le lit ---
@@ -217,6 +231,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "62%", left: "42%" },
     hint: "Qu'est-ce qui se cache là-dessous ?",
+    vhsSubtitle: "Y'a quoi là-dessous ?",
   },
 
   // --- Nouveaux objets (Sprint 1.2 / 1.3) ---
@@ -228,6 +243,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "14%", left: "65%" },
     hint: "T'as des doubles ?",
+    vhsSubtitle: "Regarde, il a toute la collection !",
   },
   {
     id: "lampeALave",
@@ -237,6 +253,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "28%", left: "16%" },
     hint: "Hypnotisant...",
+    vhsSubtitle: "C'est hypnotisant ce truc...",
   },
   {
     id: "telephone",
@@ -246,6 +263,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "44%", left: "8%" },
     hint: "Slt sa va ?",
+    vhsSubtitle: "Slt, sa va ? Mdr",
   },
   {
     id: "dinos",
@@ -255,6 +273,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "8%", left: "60%" },
     hint: "ROAAAAR !",
+    vhsSubtitle: "ROAAAAR !!",
   },
   {
     id: "posters",
@@ -264,6 +283,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "20%", left: "30%" },
     hint: "Personnalise ton mur !",
+    vhsSubtitle: "Regarde tous ses posters !",
   },
   {
     id: "diddl",
@@ -273,6 +293,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "70%", left: "55%" },
     hint: "Ça sent la fraise !",
+    vhsSubtitle: "Ça sent bon la fraise !",
   },
 
   // --- Jouets iconiques (Sprint P3) ---
@@ -284,6 +305,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "14%", left: "72%" },
     hint: "Ferme un œil et tourne...",
+    vhsSubtitle: "Ferme un œil et tourne !",
   },
   {
     id: "bouleDisco",
@@ -293,6 +315,7 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "8%", left: "78%" },
     hint: "Ambiance fête !",
+    vhsSubtitle: "Ambiance boum d'anniversaire !",
   },
   {
     id: "voitureRC",
@@ -302,5 +325,6 @@ export const ROOM_ITEMS = [
     interactive: true,
     position: { top: "80%", left: "35%" },
     hint: "VROOOM ! ...les piles sont mortes.",
+    vhsSubtitle: "VROOOM ! ...ah, les piles sont mortes.",
   },
 ];
