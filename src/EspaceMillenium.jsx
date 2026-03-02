@@ -51,6 +51,9 @@ export default function EspaceMillenium() {
   const [clippyMsg, setClippyMsg] = useState("");
   const [showScreensaver, setShowScreensaver] = useState(false);
   const [wallpaper, setWallpaper] = useState(() => loadState('wallpaper', 'colline'));
+  const [customWallpaper, setCustomWallpaper] = useState(() => loadState('custom_wallpaper', null));
+  const wallpaperInputRef = useRef(null);
+  const iconsRef = useRef(null);
   const [msnNotification, setMsnNotification] = useState(false);
   const [konamiActive, setKonamiActive] = useState(false);
   const [showBSOD, setShowBSOD] = useState(false);
@@ -59,9 +62,21 @@ export default function EspaceMillenium() {
   const konamiRef = useRef([]);
   const bootTimeRef = useRef(Date.now());
 
+  const handleWallpaperUpload = useCallback((e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const dataUrl = ev.target.result;
+      setCustomWallpaper(dataUrl);
+      saveState('custom_wallpaper', dataUrl);
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  }, []);
+
   const {
     windows, shaking, startMenu, setStartMenu,
-    selectedIcon, setSelectedIcon,
     bringToFront, openWindow, closeWindow, getZ,
     doWizz, isTopWindow, openWindowIds,
     toggleMinimize, isMinimized,
@@ -149,13 +164,15 @@ export default function EspaceMillenium() {
     <div
       style={{
         width: "100vw", height: "100vh", overflow: "hidden", position: "relative",
-        background: WALLPAPERS[wallpaper] || WALLPAPERS.colline,
+        background: customWallpaper
+          ? `url(${customWallpaper}) center / cover no-repeat`
+          : (WALLPAPERS[wallpaper] || WALLPAPERS.colline),
         transition: "background 0.5s ease",
         fontFamily: "'Tahoma', 'Segoe UI', sans-serif",
         animation: shaking ? "wizz 0.06s 7 alternate" : "none",
         cursor: "default",
       }}
-      onClick={() => { setSelectedIcon(null); setCtxMenu(null); }}
+      onClick={() => { iconsRef.current?.clearSelection(); setCtxMenu(null); }}
       onContextMenu={(e) => {
         if (e.target.closest("[data-nocontext]")) return;
         e.preventDefault();
@@ -164,7 +181,7 @@ export default function EspaceMillenium() {
       }}
     >
       <div style={{ opacity: refreshAnim ? 0 : 1, transition: "opacity 0.15s" }}>
-        <DesktopIcons key={iconKey} selectedIcon={selectedIcon} setSelectedIcon={setSelectedIcon} openWindow={openWindow} konamiActive={konamiActive} />
+        <DesktopIcons key={iconKey} ref={iconsRef} openWindow={openWindow} konamiActive={konamiActive} />
       </div>
 
       {/* Y2K Bug button */}
@@ -300,10 +317,12 @@ export default function EspaceMillenium() {
             { sep: true },
             { label: "Fond d'écran ▸", action: () => setCtxMenu(prev => ({ ...prev, showWp: !prev?.showWp })) },
             ...(ctxMenu?.showWp ? [
-              { label: `  ${wallpaper === 'colline' ? "●" : "○"} Colline verte`, action: () => { setWallpaper('colline'); saveState('wallpaper', 'colline'); setCtxMenu(null); }, wp: true },
-              { label: `  ${wallpaper === 'espace' ? "●" : "○"} Espace`, action: () => { setWallpaper('espace'); saveState('wallpaper', 'espace'); setCtxMenu(null); }, wp: true },
-              { label: `  ${wallpaper === 'matrix' ? "●" : "○"} Matrix`, action: () => { setWallpaper('matrix'); saveState('wallpaper', 'matrix'); setCtxMenu(null); }, wp: true },
-              { label: `  ${wallpaper === 'aquarium' ? "●" : "○"} Aquarium`, action: () => { setWallpaper('aquarium'); saveState('wallpaper', 'aquarium'); setCtxMenu(null); }, wp: true },
+              { label: `  ${!customWallpaper && wallpaper === 'colline' ? "●" : "○"} Colline verte`, action: () => { setWallpaper('colline'); setCustomWallpaper(null); saveState('wallpaper', 'colline'); saveState('custom_wallpaper', null); setCtxMenu(null); }, wp: true },
+              { label: `  ${!customWallpaper && wallpaper === 'espace' ? "●" : "○"} Espace`, action: () => { setWallpaper('espace'); setCustomWallpaper(null); saveState('wallpaper', 'espace'); saveState('custom_wallpaper', null); setCtxMenu(null); }, wp: true },
+              { label: `  ${!customWallpaper && wallpaper === 'matrix' ? "●" : "○"} Matrix`, action: () => { setWallpaper('matrix'); setCustomWallpaper(null); saveState('wallpaper', 'matrix'); saveState('custom_wallpaper', null); setCtxMenu(null); }, wp: true },
+              { label: `  ${!customWallpaper && wallpaper === 'aquarium' ? "●" : "○"} Aquarium`, action: () => { setWallpaper('aquarium'); setCustomWallpaper(null); saveState('wallpaper', 'aquarium'); saveState('custom_wallpaper', null); setCtxMenu(null); }, wp: true },
+              { label: `  ${customWallpaper ? "●" : "○"} Image personnalisée`, action: () => { wallpaperInputRef.current?.click(); setCtxMenu(null); }, wp: true },
+              { label: "  📂 Parcourir...", action: () => { wallpaperInputRef.current?.click(); setCtxMenu(null); }, wp: true },
             ] : []),
             { sep: true },
             { label: "Propriétés", action: () => { setCtxMenu(null); setShowAbout(true); } },
@@ -382,6 +401,15 @@ export default function EspaceMillenium() {
           }} />
         ) : null;
       })()}
+
+      {/* Input caché pour l'upload de fond d'écran */}
+      <input
+        ref={wallpaperInputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: "none" }}
+        onChange={handleWallpaperUpload}
+      />
 
       {showScreensaver && <Screensaver onDismiss={() => setShowScreensaver(false)} />}
 

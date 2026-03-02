@@ -12,7 +12,6 @@ export function useDesktop() {
   const [shaking, setShaking] = useState(false);
   const [ieInitialUrl, setIeInitialUrl] = useState(null);
   const [startMenu, setStartMenu] = useState(false);
-  const [selectedIcon, setSelectedIcon] = useState(null);
   const [muted, setMuted] = useState(() => {
     try { return localStorage.getItem('em_muted') === 'true'; } catch { return false; }
   });
@@ -134,8 +133,6 @@ export function useDesktop() {
     shaking,
     startMenu,
     setStartMenu,
-    selectedIcon,
-    setSelectedIcon,
     bringToFront,
     openWindow,
     closeWindow,
