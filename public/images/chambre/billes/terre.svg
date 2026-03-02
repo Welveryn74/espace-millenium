@@ -1,23 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <defs>
     <radialGradient id="te" cx="40%" cy="35%" r="60%">
-      <stop offset="0%" stop-color="#4169E1"/>
-      <stop offset="100%" stop-color="#00008B"/>
+      <stop offset="0%" stop-color="#D2691E"/>
+      <stop offset="60%" stop-color="#8B4513"/>
+      <stop offset="100%" stop-color="#5C2D0A"/>
     </radialGradient>
     <clipPath id="tc"><circle cx="50" cy="50" r="40"/></clipPath>
   </defs>
   <circle cx="50" cy="50" r="40" fill="url(#te)"/>
   <g clip-path="url(#tc)">
-    <!-- Continents simplified -->
-    <!-- Europe/Africa -->
-    <path d="M 48 20 Q 52 22 54 28 Q 56 35 52 42 Q 54 48 52 55 Q 50 62 48 68 Q 44 72 46 78 Q 42 75 40 68 Q 38 60 42 52 Q 40 45 42 38 Q 44 30 48 20Z" fill="#228B22" opacity="0.7"/>
-    <!-- Americas hint -->
-    <path d="M 25 25 Q 28 30 26 38 Q 24 45 22 50 Q 20 55 24 62 Q 26 58 28 52 Q 30 45 28 38 Q 30 30 25 25Z" fill="#228B22" opacity="0.5"/>
-    <!-- Asia hint -->
-    <path d="M 58 25 Q 65 28 72 30 Q 75 35 70 40 Q 68 38 62 36 Q 58 32 58 25Z" fill="#228B22" opacity="0.6"/>
-    <!-- Ice caps -->
-    <ellipse cx="50" cy="15" rx="20" ry="6" fill="white" opacity="0.4"/>
-    <ellipse cx="50" cy="85" rx="15" ry="5" fill="white" opacity="0.3"/>
+    <!-- Veines de la terre cuite -->
+    <path d="M 25 30 Q 40 35 55 28 Q 65 25 75 32" fill="none" stroke="#A0522D" stroke-width="4" opacity="0.5"/>
+    <path d="M 20 55 Q 35 50 50 58 Q 65 62 80 55" fill="none" stroke="#CD853F" stroke-width="3" opacity="0.4"/>
+    <path d="M 30 70 Q 50 65 70 72" fill="none" stroke="#A0522D" stroke-width="2" opacity="0.3"/>
+    <!-- Petites imperfections -->
+    <circle cx="60" cy="40" r="3" fill="#A0522D" opacity="0.3"/>
+    <circle cx="35" cy="62" r="2" fill="#CD853F" opacity="0.25"/>
   </g>
   <circle cx="36" cy="33" r="9" fill="white" opacity="0.2"/>
   <circle cx="33" cy="30" r="4" fill="white" opacity="0.35"/>

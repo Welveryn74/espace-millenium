@@ -26,7 +26,6 @@ export const CARTABLE_LAYERS = [
         id: "trousse",
         emoji: "⚡",
         name: "Trousse Harry Potter",
-        img: "/images/cartable/trousse.svg",
         desc: "Trousse « Gryffondor » achetée à la FNAC pour la sortie du Tome 5. Le zip est un peu grippé.",
         interaction: "zipper",
         zipContent: [
@@ -42,7 +41,6 @@ export const CARTABLE_LAYERS = [
         id: "cahierTextes",
         emoji: "📋",
         name: "Cahier de textes",
-        img: "/images/cartable/cartable.svg",
         desc: "L'emploi du temps de l'année 2004-2005. Chaque jour est une aventure.",
         interaction: "timetable",
         timetable: {
@@ -72,7 +70,6 @@ export const CARTABLE_LAYERS = [
         id: "stylos",
         emoji: "✏️",
         name: "Stylos gel pailletés",
-        img: "/images/cartable/stylos.png",
         desc: "Toute la collection ! Vert fluo, rose, bleu à paillettes, noir parfumé à la fraise...",
         interaction: "draw",
         colors: ["#FF69B4", "#00FF88", "#4488FF", "#FF4444", "#9B59B6", "#FFD700", "#FF8800", "#000000"],
@@ -103,7 +100,6 @@ export const CARTABLE_LAYERS = [
         id: "gouter",
         emoji: "🍫",
         name: "Le goûter",
-        img: "/images/cartable/cartable.svg",
         desc: "Emballé par Maman ce matin. Y'a le choix !",
         interaction: "unwrap",
         snacks: [
@@ -131,7 +127,6 @@ export const CARTABLE_LAYERS = [
         id: "chairDePoule",
         emoji: "👻",
         name: "Chair de Poule — La Nuit des Pantins",
-        img: "/images/cartable/cartable.svg",
         desc: "R.L. Stine, le maître de la peur pour ados. Tu le lisais sous la couette avec une lampe de poche.",
         interaction: "jumpscare",
       },
@@ -139,7 +134,6 @@ export const CARTABLE_LAYERS = [
         id: "carnetCorrespondance",
         emoji: "📕",
         name: "Carnet de correspondance",
-        img: "/images/cartable/cartable.svg",
         desc: "Le document qu'il ne faut SURTOUT PAS perdre. Quelques remarques à faire signer...",
         interaction: "notes",
         notes: [
@@ -154,7 +148,6 @@ export const CARTABLE_LAYERS = [
         id: "photoClasse",
         emoji: "📸",
         name: "Photo de classe 2004-2005",
-        img: "/images/cartable/cartable.svg",
         desc: "3ème rang, 4ème en partant de la gauche. Tu souris bizarrement.",
         interaction: "classPhoto",
         students: [
@@ -172,7 +165,6 @@ export const CARTABLE_LAYERS = [
         id: "trollKeychain",
         emoji: "👾",
         name: "Porte-clés Troll",
-        img: "/images/cartable/cartable.svg",
         desc: "La figurine avec les cheveux fluo qui se dressent. Accroché à la fermeture éclair du cartable.",
         interaction: "troll",
         hairColors: ["#FF1493", "#00FF00", "#FF8C00", "#8A2BE2", "#00BFFF", "#FF0000"],
@@ -181,7 +173,6 @@ export const CARTABLE_LAYERS = [
         id: "balleTennis",
         emoji: "🎾",
         name: "Balle de tennis usée",
-        img: "/images/cartable/cartable.svg",
         desc: "Trouvée dans la cour. Complètement pelée. Sert à jouer à la balle au prisonnier.",
         interaction: "bounce",
       },

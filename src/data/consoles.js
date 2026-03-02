@@ -11,7 +11,7 @@ export const CONSOLES = [
     description: "La brique grise qui a survécu à toutes les chutes. Quatre piles AA et t'étais parti pour 30h de bonheur pixelisé.",
     bootText: "Nintendo®\nGAME BOY™",
     games: [
-      { name: "Pokémon Rouge", emoji: "🔴", img: "/images/consoles/games/pokemon-rouge.png", desc: "Été 1999. Tu trades des Pokémon avec le câble link dans la cour de récré. Ton starter c'est Salamèche, évidemment. Tu connais le glitch MissingNo par cœur.", year: "1996" },
+      { name: "Pokémon Rouge", emoji: "🔴", desc: "Été 1999. Tu trades des Pokémon avec le câble link dans la cour de récré. Ton starter c'est Salamèche, évidemment. Tu connais le glitch MissingNo par cœur.", year: "1996" },
       { name: "Snake", emoji: "🐍", desc: "Le serpent qui grandit en mangeant. Simple, addictif, éternel. Tu battais ton high score dans le bus en rentrant du collège.", year: "1998", playable: true, miniGame: "snake" },
       { name: "Tetris", emoji: "🧱", img: "/images/consoles/games/tetris.png", desc: "Le jeu qui était DANS la boîte. Ta mère y jouait plus que toi. La musique tourne encore dans ta tête à 3h du mat quand tu fermes les yeux.", year: "1989", playable: true, miniGame: "tetris" },
       { name: "Kirby's Dream Land", emoji: "⭐", img: "/images/consoles/games/kirbys-dream-land.png", desc: "Le jeu que tu finissais en 45 minutes mais que tu recommençais quand même. Kirby qui aspire tout, c'était la belle vie.", year: "1992" },
@@ -31,7 +31,7 @@ export const CONSOLES = [
     games: [
       { name: "Pokémon Émeraude", emoji: "💎", img: "/images/consoles/games/pokemon-emeraude.png", desc: "La Battle Frontier, les concours Pokémon, la base secrète que tu décorais pendant des heures. 200h au compteur minimum. Tu cherches encore Latias.", year: "2004" },
       { name: "Advance Wars", emoji: "🎖️", img: "/images/consoles/games/advance-wars.png", desc: "Le jeu de stratégie qui t'a appris à réfléchir. Chaque tour prenait 20 minutes parce que tu voulais le S-Rank. Andy vs Sturm, la guerre totale.", year: "2001" },
-      { name: "Mario Kart: Super Circuit", emoji: "🏎️", img: "/images/consoles/games/mario-kart-super-circuit.png", desc: "Mario Kart dans ta poche. Les circuits SNES en bonus, le mode multijoueur avec le câble link. Les dérapages n'avaient pas de secret pour toi.", year: "2001" },
+      { name: "Mario Kart: Super Circuit", emoji: "🏎️", desc: "Mario Kart dans ta poche. Les circuits SNES en bonus, le mode multijoueur avec le câble link. Les dérapages n'avaient pas de secret pour toi.", year: "2001" },
       { name: "Metroid Fusion", emoji: "🔬", img: "/images/consoles/games/metroid-fusion.png", desc: "Samus dans un vaisseau spatial infesté de parasites X. L'ambiance flippante, le SA-X qui te pourchasse... T'avais la chair de poule sur un écran de 6cm.", year: "2002" },
       { name: "Casse-briques", emoji: "🧱", img: "/images/consoles/games/casse-briques.svg", desc: "La raquette, la balle, les briques colorées. Simple comme bonjour mais impossible de s'arrêter. \"Encore un level !\" jusqu'à ce que maman éteigne la lumière.", year: "2001", playable: true, miniGame: "cassebriques" },
     ],
@@ -70,7 +70,7 @@ export const CONSOLES = [
       { name: "GTA Liberty City Stories", emoji: "🏙️", img: "/images/consoles/games/gta-liberty-city.png", desc: "GTA. Dans ta poche. Dans le bus scolaire. Le prof de maths n'y a vu que du feu. Liberty City version portable, c'était la révolution.", year: "2005" },
       { name: "Monster Hunter Freedom Unite", emoji: "🐉", img: "/images/consoles/games/monster-hunter.png", desc: "Des heures à farmer le Rathalos avec tes potes en ad-hoc. Chaque quête était une épopée. Ton pouce gauche s'en souvient encore (le fameux \"claw grip\").", year: "2008" },
       { name: "Lumines", emoji: "🎵", img: "/images/consoles/games/lumines.svg", desc: "Tetris rencontre la musique électro. Les blocs tombent au rythme du beat. Le genre de jeu où tu lèves la tête et il est 4h du matin.", year: "2004" },
-      { name: "Tekken: Dark Resurrection", emoji: "👊", img: "/images/consoles/games/tekken-dark-resurrection.png", desc: "Les combos de Jin, les tournois au fond du bus, l'écran qui se passait de main en main. Le meilleur jeu de baston portable, point final.", year: "2006" },
+      { name: "Tekken: Dark Resurrection", emoji: "👊", desc: "Les combos de Jin, les tournois au fond du bus, l'écran qui se passait de main en main. Le meilleur jeu de baston portable, point final.", year: "2006" },
     ],
   },
   {
@@ -85,10 +85,10 @@ export const CONSOLES = [
     description: "Deux écrans ! Un stylet ! Un micro ! Nintendo a dit \"et pourquoi pas tout ça à la fois ?\" et ça a marché.",
     bootText: "Nintendo\n\n★ DS ★",
     games: [
-      { name: "Nintendogs", emoji: "🐕", img: "/images/consoles/games/nintendogs.png", desc: "Tu soufflais dans le micro pour appeler ton chien. Tu lui apprenais des tours pendant des semaines. Et puis un jour tu l'as oublié... pardon Rex.", year: "2005" },
+      { name: "Nintendogs", emoji: "🐕", desc: "Tu soufflais dans le micro pour appeler ton chien. Tu lui apprenais des tours pendant des semaines. Et puis un jour tu l'as oublié... pardon Rex.", year: "2005" },
       { name: "Mario Kart DS", emoji: "🏁", img: "/images/consoles/games/mario-kart-ds.png", desc: "Le VRAI Mario Kart portable. Le online sur la Nintendo Wi-Fi Connection, les courses contre des japonais à 3h du mat. Snaking sur Peach Circuit.", year: "2005" },
-      { name: "Pokémon Diamant", emoji: "💠", img: "/images/consoles/games/pokemon-diamant.png", desc: "La région de Sinnoh, le Pokématos, les souterrains. Tu farmais des fossiles en WiFi avec tes potes. Cynthia et sa Carchacrok t'ont traumatisé.", year: "2006", playable: true, miniGame: "memory" },
-      { name: "Programme d'Entraînement Cérébral", emoji: "🧠", img: "/images/consoles/games/cerveau.png", desc: "\"Vous avez le cerveau d'un humain de 80 ans.\" Merci Dr Kawashima. Même mamie y jouait. Les calculs rapides en écriture manuscrite, quel concept.", year: "2005" },
+      { name: "Pokémon Diamant", emoji: "💠", desc: "La région de Sinnoh, le Pokématos, les souterrains. Tu farmais des fossiles en WiFi avec tes potes. Cynthia et sa Carchacrok t'ont traumatisé.", year: "2006", playable: true, miniGame: "memory" },
+      { name: "Programme d'Entraînement Cérébral", emoji: "🧠", desc: "\"Vous avez le cerveau d'un humain de 80 ans.\" Merci Dr Kawashima. Même mamie y jouait. Les calculs rapides en écriture manuscrite, quel concept.", year: "2005" },
       { name: "Animal Crossing: Wild World", emoji: "🌳", img: "/images/consoles/games/animal-crossing.png", desc: "Tu te levais à 7h un dimanche pour acheter des navets. Tom Nook t'a appris le crédit immobilier avant la vraie vie. Ta ville était parfaite.", year: "2005" },
     ],
   },
@@ -105,9 +105,9 @@ export const CONSOLES = [
     bootText: "Nintendo\nGAMECUBE™",
     games: [
       { name: "Super Smash Bros. Melee", emoji: "💥", img: "/images/consoles/games/super-smash-bros-melee.png", desc: "LE jeu de soirée. 4 manettes, Final Destination, pas d'objets. Les wavedash, le L-cancel, le \"No items, Fox only\". Les amitiés brisées.", year: "2001" },
-      { name: "The Legend of Zelda: The Wind Waker", emoji: "🌊", img: "/images/consoles/games/zelda-wind-waker.png", desc: "\"C'est trop cartoon !\" qu'ils disaient. Et puis on y a joué et c'était magnifique. L'océan infini, la baguette du vent, les expressions de Link.", year: "2002" },
-      { name: "Super Mario Sunshine", emoji: "☀️", img: "/images/consoles/games/mario-sunshine.png", desc: "Mario avec un jet d'eau sur le dos, sur une île tropicale. Le FLUDD, les niveaux secrets sans FLUDD qui rendaient dingue. Isle Delfino, quelle ambiance.", year: "2002" },
-      { name: "Luigi's Mansion", emoji: "👻", img: "/images/consoles/games/luigis-mansion.png", desc: "Luigi avec un aspirateur à fantômes, tout tremblant dans un manoir hanté. Il sifflotait la musique du jeu quand il avait peur. Trop relatable.", year: "2001" },
+      { name: "The Legend of Zelda: The Wind Waker", emoji: "🌊", desc: "\"C'est trop cartoon !\" qu'ils disaient. Et puis on y a joué et c'était magnifique. L'océan infini, la baguette du vent, les expressions de Link.", year: "2002" },
+      { name: "Super Mario Sunshine", emoji: "☀️", desc: "Mario avec un jet d'eau sur le dos, sur une île tropicale. Le FLUDD, les niveaux secrets sans FLUDD qui rendaient dingue. Isle Delfino, quelle ambiance.", year: "2002" },
+      { name: "Luigi's Mansion", emoji: "👻", desc: "Luigi avec un aspirateur à fantômes, tout tremblant dans un manoir hanté. Il sifflotait la musique du jeu quand il avait peur. Trop relatable.", year: "2001" },
     ],
   },
   {
@@ -146,7 +146,7 @@ export const CONSOLES = [
       { name: "Nanosaur", emoji: "🦖", img: "/images/consoles/games/nanosaur.svg", desc: "Un dinosaure avec un jetpack et un laser. C'est tout ce que t'avais besoin de savoir. L'autre jeu pré-installé sur les Mac de la salle info.", year: "1998" },
       { name: "Jeux Flash Miniclip", emoji: "🌐", img: "/images/consoles/games/jeux-flash.png", desc: "On The Run, Heli Attack, Club Penguin... La barre de chargement du jeu Flash, l'excitation quand ça atteint 100%. RIP Flash Player, gone but never forgotten.", year: "~2004", playable: true, miniGame: "morpion" },
       { name: "Age of Empires II", emoji: "🏰", img: "/images/consoles/games/age-of-empires-2.png", desc: "WOLOLO. Tu convertissais les unités ennemies avec les prêtres. \"Start the game already!\" dans le lobby. Les parties de 4 heures un mercredi après-midi.", year: "1999" },
-      { name: "Les Sims", emoji: "🏠", img: "/images/consoles/games/les-sims.png", desc: "Tu construisais la maison de tes rêves, tu enlevais l'échelle de la piscine... on sait tous ce qui se passait après. Sul sul ! Dag dag !", year: "2000" },
+      { name: "Les Sims", emoji: "🏠", desc: "Tu construisais la maison de tes rêves, tu enlevais l'échelle de la piscine... on sait tous ce qui se passait après. Sul sul ! Dag dag !", year: "2000" },
       { name: "Adibou", emoji: "🧒", desc: "\"Bonjour, c'est moi, Adibou !\" Le jardin, la cuisine, les jeux éducatifs. T'apprenais à lire et à compter sans même t'en rendre compte. Le goat des jeux éducatifs.", year: "2001", playable: true, miniGame: "adibou" },
       { name: "Pong", emoji: "🏓", img: "/images/consoles/games/pong.svg", desc: "Le tout premier. Deux barres blanches, une balle carrée, et pourtant c'était suffisant pour passer des heures dessus. Le jeu qui a tout inventé.", year: "1972", playable: true, miniGame: "pong" },
     ],
