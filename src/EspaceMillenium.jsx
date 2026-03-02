@@ -184,14 +184,15 @@ export default function EspaceMillenium() {
       style={{
         width: "100vw", height: "100vh", overflow: "hidden", position: "relative",
         background: customWallpaper
-          ? `url(${customWallpaper}) center / cover no-repeat`
+          ? `url("${customWallpaper}") center / cover no-repeat`
           : (WALLPAPERS[wallpaper] || WALLPAPERS.colline),
         transition: "background 0.5s ease",
         fontFamily: "'Tahoma', 'Segoe UI', sans-serif",
         animation: shaking ? "wizz 0.06s 7 alternate" : "none",
         cursor: XP_CURSOR,
       }}
-      onClick={() => { iconsRef.current?.clearSelection(); setCtxMenu(null); }}
+      onMouseDown={(e) => { if (e.button === 0) iconsRef.current?.startRubberBand(e); }}
+      onClick={() => { setCtxMenu(null); }}
       onContextMenu={(e) => {
         if (e.target.closest("[data-nocontext]")) return;
         e.preventDefault();

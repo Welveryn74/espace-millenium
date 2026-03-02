@@ -43,6 +43,7 @@ const DesktopIcons = forwardRef(function DesktopIcons({ openWindow, konamiActive
 
   useImperativeHandle(ref, () => ({
     clearSelection: () => setSelectedIcons(new Set()),
+    startRubberBand: (e) => handleOverlayMouseDown(e),
   }));
 
   useEffect(() => {
@@ -177,12 +178,6 @@ const DesktopIcons = forwardRef(function DesktopIcons({ openWindow, konamiActive
 
   return (
     <>
-      {/* Overlay transparent derrière les icônes pour le rubber-band */}
-      <div
-        style={{ position: "fixed", inset: 0, zIndex: 1 }}
-        onMouseDown={handleOverlayMouseDown}
-      />
-
       {DESKTOP_ICONS.map((icon) => {
         const pos = positions[icon.id] || { x: PAD_X, y: PAD_Y };
         const isSelected = selectedIcons.has(icon.id);
