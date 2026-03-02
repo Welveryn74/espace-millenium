@@ -86,13 +86,9 @@ const DesktopIcons = forwardRef(function DesktopIcons({ openWindow, konamiActive
         const next = { ...prev };
         willDragSet.forEach(id => {
           const sp = startPositions[id] || { x: PAD_X, y: PAD_Y };
-          const rawX = sp.x + dx;
-          const rawY = sp.y + dy;
-          const snapX = PAD_X + Math.round((rawX - PAD_X) / GRID) * GRID;
-          const snapY = PAD_Y + Math.round((rawY - PAD_Y) / GRID) * GRID;
           next[id] = {
-            x: Math.max(PAD_X, Math.min(maxX, snapX)),
-            y: Math.max(PAD_Y, Math.min(maxY, snapY)),
+            x: Math.max(0, Math.min(maxX, Math.round(sp.x + dx))),
+            y: Math.max(0, Math.min(maxY, Math.round(sp.y + dy))),
           };
         });
         return next;
