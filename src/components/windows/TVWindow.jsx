@@ -55,47 +55,297 @@ function KD2AContent({ content, tick }) {
   );
 }
 
-function StarAcContent({ content, tick }) {
-  const lyric = content.lyrics[tick % content.lyrics.length];
-  const nominee = content.nominees[tick % content.nominees.length];
+function TF1Content({ content, tick }) {
+  const isMatin = tick % 8 < 4;
+  if (isMatin) {
+    // TFOU — grille colorée
+    const offset = tick % content.tfou.length;
+    const visible = content.tfou.slice(offset, offset + 4).concat(
+      content.tfou.slice(0, Math.max(0, offset + 4 - content.tfou.length))
+    );
+    return (
+      <div style={{ width: "100%", overflow: "hidden" }}>
+        <div style={{ color: "#FF4444", fontSize: 10, textAlign: "center", marginBottom: 6, fontWeight: "bold" }}>
+          TFOU <span style={{ fontSize: 8, color: "#FF8888" }}>sur TF1</span>
+        </div>
+        {visible.map((p, i) => (
+          <div key={p.time} style={{
+            display: "flex", gap: 8, padding: "3px 10px", fontSize: 11,
+            color: i === 0 ? p.color : "#aaa",
+            background: i === 0 ? `${p.color}18` : "transparent",
+            borderRadius: 3, animation: `slideUp 0.3s ease-out ${i * 0.08}s both`,
+          }}>
+            <span style={{ fontFamily: "monospace", minWidth: 40 }}>{p.time}</span>
+            <span>{p.show}</span>
+            {i === 0 && <span style={{ marginLeft: "auto", animation: "blink 1s infinite", color: "#F44" }}>EN COURS</span>}
+          </div>
+        ))}
+      </div>
+    );
+  }
+  // Prime — alterne Star Ac et Koh-Lanta
+  const isStarAc = tick % 6 < 3;
+  if (isStarAc) {
+    const lyric = content.starac.lyrics[tick % content.starac.lyrics.length];
+    const nominee = content.starac.nominees[tick % content.starac.nominees.length];
+    return (
+      <div style={{ textAlign: "center", width: "100%" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", width: "100%", marginBottom: 10 }}>
+          <span style={{ color: "#F44", fontSize: 9, animation: "blink 1s infinite", fontWeight: "bold" }}>EN DIRECT</span>
+          <span style={{ color: "#F44", fontSize: 9 }}>STAR ACADEMY — PRIME N°{7 + (tick % 5)}</span>
+        </div>
+        <div key={tick} style={{ color: "#FF4", fontSize: 14, fontStyle: "italic", animation: "fadeIn 0.5s ease-out", marginBottom: 12, textShadow: "0 0 10px rgba(255,255,0,0.3)" }}>
+          {lyric}
+        </div>
+        <div style={{ color: "#F88", fontSize: 10, borderTop: "1px solid #333", paddingTop: 6 }}>
+          Nominé(e) : <span style={{ fontWeight: "bold", color: "#FF4444" }}>{nominee}</span> — Votez au 3672 !
+        </div>
+      </div>
+    );
+  }
+  // Koh-Lanta
+  const scene = content.kohlanta[tick % content.kohlanta.length];
   return (
     <div style={{ textAlign: "center", width: "100%" }}>
       <div style={{ display: "flex", justifyContent: "space-between", width: "100%", marginBottom: 10 }}>
         <span style={{ color: "#F44", fontSize: 9, animation: "blink 1s infinite", fontWeight: "bold" }}>EN DIRECT</span>
-        <span style={{ color: "#F44", fontSize: 9 }}>PRIME N\u00b0{7 + (tick % 5)}</span>
+        <span style={{ color: "#FF8C00", fontSize: 9, fontWeight: "bold" }}>KOH-LANTA</span>
       </div>
-      <div key={tick} style={{ color: "#FF4", fontSize: 14, fontStyle: "italic", animation: "fadeIn 0.5s ease-out", marginBottom: 12, textShadow: "0 0 10px rgba(255,255,0,0.3)" }}>
-        {lyric}
+      <div key={tick} style={{ color: "#FF8C00", fontSize: 13, animation: "fadeIn 0.5s ease-out", lineHeight: 1.6, fontStyle: "italic" }}>
+        {scene}
       </div>
-      <div style={{ color: "#F88", fontSize: 10, borderTop: "1px solid #333", paddingTop: 6 }}>
-        Nomin\u00e9(e) : <span style={{ fontWeight: "bold", color: "#FF4444" }}>{nominee}</span> \u2014 Votez au 3672 !
+      <div style={{ marginTop: 10, color: "#888", fontSize: 9 }}>
+        TF1 — Vendredi 20h50
       </div>
     </div>
   );
 }
 
-function LoftContent({ content, tick }) {
-  const event = content.events[tick % content.events.length];
-  const isConfessionnal = event.includes("confessionnal");
+function M6Content({ content, tick }) {
+  const isMatin = tick % 8 < 4;
+  if (isMatin) {
+    // M6 Kid — grille colorée
+    const offset = tick % content.m6kid.length;
+    const visible = content.m6kid.slice(offset, offset + 4).concat(
+      content.m6kid.slice(0, Math.max(0, offset + 4 - content.m6kid.length))
+    );
+    return (
+      <div style={{ width: "100%", overflow: "hidden" }}>
+        <div style={{ color: "#44AAFF", fontSize: 10, textAlign: "center", marginBottom: 6, fontWeight: "bold" }}>
+          M6 KID <span style={{ fontSize: 8, color: "#88CCFF" }}>le matin</span>
+        </div>
+        {visible.map((p, i) => (
+          <div key={p.time} style={{
+            display: "flex", gap: 8, padding: "3px 10px", fontSize: 11,
+            color: i === 0 ? p.color : "#aaa",
+            background: i === 0 ? `${p.color}18` : "transparent",
+            borderRadius: 3, animation: `slideUp 0.3s ease-out ${i * 0.08}s both`,
+          }}>
+            <span style={{ fontFamily: "monospace", minWidth: 40 }}>{p.time}</span>
+            <span>{p.show}</span>
+            {i === 0 && <span style={{ marginLeft: "auto", animation: "blink 1s infinite", color: "#F44" }}>EN COURS</span>}
+          </div>
+        ))}
+      </div>
+    );
+  }
+  // Prime — alterne Loft Story et Friends
+  const isLoft = tick % 6 < 3;
+  if (isLoft) {
+    const event = content.loft.events[tick % content.loft.events.length];
+    const isConfessionnal = event.includes("confessionnal");
+    return (
+      <div style={{ textAlign: "center", width: "100%" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", width: "100%", marginBottom: 8 }}>
+          <span style={{ color: "#F44", fontSize: 9, animation: "blink 1s infinite" }}>
+            {isConfessionnal ? "CONFESSIONNAL" : "REC"}
+          </span>
+          <span style={{ color: "#44AAFF", fontSize: 10, fontWeight: "bold" }}>LOFT STORY — JOUR {content.loft.day + (tick % 3)}</span>
+        </div>
+        <div key={tick} style={{ color: "#ddd", fontSize: 12, animation: "fadeIn 0.5s ease-out", lineHeight: 1.6, fontStyle: "italic" }}>
+          {event}
+        </div>
+        <div style={{ marginTop: 10, display: "flex", gap: 8, justifyContent: "center" }}>
+          {["Cam 1", "Cam 2", "Cam 3"].map((c, i) => (
+            <span key={c} style={{
+              fontSize: 8, padding: "2px 6px", borderRadius: 2,
+              background: tick % 3 === i ? "rgba(68,170,255,0.3)" : "rgba(255,255,255,0.05)",
+              color: tick % 3 === i ? "#44AAFF" : "#666",
+              border: `1px solid ${tick % 3 === i ? "#44AAFF" : "#333"}`,
+            }}>{c}</span>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  // Friends
+  const quote = content.friends[tick % content.friends.length];
+  return (
+    <div style={{ textAlign: "center", width: "100%" }}>
+      <div style={{ color: "#44AAFF", fontSize: 10, textAlign: "center", marginBottom: 8, fontWeight: "bold" }}>
+        FRIENDS <span style={{ fontSize: 8, color: "#88CCFF" }}>sur M6</span>
+      </div>
+      <div key={tick} style={{ color: "#FFD700", fontSize: 13, animation: "fadeIn 0.5s ease-out", lineHeight: 1.6, fontStyle: "italic" }}>
+        {quote}
+      </div>
+      <div style={{ marginTop: 10, color: "#888", fontSize: 9 }}>
+        Saison 8 — Tous les mardis 20h50
+      </div>
+    </div>
+  );
+}
+
+function ZouzousContent({ content, tick }) {
+  const scene = content.scenes[tick % content.scenes.length];
+  return (
+    <div style={{ textAlign: "center", width: "100%" }}>
+      <div style={{ color: "#88CC44", fontSize: 10, textAlign: "center", marginBottom: 8, fontWeight: "bold" }}>
+        LES ZOUZOUS <span style={{ fontSize: 8, color: "#AADD66" }}>France 5</span>
+      </div>
+      <div style={{
+        background: `${scene.color}15`, borderRadius: 8, padding: "10px 16px",
+        border: `1px solid ${scene.color}30`,
+      }}>
+        <div style={{ color: scene.color, fontSize: 10, fontWeight: "bold", marginBottom: 4 }}>
+          {scene.show}
+        </div>
+        <div key={tick} style={{
+          color: "#eee", fontSize: 13, animation: "fadeIn 0.5s ease-out", lineHeight: 1.6,
+        }}>
+          {scene.text}
+        </div>
+      </div>
+      <div style={{ marginTop: 8, display: "flex", justifyContent: "center", gap: 4 }}>
+        {content.scenes.filter((_, i) => i < 5).map((s, i) => (
+          <div key={i} style={{
+            width: 8, height: 8, borderRadius: "50%",
+            background: content.scenes[tick % content.scenes.length].show === s.show ? s.color : "#333",
+            transition: "background 0.3s",
+          }} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CartoonNetworkContent({ content, tick }) {
+  const scene = content.scenes[tick % content.scenes.length];
+  const ono = ["SPLAAT!", "CRASH!", "BOOM!", "WHAM!", "POW!", "KABOOM!"];
+  const randomOno = ono[tick % ono.length];
+  return (
+    <div style={{ textAlign: "center", width: "100%", position: "relative" }}>
+      <div style={{ color: "#00CCFF", fontSize: 10, textAlign: "center", marginBottom: 6, fontWeight: "bold" }}>
+        CARTOON NETWORK
+      </div>
+      {/* Onomatopée flottante style comic */}
+      {(scene.style === "slapstick" || scene.style === "action") && (
+        <div style={{
+          position: "absolute", top: -2, right: 10,
+          color: "#FF4444", fontSize: 10, fontWeight: "bold", fontStyle: "italic",
+          transform: "rotate(12deg)", opacity: 0.4,
+        }}>
+          {randomOno}
+        </div>
+      )}
+      <div style={{
+        background: `${scene.color}15`, borderRadius: 6, padding: "8px 14px",
+        border: `1px solid ${scene.color}30`,
+      }}>
+        <div style={{ color: scene.color, fontSize: 10, fontWeight: "bold", marginBottom: 4 }}>
+          {scene.show}
+        </div>
+        <div key={tick} style={{
+          color: "#fff", fontSize: 12,
+          fontStyle: scene.style === "dialogue" ? "italic" : "normal",
+          fontWeight: scene.style === "action" ? "bold" : "normal",
+          animation: scene.style === "slapstick" ? "pulse 0.3s ease-out" : "fadeIn 0.4s ease-out",
+          lineHeight: 1.5,
+        }}>
+          {scene.text}
+        </div>
+      </div>
+      <div style={{ marginTop: 6, display: "flex", justifyContent: "center", gap: 3 }}>
+        {content.scenes.map((_, i) => (
+          <div key={i} style={{
+            width: 5, height: 5, borderRadius: "50%",
+            background: i === tick % content.scenes.length ? "#00CCFF" : "#333",
+            transition: "background 0.3s",
+          }} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function JetixContent({ content, tick }) {
+  const scene = content.scenes[tick % content.scenes.length];
+  return (
+    <div style={{ textAlign: "center", width: "100%", position: "relative" }}>
+      <div style={{ color: "#FF3300", fontSize: 10, textAlign: "center", marginBottom: 6, fontWeight: "bold", letterSpacing: 2 }}>
+        JETIX
+      </div>
+      <div style={{
+        background: "rgba(255,51,0,0.08)", borderRadius: 6, padding: "8px 14px",
+        border: "1px solid rgba(255,51,0,0.2)",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 4 }}>
+          <span style={{ fontSize: 14 }}>{scene.icon}</span>
+          <span style={{ color: "#FF3300", fontSize: 11, fontWeight: "bold" }}>{scene.show}</span>
+        </div>
+        <div key={tick} style={{
+          color: "#eee", fontSize: 12, animation: "fadeIn 0.4s ease-out", lineHeight: 1.5,
+          textShadow: "0 0 8px rgba(255,51,0,0.2)",
+        }}>
+          {scene.text}
+        </div>
+      </div>
+      {/* Watermark JETIX */}
+      <div style={{
+        position: "absolute", bottom: 2, right: 8,
+        color: "#FF3300", fontSize: 8, opacity: 0.25, fontWeight: "bold", letterSpacing: 3,
+      }}>
+        JETIX
+      </div>
+    </div>
+  );
+}
+
+function JeuxTVContent({ content, tick }) {
+  const jeuIdx = Math.floor(tick / 3) % content.jeux.length;
+  const jeu = content.jeux[jeuIdx];
+  const sceneIdx = tick % jeu.scenes.length;
+  const scene = jeu.scenes[sceneIdx];
   return (
     <div style={{ textAlign: "center", width: "100%" }}>
       <div style={{ display: "flex", justifyContent: "space-between", width: "100%", marginBottom: 8 }}>
-        <span style={{ color: "#F44", fontSize: 9, animation: "blink 1s infinite" }}>
-          {isConfessionnal ? "CONFESSIONNAL" : "REC"}
-        </span>
-        <span style={{ color: "#44AAFF", fontSize: 10, fontWeight: "bold" }}>JOUR {content.day + (tick % 3)}</span>
+        <span style={{ color: "#F44", fontSize: 9, animation: "blink 1s infinite", fontWeight: "bold" }}>EN DIRECT</span>
+        <span style={{ color: "#FFD700", fontSize: 9, fontWeight: "bold" }}>JEUX TV</span>
       </div>
-      <div key={tick} style={{ color: "#ddd", fontSize: 12, animation: "fadeIn 0.5s ease-out", lineHeight: 1.6, fontStyle: "italic" }}>
-        {event}
+      <div style={{
+        background: "rgba(255,215,0,0.08)", borderRadius: 6, padding: "8px 14px",
+        border: "1px solid rgba(255,215,0,0.2)",
+      }}>
+        <div style={{ color: "#FFD700", fontSize: 11, fontWeight: "bold", marginBottom: 6 }}>
+          {jeu.nom}
+        </div>
+        <div key={tick} style={{
+          color: "#fff", fontSize: 12, animation: "fadeIn 0.5s ease-out", lineHeight: 1.6,
+          fontStyle: "italic",
+        }}>
+          {scene}
+        </div>
       </div>
-      <div style={{ marginTop: 10, display: "flex", gap: 8, justifyContent: "center" }}>
-        {["Cam 1", "Cam 2", "Cam 3"].map((c, i) => (
-          <span key={c} style={{
-            fontSize: 8, padding: "2px 6px", borderRadius: 2,
-            background: tick % 3 === i ? "rgba(68,170,255,0.3)" : "rgba(255,255,255,0.05)",
-            color: tick % 3 === i ? "#44AAFF" : "#666",
-            border: `1px solid ${tick % 3 === i ? "#44AAFF" : "#333"}`,
-          }}>{c}</span>
+      {/* Indicateur de jeu en cours */}
+      <div style={{ marginTop: 6, display: "flex", justifyContent: "center", gap: 4 }}>
+        {content.jeux.map((j, i) => (
+          <div key={i} style={{
+            fontSize: 8, padding: "1px 6px", borderRadius: 2,
+            background: i === jeuIdx ? "rgba(255,215,0,0.2)" : "transparent",
+            color: i === jeuIdx ? "#FFD700" : "#555",
+            border: `1px solid ${i === jeuIdx ? "#FFD700" : "#333"}`,
+          }}>
+            {i + 1}
+          </div>
         ))}
       </div>
     </div>
@@ -113,7 +363,7 @@ function MangaContent({ content, tick }) {
   return (
     <div style={{ textAlign: "center", width: "100%" }}>
       <div style={{ color: "#44FF88", fontSize: 9, marginBottom: 8, fontWeight: "bold" }}>
-        CANAL J \u2014 CLUB MANGA
+        CANAL J — CLUB MANGA
       </div>
       <div key={tick} style={{ ...styles[panel.style], animation: panel.style === "impact" ? "pulse 0.5s ease-out" : "fadeIn 0.4s ease-out" }}>
         {panel.text}
@@ -180,10 +430,14 @@ function ChannelContent({ channel, tick }) {
   switch (type) {
     case "minikeums": return <MinikeumsContent content={content} tick={tick} />;
     case "kd2a": return <KD2AContent content={content} tick={tick} />;
-    case "starac": return <StarAcContent content={content} tick={tick} />;
-    case "loft": return <LoftContent content={content} tick={tick} />;
+    case "tf1": return <TF1Content content={content} tick={tick} />;
+    case "m6": return <M6Content content={content} tick={tick} />;
+    case "zouzous": return <ZouzousContent content={content} tick={tick} />;
     case "manga": return <MangaContent content={content} tick={tick} />;
     case "pokemon": return <PokemonContent content={content} tick={tick} />;
+    case "cartoon_network": return <CartoonNetworkContent content={content} tick={tick} />;
+    case "jetix": return <JetixContent content={content} tick={tick} />;
+    case "jeuxtv": return <JeuxTVContent content={content} tick={tick} />;
     default: return <div style={{ color: "#bbb", fontSize: 11, textAlign: "center", fontStyle: "italic" }}>{channel.desc || "Pas de signal"}</div>;
   }
 }
@@ -316,7 +570,7 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
   const showFallbackText = !hasVideo || videoError || !videoReady;
 
   return (
-    <Win title="Ma T\u00e9l\u00e9vision Cathodique \u2014 Thomson 36cm" onClose={onClose} onMinimize={onMinimize} width={640} height={590} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 180, y: 40 }} color="#444">
+    <Win title="Ma Télévision Cathodique — Thomson 36cm" onClose={onClose} onMinimize={onMinimize} width={640} height={590} zIndex={zIndex} onFocus={onFocus} initialPos={{ x: 180, y: 40 }} color="#444">
       <div style={{ padding: 16, background: "#1a1a1a", height: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
         {/* TV Frame */}
         <div className="tv-screen" style={{
@@ -414,7 +668,7 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
               }}>CH {channel + 1}</div>
               {/* z-12: Volume indicator */}
               <div style={{ position: "absolute", top: 10, left: 14, display: "flex", gap: 2, alignItems: "center", zIndex: 12, pointerEvents: "none" }}>
-                <NostalImg src="/images/ui/volume.svg" fallback="\u{1F50A}" size={10} />
+                <NostalImg src="/images/ui/volume.svg" fallback={"\u{1F50A}"} size={10} />
                 <div style={{ width: 50, height: 4, background: "#333", borderRadius: 2, overflow: "hidden" }}>
                   <div style={{ width: `${volume}%`, height: "100%", background: CHANNELS[channel].color, transition: "width 0.2s" }} />
                 </div>
@@ -457,7 +711,7 @@ export default function TVWindow({ onClose, onMinimize, zIndex, onFocus }) {
               textShadow: i === channel ? `0 0 6px ${ch.color}60` : "none",
             }}>
               <NostalImg src={ch.img} fallback={ch.emoji} size={12} style={{ verticalAlign: "middle", marginRight: 3 }} />
-              {ch.name.split(" \u2014 ")[0]}
+              {ch.name.split(" — ")[0]}
             </button>
           ))}
         </div>
