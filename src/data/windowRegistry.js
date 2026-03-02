@@ -11,6 +11,7 @@ import PaintWindow from "../components/windows/PaintWindow";
 import CorbeilleWindow from "../components/windows/CorbeilleWindow";
 import CaramailWindow from "../components/windows/CaramailWindow";
 import IEWindow from "../components/windows/ie/IEWindow";
+import DehorsWindow from "../components/windows/dehors/DehorsWindow";
 
 export const WINDOW_REGISTRY = {
   msn:      { component: MSNWindow, needsDesktopActions: true },
@@ -26,4 +27,5 @@ export const WINDOW_REGISTRY = {
   poubelle: { component: CorbeilleWindow },
   caramail: { component: CaramailWindow },
   ie:       { component: IEWindow },
+  dehors:   { component: DehorsWindow },
 };
