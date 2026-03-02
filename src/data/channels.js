@@ -153,7 +153,7 @@ export const CHANNELS = [
   // 5 — France 5 — Les Zouzous (NOUVEAU)
   {
     name: "France 5 — Les Zouzous", color: "#88CC44", emoji: "\u{1F333}",
-    bg: "#0a200a", img: "/images/tv/france5.png",
+    bg: "#0a200a",
     type: "zouzous",
     videos: [],
     content: {
@@ -216,7 +216,7 @@ export const CHANNELS = [
   // 8 — Cartoon Network (NOUVEAU)
   {
     name: "Cartoon Network", color: "#00CCFF", emoji: "\u{1F4A5}",
-    bg: "#0a0a1a", img: "/images/tv/cartoon_network.png",
+    bg: "#0a0a1a",
     type: "cartoon_network",
     videos: [],
     content: {
@@ -237,7 +237,7 @@ export const CHANNELS = [
   // 9 — Jetix (NOUVEAU)
   {
     name: "Jetix", color: "#FF3300", emoji: "\u{1F9B8}",
-    bg: "#1a0500", img: "/images/tv/jetix.png",
+    bg: "#1a0500",
     type: "jetix",
     videos: [],
     content: {

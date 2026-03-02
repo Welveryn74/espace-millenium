@@ -274,4 +274,33 @@ export const ROOM_ITEMS = [
     position: { top: "70%", left: "55%" },
     hint: "Ça sent la fraise !",
   },
+
+  // --- Jouets iconiques (Sprint P3) ---
+  {
+    id: "kaleidoscope",
+    emoji: "🌈",
+    label: "Kaléidoscope",
+    zone: "etagere",
+    interactive: true,
+    position: { top: "14%", left: "72%" },
+    hint: "Ferme un œil et tourne...",
+  },
+  {
+    id: "bouleDisco",
+    emoji: "🪩",
+    label: "Boule disco",
+    zone: "etagere",
+    interactive: true,
+    position: { top: "8%", left: "78%" },
+    hint: "Ambiance fête !",
+  },
+  {
+    id: "voitureRC",
+    emoji: "🏎️",
+    label: "Voitures télécommandées",
+    zone: "parterre",
+    interactive: true,
+    position: { top: "80%", left: "35%" },
+    hint: "VROOOM ! ...les piles sont mortes.",
+  },
 ];

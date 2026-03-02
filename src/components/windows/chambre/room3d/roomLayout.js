@@ -158,6 +158,12 @@ export const SHELF_ITEMS = [
     position: [1.7, 1.83, -2.3] },
   { type: "box", size: [0.06, 0.14, 0.11], color: "#2E7D32",
     position: [1.76, 1.84, -2.3] },
+  // Kaléidoscope — petit cylindre coloré sur étagère milieu
+  { type: "cylinder", radius: 0.025, height: 0.12, segments: 8,
+    color: "#FF6600", position: [1.85, 1.82, -2.2], rotation: [0, 0, 0.3] },
+  // Boule disco — petite sphère argentée sur étagère haut
+  { type: "sphere", radius: 0.05, segments: 8, color: "#C0C0C0",
+    position: [2.65, 2.26, -2.2] },
 ];
 
 // Floor objects — real 3D low-poly items
@@ -203,6 +209,11 @@ export const FLOOR_OBJECTS = [
     position: [-1.25, 0.003, 0.35], rotation: [0, -0.2, 0] },
   { type: "box", size: [0.12, 0.003, 0.16], color: "#FFE082",
     position: [-1.18, 0.006, 0.3], rotation: [0, 0.5, 0] },
+  // Voiture RC — petite boîte rouge basse + télécommande noire
+  { type: "box", size: [0.18, 0.06, 0.1], color: "#C62828",
+    position: [-2.0, 0.03, 0.3] },
+  { type: "box", size: [0.08, 0.02, 0.06], color: "#1a1a1a",
+    position: [-1.75, 0.01, 0.35] },
 ];
 
 // Interactive hitbox zones — match ROOM_ITEMS ids from chambreItems.js
@@ -230,6 +241,10 @@ export const HITBOXES = [
   { id: "dinos",       position: [2.5, 1.85, -2.2],  size: [0.4, 0.25] },
   { id: "posters",     position: [0.2, 2.2, -2.40],  size: [1.6, 0.9] },
   { id: "diddl",       position: [-1.2, 0.01, 0.3],  size: [0.3, 0.25], isFloor: true },
+  // Jouets P3
+  { id: "kaleidoscope",position: [1.85, 1.85, -2.2], size: [0.15, 0.2] },
+  { id: "bouleDisco",  position: [2.65, 2.28, -2.2], size: [0.2, 0.2] },
+  { id: "voitureRC",   position: [-2.0, 0.03, 0.3],  size: [0.45, 0.3], isFloor: true },
 ];
 
 // Lighting presets

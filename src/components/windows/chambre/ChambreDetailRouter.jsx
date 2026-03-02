@@ -18,6 +18,9 @@ import TelephoneView from "./details/TelephoneView";
 import DinosView from "./details/DinosView";
 import PostersView from "./details/PostersView";
 import DiddlView from "./details/DiddlView";
+import KaleidoscopeView from "./details/KaleidoscopeView";
+import BouleDiscoView from "./details/BouleDiscoView";
+import VoitureRCView from "./details/VoitureRCView";
 
 const backBtnStyle = {
   background: "none",
@@ -110,6 +113,9 @@ export default function ChambreDetailRouter({ activeItem, goBack, state }) {
         {activeItem === "dinos" && <DinosView />}
         {activeItem === "posters" && <PostersView />}
         {activeItem === "diddl" && <DiddlView />}
+        {activeItem === "kaleidoscope" && <KaleidoscopeView />}
+        {activeItem === "bouleDisco" && <BouleDiscoView />}
+        {activeItem === "voitureRC" && <VoitureRCView />}
       </div>
     </div>
   );
